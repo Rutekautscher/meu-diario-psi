@@ -1,79 +1,124 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NetPsi - Produtora Rute Kautscher</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Diário Psi</title>
+    <!-- Script para o efeito de confete -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        :root { --n-red: #E50914; --text: #ffffff; }
-        body {
-            font-family: 'Roboto', sans-serif; margin: 0; min-height: 100vh; color: var(--text);
-            background: linear-gradient(-45deg, #000000, #1a0000, #001a33, #1a0033, #000000);
-            background-size: 400% 400%; animation: gradientBG 10s ease infinite;
-            background-attachment: fixed; display: flex; flex-direction: column; align-items: center; overflow-x: hidden;
-        }
-        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        .container { width: 95%; max-width: 1200px; padding: 20px 10px; position: relative; box-sizing: border-box; }
-        .sidebar-profiles { position: static; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 20px; }
-        @media (min-width: 1024px) { .sidebar-profiles { position: absolute; top: 20px; right: 0; flex-direction: column; } }
-        .perfil-box { width: 45px; height: 45px; background: #2b2b2b; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: bold; border: 2px solid transparent; }
-        .perfil-box.azul { background: #1a73e8; } .perfil-box.vermelho { background: #e50914; } .perfil-box.verde { background: #4caf50; }
-        .logo-main { font-family: 'Bebas Neue', cursive; font-size: 4rem; color: var(--n-red); text-align: center; margin: 0; filter: drop-shadow(0 0 20px rgba(229, 9, 20, 0.9)); }
-        .credito-mini { color: #fff; text-align: center; text-transform: uppercase; letter-spacing: 2px; margin-top: -5px; margin-bottom: 30px; font-size: 0.8rem; }
-        .card-netflix { background-color: rgba(10, 10, 10, 0.9); padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #333; }
-        input, textarea, select { width: 100%; padding: 15px; margin: 8px 0; border: 1px solid #333; background: #080808; color: white; border-radius: 4px; box-sizing: border-box; }
-        .btn-netflix { background-color: var(--n-red); color: white; border: none; padding: 18px; border-radius: 4px; cursor: pointer; font-weight: 700; text-transform: uppercase; width: 100%; font-size: 1rem; }
-        label { font-weight: 700; color: #fff; margin-top: 20px; display: block; text-transform: uppercase; border-left: 5px solid var(--n-red); padding-left: 15px; }
-        .tcc-entry { background: rgba(20, 20, 20, 0.8); padding: 20px; border-radius: 6px; margin-top: 15px; border: 1px solid #222; }
-        .valor-emocao { color: var(--n-red); font-weight: bold; float: right; font-size: 1.2rem; }
-        .retangulo-netflix { background: var(--n-red); padding: 25px; margin: 30px 0; font-family: 'Bebas Neue'; font-size: 1.4rem; text-align: center; color: white; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #141414; color: white; text-align: center; margin: 0; padding: 20px; }
+        .box { border: 1px solid #444; padding: 20px; margin: 15px auto; width: 90%; max-width: 500px; border-radius: 10px; background: #1f1f1f; }
+        h3 { color: #e50914; margin-top: 0; }
+        input[type="range"] { accent-color: red; width: 100%; margin: 10px 0; }
+        textarea, input[type="text"], input[type="password"] { width: 100%; padding: 10px; margin: 5px 0; border-radius: 5px; border: 1px solid #444; background: #333; color: white; box-sizing: border-box; }
+        .btn-revelar { background: #e50914; color: white; border: none; padding: 15px 30px; border-radius: 5px; margin-top: 30px; cursor: pointer; font-weight: bold; font-size: 16px; }
+        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .login-btn { background: #e50914; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 10px; }
+        .label-text { display: block; margin-bottom: 10px; font-weight: bold; }
     </style>
 </head>
 <body>
-<div class="container">
-    <div id="auth-section">
-        <h1 class="logo-main">NETPSI</h1>
-        <div class="credito-mini">PRODUTORA RUTE KAUTSCHER</div>
-        <div class="card-netflix" style="max-width: 400px; margin: auto; text-align:center;">
-            <p>SISTEMA RESTAURADO</p>
-            <button class="btn-netflix" onclick="realizarLogin()">ENTRAR NO SET</button>
-        </div>
-    </div>
-    <div id="main-content" style="display:none;">
-        <div class="sidebar-profiles" id="historico-sidebar"></div>
-        <h1 class="logo-main" style="font-size: 3rem;">NETPSI</h1>
-        <div class="card-netflix">
-            <label>Ingresso de Hoje</label>
-            <button class="btn-netflix" style="background: #333;" onclick="revelarSurpresa()">REVELAR</button>
-            <div id="box-surpresa" style="display:none; padding:15px; color:var(--n-red); text-align:center; font-weight:bold;"></div>
-        </div>
-        <div class="card-netflix">
-            <label>Relato do Episódio</label>
-            <textarea rows="4" id="relato"></textarea>
-        </div>
-        <div class="card-netflix"><label>TCC Completo</label><div id="grid-tcc"></div></div>
-        <div class="card-netflix"><label>Elogios & Gratidão</label><input type="text" placeholder="Elogio"><input type="text" placeholder="Gratidão"></div>
-        <div id="pasta-arquivos" style="margin-top:20px;"><div id="grid-meses" style="display:grid; grid-template-columns: repeat(4,1fr); gap:8px;"></div></div>
-        <div class="retangulo-netflix">"O SOFRIMENTO É O LODO ONDE A FLOR DA FELICIDADE CRESCE."<br><small>— Thich Nhat Hanh</small></div>
+
+<!-- Tela de Entrada/Login -->
+<div id="login-screen">
+    <h1 style="color: #e50914; letter-spacing: 2px;">SISTEMA RESTAURADO</h1>
+    <div id="login-container">
+        <input type="password" id="pass" placeholder="Crie ou digite sua senha">
+        <button class="login-btn" onclick="fazerLogin()">Entrar no Site</button>
     </div>
 </div>
+
+<div id="main-content" style="display:none;">
+    <h1 style="color: #e50914;">Meu Diário Psi</h1>
+    
+    <!-- Humor Crítico -->
+    <div class="box">
+        <h3>Humor Crítico</h3>
+        <span class="label-text">Avaliação de 0 a 10</span>
+        <input type="range" min="0" max="10" value="5" oninput="this.nextElementSibling.value = this.value">
+        <output>5</output>
+    </div>
+
+    <!-- Pensamento Automático -->
+    <div class="box">
+        <h3>Pensamento Automático</h3>
+        <textarea rows="3" placeholder="O que passou pela sua cabeça?"></textarea>
+    </div>
+
+    <!-- Reestruturação Cognitiva -->
+    <div class="box">
+        <h3>Reestruturação Cognitiva</h3>
+        <span class="label-text">Como posso pensar diferente?</span>
+        <textarea rows="3" placeholder="Desafie o pensamento anterior..."></textarea>
+    </div>
+
+    <!-- Elogios da Estrela -->
+    <div class="box">
+        <h3>Elogios da Estrela</h3>
+        <input type="text" placeholder="Elogio 1">
+        <input type="text" placeholder="Elogio 2">
+        <input type="text" placeholder="Elogio 3">
+    </div>
+
+    <!-- Gratidão -->
+    <div class="box">
+        <h3>Gratidão pelo Episódio de Hoje</h3>
+        <input type="text" placeholder="Motivo de gratidão 1">
+        <input type="text" placeholder="Motivo de gratidão 2">
+        <input type="text" placeholder="Motivo de gratidão 3">
+    </div>
+
+    <div style="margin-top: 40px;">
+        <p style="font-size: 18px; margin-bottom: 10px;">Ingresso de Hoje</p>
+        <button class="btn-revelar" onclick="revelar()">REVELAR</button>
+    </div>
+</div>
+
+<!-- Elemento de áudio para o som do tudum -->
+<audio id="tudum" src="tudum.mp3"></audio>
+
 <script>
-    const EMOC_LIST = ["Ansiedade", "Alegria", "Cansaço", "Paz", "Tristeza", "Raiva", "Frustração", "Culpa"];
-    function realizarLogin() { document.getElementById('auth-section').style.display='none'; document.getElementById('main-content').style.display='block'; buildTCC(); renderPasta(); }
-    function revelarSurpresa() { const b = document.getElementById('box-surpresa'); b.innerText = "CARTA: " + ["Foque no agora.", "Você é capaz.", "Respire.", "Tudo passa."][Math.floor(Math.random()*4)]; b.style.display='block'; }
-    function buildTCC(){
-        const container = document.getElementById("grid-tcc"); container.innerHTML = "";
-        EMOC_LIST.forEach((em, i) => {
-            container.innerHTML += `<div class="tcc-entry"><span class="valor-emocao" id="v_${i}">0</span><strong>${em}</strong><input type="range" min="0" max="10" oninput="document.getElementById('v_${i}').innerText=this.value"><input type="text" placeholder="Gatilho"><input type="text" placeholder="Pensamento"><textarea placeholder="Reestruturação"></textarea></div>`;
+    // Função para gerenciar o login e o som
+    function fazerLogin() {
+        const senhaInserida = document.getElementById('pass').value;
+        if(senhaInserida) {
+            // Salva a senha para não precisar criar toda vez
+            localStorage.setItem('meu_diario_senha', senhaInserida);
+            iniciarSite();
+        } else {
+            alert("Por favor, digite uma senha.");
+        }
+    }
+
+    function iniciarSite() {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('main-content').style.display = 'block';
+        // Toca o som do tudum
+        const som = document.getElementById('tudum');
+        som.play().catch(e => console.log("Som aguardando interação ou arquivo ausente."));
+    }
+
+    // Função para o botão de revelar com confetes
+    function revelar() {
+        confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#ff0000', '#ffffff', '#b9090b']
         });
     }
-    function renderPasta() {
-        const container = document.getElementById('grid-meses'); container.innerHTML = "";
-        ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"].forEach(m => {
-            container.innerHTML += `<div style="background:#111; padding:10px; border:1px solid #222; font-size:0.6rem; text-align:center;">${m}</div>`;
-        });
-    }
+
+    // Verifica se já existe uma senha salva ao carregar a página
+    window.onload = () => {
+        const senhaSalva = localStorage.getItem('meu_diario_senha');
+        if(senhaSalva) {
+            document.getElementById('login-container').innerHTML = `
+                <p>Bem-vinda de volta!</p>
+                <button class="login-btn" onclick="iniciarSite()">Entrar no Site</button>
+            `;
+        }
+    };
 </script>
 </body>
 </html>
