@@ -2,123 +2,754 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Diário Psi</title>
-    <!-- Script para o efeito de confete -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>NETPSI - Seu Diário Terapêutico</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #141414; color: white; text-align: center; margin: 0; padding: 20px; }
-        .box { border: 1px solid #444; padding: 20px; margin: 15px auto; width: 90%; max-width: 500px; border-radius: 10px; background: #1f1f1f; }
-        h3 { color: #e50914; margin-top: 0; }
-        input[type="range"] { accent-color: red; width: 100%; margin: 10px 0; }
-        textarea, input[type="text"], input[type="password"] { width: 100%; padding: 10px; margin: 5px 0; border-radius: 5px; border: 1px solid #444; background: #333; color: white; box-sizing: border-box; }
-        .btn-revelar { background: #e50914; color: white; border: none; padding: 15px 30px; border-radius: 5px; margin-top: 30px; cursor: pointer; font-weight: bold; font-size: 16px; }
-        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .login-btn { background: #e50914; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 10px; }
-        .label-text { display: block; margin-bottom: 10px; font-weight: bold; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #141414;
+            color: #e5e5e5;
+        }
+
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at 30% 10%, #0a0a0a, #000000);
+            position: relative;
+            padding: 2rem;
+        }
+
+        .netpsi-logo {
+            font-size: 5rem;
+            font-weight: 900;
+            color: #E50914;
+            text-shadow: 0 0 10px rgba(229,9,20,0.5), 0 0 20px rgba(229,9,20,0.3);
+            letter-spacing: -2px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            font-weight: 300;
+            color: #ccc;
+            text-align: center;
+            margin-bottom: 0.25rem;
+        }
+
+        .producer {
+            font-size: 0.7rem;
+            color: #888;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-card {
+            background: rgba(0,0,0,0.75);
+            border-radius: 8px;
+            padding: 3rem 2.5rem;
+            width: 100%;
+            max-width: 450px;
+            backdrop-filter: blur(10px);
+        }
+
+        .login-card h2 {
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 1rem;
+            background: #333;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            background: #454545;
+        }
+
+        .btn-red {
+            background: #E50914;
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 4px;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background 0.2s;
+        }
+
+        .btn-red:hover {
+            background: #f6121d;
+        }
+
+        .switch-btn {
+            background: none;
+            border: none;
+            color: #b3b3b3;
+            margin-top: 1rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        .switch-btn:hover {
+            text-decoration: underline;
+            color: #E50914;
+        }
+
+        .error-msg {
+            color: #E50914;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+
+        .dashboard {
+            display: none;
+            padding-bottom: 4rem;
+        }
+
+        .nav-bar {
+            background: linear-gradient(to bottom, #000000cc, #141414);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #E50914;
+            letter-spacing: -1px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn-logout {
+            background: #E50914;
+            border: none;
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .save-bar {
+            background: #1f1f1f;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .btn-save {
+            background: #E50914;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .history-select {
+            background: #333;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            border: none;
+        }
+
+        .content {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .section {
+            background: #1f1f1f;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid #E50914;
+        }
+
+        .section h3 {
+            color: #E50914;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .atividade-tcc {
+            background: #2a2a2a;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-style: italic;
+        }
+
+        .emo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .emo-card {
+            background: #2a2a2a;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .emo-card h4 {
+            color: #E50914;
+            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        .emo-input {
+            margin-bottom: 0.8rem;
+        }
+
+        .emo-input label {
+            font-size: 0.75rem;
+            color: #aaa;
+            display: block;
+        }
+
+        .emo-input input, .emo-input textarea {
+            width: 100%;
+            background: #3a3a3a;
+            border: none;
+            padding: 0.5rem;
+            color: white;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        .emo-input textarea {
+            resize: vertical;
+            min-height: 50px;
+        }
+
+        .rating-div {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .rating-div input {
+            width: 70px;
+            padding: 0.5rem;
+            background: #333;
+            border: none;
+            color: white;
+            border-radius: 4px;
+        }
+
+        .triple-box {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .triple-item textarea {
+            width: 100%;
+            background: #3a3a3a;
+            border: none;
+            padding: 0.5rem;
+            color: white;
+            border-radius: 4px;
+        }
+
+        .arquivos-footer {
+            background: #0f0f0f;
+            padding: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid #E50914;
+        }
+
+        .arquivos-footer h3 {
+            color: #E50914;
+            margin-bottom: 1rem;
+        }
+
+        .filmes-lista {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .filme-card {
+            background: #1f1f1f;
+            padding: 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            width: 150px;
+            text-align: center;
+        }
+
+        .filme-card:hover {
+            transform: scale(1.05);
+            background: #E50914;
+            color: white;
+        }
+
+        .filmes-antigos-box {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .filme-antigo-item {
+            background: #2a2a2a;
+            padding: 0.8rem;
+            border-radius: 6px;
+        }
+
+        .filme-antigo-item textarea {
+            width: 100%;
+            background: #3a3a3a;
+            border: none;
+            padding: 0.5rem;
+            color: white;
+            border-radius: 4px;
+            margin-top: 0.3rem;
+        }
+
+        .add-btn {
+            background: #E50914;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        textarea, input {
+            font-family: inherit;
+        }
+
+        @media (max-width: 700px) {
+            .netpsi-logo { font-size: 3rem; }
+            .login-card { padding: 2rem 1.5rem; }
+            .content { padding: 0 1rem; }
+        }
     </style>
 </head>
 <body>
 
-<!-- Tela de Entrada/Login -->
-<div id="login-screen">
-    <h1 style="color: #e50914; letter-spacing: 2px;">SISTEMA RESTAURADO</h1>
-    <div id="login-container">
-        <input type="password" id="pass" placeholder="Crie ou digite sua senha">
-        <button class="login-btn" onclick="fazerLogin()">Entrar no Site</button>
+<div id="loginScreen" class="login-container">
+    <div class="netpsi-logo">NETPSI</div>
+    <div class="tagline">Seu diário terapêutico pessoal</div>
+    <div class="producer">Uma produção de Rute Kautscher</div>
+    <div class="login-card">
+        <h2 id="formTitle">Entrar na sua temporada</h2>
+        <div class="input-group"><input type="text" id="loginUser" placeholder="Seu usuário"></div>
+        <div class="input-group"><input type="password" id="loginPass" placeholder="Senha"></div>
+        <button class="btn-red" id="submitBtn">Entrar</button>
+        <button class="switch-btn" id="switchBtn">Criar sua temporada</button>
+        <div id="loginError" class="error-msg"></div>
     </div>
 </div>
 
-<div id="main-content" style="display:none;">
-    <h1 style="color: #e50914;">Meu Diário Psi</h1>
-    
-    <!-- Humor Crítico -->
-    <div class="box">
-        <h3>Humor Crítico</h3>
-        <span class="label-text">Avaliação de 0 a 10</span>
-        <input type="range" min="0" max="10" value="5" oninput="this.nextElementSibling.value = this.value">
-        <output>5</output>
+<div id="dashboard" class="dashboard">
+    <div class="nav-bar">
+        <div class="nav-logo">NETPSI</div>
+        <div class="user-info">
+            <span id="currentUserDisplay"></span>
+            <button class="btn-logout" id="logoutBtn">Sair</button>
+        </div>
     </div>
-
-    <!-- Pensamento Automático -->
-    <div class="box">
-        <h3>Pensamento Automático</h3>
-        <textarea rows="3" placeholder="O que passou pela sua cabeça?"></textarea>
+    <div class="save-bar">
+        <button class="btn-save" id="saveEntryBtn">Salvar episódio de hoje</button>
+        <select id="historySelect" class="history-select">
+            <option value="hoje">Hoje</option>
+        </select>
     </div>
-
-    <!-- Reestruturação Cognitiva -->
-    <div class="box">
-        <h3>Reestruturação Cognitiva</h3>
-        <span class="label-text">Como posso pensar diferente?</span>
-        <textarea rows="3" placeholder="Desafie o pensamento anterior..."></textarea>
-    </div>
-
-    <!-- Elogios da Estrela -->
-    <div class="box">
-        <h3>Elogios da Estrela</h3>
-        <input type="text" placeholder="Elogio 1">
-        <input type="text" placeholder="Elogio 2">
-        <input type="text" placeholder="Elogio 3">
-    </div>
-
-    <!-- Gratidão -->
-    <div class="box">
-        <h3>Gratidão pelo Episódio de Hoje</h3>
-        <input type="text" placeholder="Motivo de gratidão 1">
-        <input type="text" placeholder="Motivo de gratidão 2">
-        <input type="text" placeholder="Motivo de gratidão 3">
-    </div>
-
-    <div style="margin-top: 40px;">
-        <p style="font-size: 18px; margin-bottom: 10px;">Ingresso de Hoje</p>
-        <button class="btn-revelar" onclick="revelar()">REVELAR</button>
+    <div class="content" id="diaryContent"></div>
+    <div class="arquivos-footer" id="arquivosSection">
+        <h3>Seus Arquivos (como filmes)</h3>
+        <div class="filmes-lista" id="filmesList"></div>
     </div>
 </div>
-
-<!-- Elemento de áudio para o som do tudum -->
-<audio id="tudum" src="tudum.mp3"></audio>
 
 <script>
-    // Função para gerenciar o login e o som
-    function fazerLogin() {
-        const senhaInserida = document.getElementById('pass').value;
-        if(senhaInserida) {
-            // Salva a senha para não precisar criar toda vez
-            localStorage.setItem('meu_diario_senha', senhaInserida);
-            iniciarSite();
+    let users = JSON.parse(localStorage.getItem('netpsi_users')) || {};
+    let currentUser = null;
+    let currentDate = new Date().toISOString().slice(0,10);
+    
+    const atividadesTCC = [
+        "Registro de pensamentos disfuncionais: anote situação, emoção, pensamento automático.",
+        "Questionamento socrático: quais evidências sustentam e contradizem seu pensamento?",
+        "Experimente fazer uma 'previsão' sobre algo que te causa ansiedade e teste depois.",
+        "Liste 3 distorções cognitivas que você percebeu hoje.",
+        "Técnica da dupla coluna: pensamento automático x resposta racional.",
+        "Atividade programada: faça algo que estava procrastinando por 15 minutos.",
+        "Escreva uma carta para si mesmo sobre uma crença que gostaria de modificar.",
+        "Role-play mental: como um amigo aconselharia você nessa situação?",
+        "Técnica do espelho: fale 3 qualidades suas em voz alta.",
+        "Exposição imaginária: visualize uma situação temida por 5 minutos.",
+        "Liste pequenas conquistas do dia, mesmo as mínimas.",
+        "Reestruturação cognitiva: troque 'deveria' por 'seria bom se'.",
+        "Identifique um pensamento automático e encontre 3 alternativas.",
+        "Técnica da seta descendente: qual o pior que pode acontecer? E daí?",
+        "Relaxamento muscular progressivo por 10 minutos.",
+        "Programe uma atividade agradável para hoje e faça.",
+        "Escreva os prós e contras de manter um comportamento negativo.",
+        "Tente agir como se já tivesse superado seu medo por um dia.",
+        "Identifique gatilhos emocionais e planeje como evitá-los ou enfrentá-los.",
+        "Diário de três colunas: situação, pensamento, emoção (0-10).",
+        "Exercício de atenção plena em uma tarefa comum (escovar dentes, comer).",
+        "Liste coisas que estão sob seu controle e as que não estão.",
+        "Técnica de parada de pensamento: imagine um sinal vermelho.",
+        "Escreva uma nova narrativa sobre um evento estressante recente.",
+        "Identifique uma crença central e encontre evidências contrárias.",
+        "Prática de autocompaixão: trate-se como trataria um amigo.",
+        "Estabeleça uma meta pequena e realista para as próximas 2 horas.",
+        "Reveja uma preocupação: é útil se preocupar agora?",
+        "Liste 5 coisas que você pode ver, 4 que pode tocar, 3 que ouve... (grounding).",
+        "Substitua 'nunca consigo' por 'ainda não consegui, mas posso tentar'."
+    ];
+    while(atividadesTCC.length < 110) {
+        atividadesTCC.push(...atividadesTCC.slice(0,10).map(a => a + " (variação)"));
+    }
+    
+    function getAtividadeAleatoria() {
+        return atividadesTCC[Math.floor(Math.random() * atividadesTCC.length)];
+    }
+    
+    function getEmptyDiary() {
+        const emocoes = ["alegria", "tedio", "medo", "raiva", "tristeza", "nojo", "frustracao", "apatia", "vergonha"];
+        const emocoesData = {};
+        emocoes.forEach(emo => {
+            emocoesData[emo] = { gatilho: "", pensamentos: "", outra_forma: "" };
+        });
+        return {
+            atividade_tcc: getAtividadeAleatoria(),
+            como_foi: "",
+            humor_critico: 5,
+            emocoes: emocoesData,
+            sofa_preguica: "",
+            elogios: ["", "", ""],
+            gratidao: ["", "", ""],
+            melhorar_amanha: "",
+            filmes_antigos: []
+        };
+    }
+    
+    function captureDiaryFromDOM() {
+        const emocoes = ["alegria", "tedio", "medo", "raiva", "tristeza", "nojo", "frustracao", "apatia", "vergonha"];
+        const emocoesData = {};
+        emocoes.forEach(emo => {
+            emocoesData[emo] = {
+                gatilho: document.getElementById(`emo_${emo}_gatilho`)?.value || "",
+                pensamentos: document.getElementById(`emo_${emo}_pensamentos`)?.value || "",
+                outra_forma: document.getElementById(`emo_${emo}_outra`)?.value || ""
+            };
+        });
+        
+        const filmesAntigos = [];
+        document.querySelectorAll('.filme-antigo-texto').forEach((textarea) => {
+            if(textarea.value.trim()) {
+                filmesAntigos.push(textarea.value);
+            }
+        });
+        
+        return {
+            atividade_tcc: document.getElementById('atividadeTexto')?.innerText || getAtividadeAleatoria(),
+            como_foi: document.getElementById('comoFoi')?.value || "",
+            humor_critico: parseInt(document.getElementById('humorValor')?.value) || 5,
+            emocoes: emocoesData,
+            sofa_preguica: document.getElementById('sofaPreguica')?.value || "",
+            elogios: [
+                document.getElementById('elogio1')?.value || "",
+                document.getElementById('elogio2')?.value || "",
+                document.getElementById('elogio3')?.value || ""
+            ],
+            gratidao: [
+                document.getElementById('gratidao1')?.value || "",
+                document.getElementById('gratidao2')?.value || "",
+                document.getElementById('gratidao3')?.value || ""
+            ],
+            melhorar_amanha: document.getElementById('melhorarAmanha')?.value || "",
+            filmes_antigos: filmesAntigos
+        };
+    }
+    
+    function renderDiary(data) {
+        const container = document.getElementById('diaryContent');
+        if(!container) return;
+        const emocoesList = ["alegria", "tedio", "medo", "raiva", "tristeza", "nojo", "frustracao", "apatia", "vergonha"];
+        const nomesBonitos = { alegria:"Alegria", tedio:"Tedio", medo:"Medo", raiva:"Raiva", tristeza:"Tristeza", nojo:"Nojo", frustracao:"Frustracao", apatia:"Apatia", vergonha:"Vergonha" };
+        
+        let html = `
+            <div class="section">
+                <h3>Filme de hoje</h3>
+                <div class="atividade-tcc" id="atividadeTexto">${data.atividade_tcc || getAtividadeAleatoria()}</div>
+                <button class="btn-red" id="novaAtividadeBtn" style="margin-top:0.5rem; padding:0.3rem 1rem; width:auto;">Nova atividade</button>
+            </div>
+            <div class="section">
+                <h3>Como foi o episodio de hoje?</h3>
+                <textarea id="comoFoi" rows="3" style="width:100%; background:#2a2a2a; border:none; color:white; padding:0.8rem;">${data.como_foi || ""}</textarea>
+            </div>
+            <div class="section">
+                <h3>Humor critico (0-10)</h3>
+                <div class="rating-div"><input type="number" id="humorValor" min="0" max="10" value="${data.humor_critico}"> <span>/10</span></div>
+            </div>
+            <div class="section">
+                <h3>Emocoes</h3>
+                <div class="emo-grid">
+        `;
+        emocoesList.forEach(emo => {
+            const eData = data.emocoes[emo] || { gatilho:"", pensamentos:"", outra_forma:"" };
+            html += `
+                <div class="emo-card">
+                    <h4>${nomesBonitos[emo]}</h4>
+                    <div class="emo-input"><label>Gatilho</label><textarea id="emo_${emo}_gatilho">${eData.gatilho}</textarea></div>
+                    <div class="emo-input"><label>Pensamentos automaticos</label><textarea id="emo_${emo}_pensamentos">${eData.pensamentos}</textarea></div>
+                    <div class="emo-input"><label>Como posso ver de outra forma?</label><textarea id="emo_${emo}_outra">${eData.outra_forma}</textarea></div>
+                </div>
+            `;
+        });
+        
+        let filmesAntigosHtml = `<div class="section"><h3>Filmes antigos que preciso esquecer</h3><div class="filmes-antigos-box" id="filmesAntigosBox">`;
+        const filmesLista = data.filmes_antigos || [];
+        if(filmesLista.length === 0) {
+            filmesAntigosHtml += `<div class="filme-antigo-item"><textarea class="filme-antigo-texto" placeholder="Ex: acreditar que nunca sou bom o suficiente..."></textarea></div>`;
         } else {
-            alert("Por favor, digite uma senha.");
+            filmesLista.forEach((filme, idx) => {
+                filmesAntigosHtml += `<div class="filme-antigo-item"><textarea class="filme-antigo-texto" placeholder="Crença ou pensamento antigo">${filme}</textarea><button class="add-btn remover-filme-btn" data-idx="${idx}">Remover</button></div>`;
+            });
         }
-    }
-
-    function iniciarSite() {
-        document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('main-content').style.display = 'block';
-        // Toca o som do tudum
-        const som = document.getElementById('tudum');
-        som.play().catch(e => console.log("Som aguardando interação ou arquivo ausente."));
-    }
-
-    // Função para o botão de revelar com confetes
-    function revelar() {
-        confetti({
-            particleCount: 150,
-            spread: 70,
-            origin: { y: 0.6 },
-            colors: ['#ff0000', '#ffffff', '#b9090b']
+        filmesAntigosHtml += `<button class="add-btn" id="addFilmeAntigoBtn">Adicionar crença antiga</button></div></div>`;
+        
+        html += `</div></div>`;
+        html += `
+            <div class="section">
+                <h3>Sofa da preguiça</h3>
+                <textarea id="sofaPreguica" rows="2" style="width:100%; background:#2a2a2a; border:none; color:white; padding:0.8rem;">${data.sofa_preguica || ""}</textarea>
+                <small>O que procrastinei hoje?</small>
+            </div>
+            <div class="section">
+                <h3>Elogie-se, voce é uma estrela</h3>
+                <div class="triple-box">
+                    <div class="triple-item"><textarea id="elogio1" placeholder="Elogio 1">${data.elogios[0] || ""}</textarea></div>
+                    <div class="triple-item"><textarea id="elogio2" placeholder="Elogio 2">${data.elogios[1] || ""}</textarea></div>
+                    <div class="triple-item"><textarea id="elogio3" placeholder="Elogio 3">${data.elogios[2] || ""}</textarea></div>
+                </div>
+            </div>
+            <div class="section">
+                <h3>Gratidao pelo episodio de hoje</h3>
+                <div class="triple-box">
+                    <div class="triple-item"><textarea id="gratidao1" placeholder="Gratidao 1">${data.gratidao[0] || ""}</textarea></div>
+                    <div class="triple-item"><textarea id="gratidao2" placeholder="Gratidao 2">${data.gratidao[1] || ""}</textarea></div>
+                    <div class="triple-item"><textarea id="gratidao3" placeholder="Gratidao 3">${data.gratidao[2] || ""}</textarea></div>
+                </div>
+            </div>
+            <div class="section">
+                <h3>Como posso melhorar no episodio de amanha?</h3>
+                <textarea id="melhorarAmanha" rows="2" style="width:100%; background:#2a2a2a; border:none; color:white; padding:0.8rem;">${data.melhorar_amanha || ""}</textarea>
+            </div>
+            ${filmesAntigosHtml}
+        `;
+        container.innerHTML = html;
+        
+        document.getElementById('novaAtividadeBtn')?.addEventListener('click', () => {
+            document.getElementById('atividadeTexto').innerText = getAtividadeAleatoria();
+        });
+        
+        document.getElementById('addFilmeAntigoBtn')?.addEventListener('click', () => {
+            const box = document.getElementById('filmesAntigosBox');
+            const novoItem = document.createElement('div');
+            novoItem.className = 'filme-antigo-item';
+            novoItem.innerHTML = `<textarea class="filme-antigo-texto" placeholder="Ex: acreditar que nunca sou bom o suficiente..."></textarea><button class="add-btn remover-filme-btn">Remover</button>`;
+            box.insertBefore(novoItem, document.getElementById('addFilmeAntigoBtn'));
+            novoItem.querySelector('.remover-filme-btn').addEventListener('click', () => novoItem.remove());
+        });
+        
+        document.querySelectorAll('.remover-filme-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.target.closest('.filme-antigo-item').remove();
+            });
         });
     }
-
-    // Verifica se já existe uma senha salva ao carregar a página
-    window.onload = () => {
-        const senhaSalva = localStorage.getItem('meu_diario_senha');
-        if(senhaSalva) {
-            document.getElementById('login-container').innerHTML = `
-                <p>Bem-vinda de volta!</p>
-                <button class="login-btn" onclick="iniciarSite()">Entrar no Site</button>
-            `;
+    
+    function saveCurrentUserData() {
+        if(!currentUser) return;
+        if(!users[currentUser].diarios) users[currentUser].diarios = {};
+        const dataStr = currentDate;
+        const content = captureDiaryFromDOM();
+        users[currentUser].diarios[dataStr] = content;
+        localStorage.setItem('netpsi_users', JSON.stringify(users));
+    }
+    
+    function loadDate(dateStr) {
+        currentDate = dateStr;
+        if(!users[currentUser].diarios) users[currentUser].diarios = {};
+        let diary = users[currentUser].diarios[dateStr];
+        if(!diary) {
+            diary = getEmptyDiary();
+            users[currentUser].diarios[dateStr] = diary;
+            localStorage.setItem('netpsi_users', JSON.stringify(users));
+        }
+        renderDiary(diary);
+        updateHistorySelect();
+    }
+    
+    function updateHistorySelect() {
+        const select = document.getElementById('historySelect');
+        if(!select) return;
+        const allDates = Object.keys(users[currentUser].diarios || {}).sort().reverse();
+        select.innerHTML = '<option value="hoje">Hoje</option>';
+        allDates.forEach(d => {
+            if(d !== new Date().toISOString().slice(0,10)) {
+                select.innerHTML += `<option value="${d}">${d}</option>`;
+            }
+        });
+        select.value = currentDate === new Date().toISOString().slice(0,10) ? "hoje" : currentDate;
+    }
+    
+    function populateFilmesArquivos() {
+        const container = document.getElementById('filmesList');
+        if(!container) return;
+        const allDates = Object.keys(users[currentUser].diarios || {}).sort().reverse();
+        container.innerHTML = allDates.map(d => `<div class="filme-card" data-data="${d}">Entrada: ${d}</div>`).join('');
+        document.querySelectorAll('.filme-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                const data = card.getAttribute('data-data');
+                if(data) {
+                    currentDate = data;
+                    loadDate(currentDate);
+                    updateHistorySelect();
+                }
+            });
+        });
+    }
+    
+    function initDashboard() {
+        if(!users[currentUser].diarios) users[currentUser].diarios = {};
+        const today = new Date().toISOString().slice(0,10);
+        if(!users[currentUser].diarios[today]) {
+            users[currentUser].diarios[today] = getEmptyDiary();
+            localStorage.setItem('netpsi_users', JSON.stringify(users));
+        }
+        currentDate = today;
+        renderDiary(users[currentUser].diarios[today]);
+        updateHistorySelect();
+        populateFilmesArquivos();
+        document.getElementById('currentUserDisplay').innerText = currentUser;
+        document.getElementById('saveEntryBtn').onclick = () => {
+            saveCurrentUserData();
+            alert('Episodio salvo!');
+            populateFilmesArquivos();
+            updateHistorySelect();
+        };
+        document.getElementById('historySelect').onchange = (e) => {
+            let val = e.target.value;
+            if(val === "hoje") val = new Date().toISOString().slice(0,10);
+            currentDate = val;
+            loadDate(currentDate);
+            populateFilmesArquivos();
+        };
+        document.getElementById('logoutBtn').onclick = () => {
+            currentUser = null;
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'flex';
+        };
+    }
+    
+    let isLoginMode = true;
+    const formTitle = document.getElementById('formTitle');
+    const submitBtn = document.getElementById('submitBtn');
+    const switchBtn = document.getElementById('switchBtn');
+    const loginError = document.getElementById('loginError');
+    
+    function updateUIMode() {
+        if(isLoginMode) {
+            formTitle.innerText = "Entrar na sua temporada";
+            submitBtn.innerText = "Entrar";
+            switchBtn.innerText = "Criar sua temporada";
+        } else {
+            formTitle.innerText = "Criar sua temporada";
+            submitBtn.innerText = "Criar conta";
+            switchBtn.innerText = "Ja tenho conta -> Entrar";
+        }
+        loginError.innerText = "";
+    }
+    
+    submitBtn.onclick = () => {
+        const user = document.getElementById('loginUser').value.trim();
+        const pass = document.getElementById('loginPass').value.trim();
+        if(!user || !pass) { loginError.innerText = "Preencha usuario e senha."; return; }
+        if(isLoginMode) {
+            if(users[user] && users[user].senha === pass) {
+                currentUser = user;
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                initDashboard();
+            } else {
+                loginError.innerText = "Usuario ou senha incorretos. Crie uma conta nova.";
+            }
+        } else {
+            if(users[user]) {
+                loginError.innerText = "Usuario ja existe. Faca login.";
+            } else {
+                users[user] = { senha: pass, diarios: {} };
+                localStorage.setItem('netpsi_users', JSON.stringify(users));
+                currentUser = user;
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                initDashboard();
+            }
         }
     };
+    
+    switchBtn.onclick = () => {
+        isLoginMode = !isLoginMode;
+        updateUIMode();
+    };
+    updateUIMode();
 </script>
 </body>
 </html>
