@@ -17,15 +17,45 @@
             color: #e5e5e5;
         }
 
+        /* Efeito Netflix no fundo externo */
+        .netflix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, #1a1a1a, #000000);
+            transition: background 0.3s ease;
+            z-index: -1;
+        }
+
+        .netflix-bg::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(229,9,20,0.05) 0%, rgba(0,0,0,0) 100%);
+            pointer-events: none;
+            animation: bgPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes bgPulse {
+            0% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+            100% { opacity: 0.3; }
+        }
+
         .login-container {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: radial-gradient(circle at 30% 10%, #0a0a0a, #000000);
             position: relative;
             padding: 2rem;
+            z-index: 1;
         }
 
         .netpsi-logo {
@@ -97,11 +127,12 @@
             width: 100%;
             cursor: pointer;
             margin-top: 1rem;
-            transition: background 0.2s;
+            transition: transform 0.2s, background 0.2s;
         }
 
         .btn-red:hover {
             background: #f6121d;
+            transform: scale(1.02);
         }
 
         .switch-btn {
@@ -130,6 +161,8 @@
         .dashboard {
             display: none;
             padding-bottom: 4rem;
+            position: relative;
+            z-index: 1;
         }
 
         .nav-bar {
@@ -208,6 +241,11 @@
             padding: 1.5rem;
             margin-bottom: 2rem;
             border-left: 4px solid #E50914;
+            transition: transform 0.2s;
+        }
+
+        .section:hover {
+            transform: scale(1.01);
         }
 
         .section h3 {
@@ -216,12 +254,26 @@
             font-size: 1.5rem;
         }
 
-        .atividade-tcc {
-            background: #2a2a2a;
-            padding: 1rem;
-            border-radius: 8px;
+        /* Cartão clicável da atividade TCC */
+        .atividade-card {
+            background: linear-gradient(135deg, #2a2a2a, #1f1f1f);
+            padding: 1.5rem;
+            border-radius: 12px;
             margin: 1rem 0;
             font-style: italic;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #E50914;
+        }
+
+        .atividade-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(229,9,20,0.3);
+        }
+
+        .atividade-card:active {
+            transform: scale(0.98);
         }
 
         .emo-grid {
@@ -366,6 +418,28 @@
             font-size: 0.8rem;
         }
 
+        /* Botão da música */
+        .music-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #E50914;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            transition: transform 0.2s;
+        }
+
+        .music-btn:hover {
+            transform: scale(1.1);
+        }
+
         textarea, input {
             font-family: inherit;
         }
@@ -378,6 +452,18 @@
     </style>
 </head>
 <body>
+
+<div class="netflix-bg"></div>
+
+<!-- Áudio do TU DUM -->
+<audio id="tudumAudio" preload="auto">
+    <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Música calma de fundo -->
+<audio id="calmMusic" loop preload="auto">
+    <source src="https://www.soundjay.com/nature/sounds/water-stream-01.mp3" type="audio/mpeg">
+</audio>
 
 <div id="loginScreen" class="login-container">
     <div class="netpsi-logo">NETPSI</div>
@@ -414,10 +500,29 @@
     </div>
 </div>
 
+<button class="music-btn" id="musicToggleBtn">🎵</button>
+
 <script>
     let users = JSON.parse(localStorage.getItem('netpsi_users')) || {};
     let currentUser = null;
     let currentDate = new Date().toISOString().slice(0,10);
+    let musicPlaying = false;
+    const calmMusic = document.getElementById('calmMusic');
+    const tudumAudio = document.getElementById('tudumAudio');
+    const musicBtn = document.getElementById('musicToggleBtn');
+    
+    // Controle da música
+    musicBtn.addEventListener('click', () => {
+        if(musicPlaying) {
+            calmMusic.pause();
+            musicBtn.textContent = '🎵';
+            musicPlaying = false;
+        } else {
+            calmMusic.play().catch(e => console.log('Áudio não disponível'));
+            musicBtn.textContent = '🔊';
+            musicPlaying = true;
+        }
+    });
     
     const atividadesTCC = [
         "Registro de pensamentos disfuncionais: anote situação, emoção, pensamento automático.",
@@ -521,24 +626,25 @@
         const container = document.getElementById('diaryContent');
         if(!container) return;
         const emocoesList = ["alegria", "tedio", "medo", "raiva", "tristeza", "nojo", "frustracao", "apatia", "vergonha"];
-        const nomesBonitos = { alegria:"Alegria", tedio:"Tedio", medo:"Medo", raiva:"Raiva", tristeza:"Tristeza", nojo:"Nojo", frustracao:"Frustracao", apatia:"Apatia", vergonha:"Vergonha" };
+        const nomesBonitos = { alegria:"Alegria", tedio:"Tédio", medo:"Medo", raiva:"Raiva", tristeza:"Tristeza", nojo:"Nojo", frustracao:"Frustração", apatia:"Apatia", vergonha:"Vergonha" };
         
         let html = `
             <div class="section">
                 <h3>Filme de hoje</h3>
-                <div class="atividade-tcc" id="atividadeTexto">${data.atividade_tcc || getAtividadeAleatoria()}</div>
-                <button class="btn-red" id="novaAtividadeBtn" style="margin-top:0.5rem; padding:0.3rem 1rem; width:auto;">Nova atividade</button>
+                <div class="atividade-card" id="atividadeCard">
+                    <div id="atividadeTexto">${data.atividade_tcc || getAtividadeAleatoria()}</div>
+                </div>
             </div>
             <div class="section">
-                <h3>Como foi o episodio de hoje?</h3>
+                <h3>Como foi o episódio de hoje?</h3>
                 <textarea id="comoFoi" rows="3" style="width:100%; background:#2a2a2a; border:none; color:white; padding:0.8rem;">${data.como_foi || ""}</textarea>
             </div>
             <div class="section">
-                <h3>Humor critico (0-10)</h3>
+                <h3>Humor crítico (0-10)</h3>
                 <div class="rating-div"><input type="number" id="humorValor" min="0" max="10" value="${data.humor_critico}"> <span>/10</span></div>
             </div>
             <div class="section">
-                <h3>Emocoes</h3>
+                <h3>Emoções</h3>
                 <div class="emo-grid">
         `;
         emocoesList.forEach(emo => {
@@ -547,7 +653,7 @@
                 <div class="emo-card">
                     <h4>${nomesBonitos[emo]}</h4>
                     <div class="emo-input"><label>Gatilho</label><textarea id="emo_${emo}_gatilho">${eData.gatilho}</textarea></div>
-                    <div class="emo-input"><label>Pensamentos automaticos</label><textarea id="emo_${emo}_pensamentos">${eData.pensamentos}</textarea></div>
+                    <div class="emo-input"><label>Pensamentos automáticos</label><textarea id="emo_${emo}_pensamentos">${eData.pensamentos}</textarea></div>
                     <div class="emo-input"><label>Como posso ver de outra forma?</label><textarea id="emo_${emo}_outra">${eData.outra_forma}</textarea></div>
                 </div>
             `;
@@ -567,12 +673,12 @@
         html += `</div></div>`;
         html += `
             <div class="section">
-                <h3>Sofa da preguiça</h3>
+                <h3>Sofá da preguiça</h3>
                 <textarea id="sofaPreguica" rows="2" style="width:100%; background:#2a2a2a; border:none; color:white; padding:0.8rem;">${data.sofa_preguica || ""}</textarea>
                 <small>O que procrastinei hoje?</small>
             </div>
             <div class="section">
-                <h3>Elogie-se, voce é uma estrela</h3>
+                <h3>Elogie-se, você é uma estrela</h3>
                 <div class="triple-box">
                     <div class="triple-item"><textarea id="elogio1" placeholder="Elogio 1">${data.elogios[0] || ""}</textarea></div>
                     <div class="triple-item"><textarea id="elogio2" placeholder="Elogio 2">${data.elogios[1] || ""}</textarea></div>
@@ -580,23 +686,25 @@
                 </div>
             </div>
             <div class="section">
-                <h3>Gratidao pelo episodio de hoje</h3>
+                <h3>Gratidão pelo episódio de hoje</h3>
                 <div class="triple-box">
-                    <div class="triple-item"><textarea id="gratidao1" placeholder="Gratidao 1">${data.gratidao[0] || ""}</textarea></div>
-                    <div class="triple-item"><textarea id="gratidao2" placeholder="Gratidao 2">${data.gratidao[1] || ""}</textarea></div>
-                    <div class="triple-item"><textarea id="gratidao3" placeholder="Gratidao 3">${data.gratidao[2] || ""}</textarea></div>
+                    <div class="triple-item"><textarea id="gratidao1" placeholder="Gratidão 1">${data.gratidao[0] || ""}</textarea></div>
+                    <div class="triple-item"><textarea id="gratidao2" placeholder="Gratidão 2">${data.gratidao[1] || ""}</textarea></div>
+                    <div class="triple-item"><textarea id="gratidao3" placeholder="Gratidão 3">${data.gratidao[2] || ""}</textarea></div>
                 </div>
             </div>
             <div class="section">
-                <h3>Como posso melhorar no episodio de amanha?</h3>
+                <h3>Como posso melhorar no episódio de amanhã?</h3>
                 <textarea id="melhorarAmanha" rows="2" style="width:100%; background:#2a2a2a; border:none; color:white; padding:0.8rem;">${data.melhorar_amanha || ""}</textarea>
             </div>
             ${filmesAntigosHtml}
         `;
         container.innerHTML = html;
         
-        document.getElementById('novaAtividadeBtn')?.addEventListener('click', () => {
-            document.getElementById('atividadeTexto').innerText = getAtividadeAleatoria();
+        // Cartão clicável da atividade
+        document.getElementById('atividadeCard')?.addEventListener('click', () => {
+            const novaAtividade = getAtividadeAleatoria();
+            document.getElementById('atividadeTexto').innerText = novaAtividade;
         });
         
         document.getElementById('addFilmeAntigoBtn')?.addEventListener('click', () => {
@@ -681,7 +789,7 @@
         document.getElementById('currentUserDisplay').innerText = currentUser;
         document.getElementById('saveEntryBtn').onclick = () => {
             saveCurrentUserData();
-            alert('Episodio salvo!');
+            alert('Episódio salvo!');
             populateFilmesArquivos();
             updateHistorySelect();
         };
@@ -696,6 +804,11 @@
             currentUser = null;
             document.getElementById('dashboard').style.display = 'none';
             document.getElementById('loginScreen').style.display = 'flex';
+            if(musicPlaying) {
+                calmMusic.pause();
+                musicPlaying = false;
+                musicBtn.textContent = '🎵';
+            }
         };
     }
     
@@ -713,7 +826,7 @@
         } else {
             formTitle.innerText = "Criar sua temporada";
             submitBtn.innerText = "Criar conta";
-            switchBtn.innerText = "Ja tenho conta -> Entrar";
+            switchBtn.innerText = "Já tenho conta → Entrar";
         }
         loginError.innerText = "";
     }
@@ -721,25 +834,28 @@
     submitBtn.onclick = () => {
         const user = document.getElementById('loginUser').value.trim();
         const pass = document.getElementById('loginPass').value.trim();
-        if(!user || !pass) { loginError.innerText = "Preencha usuario e senha."; return; }
+        if(!user || !pass) { loginError.innerText = "Preencha usuário e senha."; return; }
         if(isLoginMode) {
             if(users[user] && users[user].senha === pass) {
                 currentUser = user;
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
+                // Som do TU DUM
+                tudumAudio.play().catch(e => console.log('Áudio não disponível'));
                 initDashboard();
             } else {
-                loginError.innerText = "Usuario ou senha incorretos. Crie uma conta nova.";
+                loginError.innerText = "Usuário ou senha incorretos. Crie uma conta nova.";
             }
         } else {
             if(users[user]) {
-                loginError.innerText = "Usuario ja existe. Faca login.";
+                loginError.innerText = "Usuário já existe. Faça login.";
             } else {
                 users[user] = { senha: pass, diarios: {} };
                 localStorage.setItem('netpsi_users', JSON.stringify(users));
                 currentUser = user;
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
+                tudumAudio.play().catch(e => console.log('Áudio não disponível'));
                 initDashboard();
             }
         }
