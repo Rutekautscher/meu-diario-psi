@@ -184,6 +184,14 @@
             letter-spacing: -1px;
         }
 
+        .nav-producer {
+            font-size: 0.8rem;
+            color: #888;
+            background: rgba(0,0,0,0.5);
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+        }
+
         .user-info {
             display: flex;
             align-items: center;
@@ -254,26 +262,68 @@
             font-size: 1.5rem;
         }
 
-        /* Cartão clicável da atividade TCC */
-        .atividade-card {
-            background: linear-gradient(135deg, #2a2a2a, #1f1f1f);
-            padding: 1.5rem;
-            border-radius: 12px;
+        /* Botão de gravação estilo REC */
+        .rec-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             margin: 1rem 0;
-            font-style: italic;
-            text-align: center;
+        }
+
+        .record-btn {
+            background: #E50914;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(229,9,20,0.5);
+            border: none;
+            color: white;
+        }
+
+        .record-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(229,9,20,0.8);
+        }
+
+        .record-btn:active {
+            transform: scale(0.95);
+        }
+
+        .record-text {
+            font-size: 1.2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .record-sub {
+            font-size: 0.7rem;
+            margin-top: 5px;
+        }
+
+        .atividade-revelada {
+            background: #2a2a2a;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            text-align: center;
+            display: none;
             border: 1px solid #E50914;
         }
 
-        .atividade-card:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 15px rgba(229,9,20,0.3);
+        .atividade-revelada.visible {
+            display: block;
+            animation: fadeIn 0.5s ease;
         }
 
-        .atividade-card:active {
-            transform: scale(0.98);
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .emo-grid {
@@ -418,28 +468,6 @@
             font-size: 0.8rem;
         }
 
-        /* Botão da música */
-        .music-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #E50914;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            z-index: 1000;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-            transition: transform 0.2s;
-        }
-
-        .music-btn:hover {
-            transform: scale(1.1);
-        }
-
         textarea, input {
             font-family: inherit;
         }
@@ -448,22 +476,14 @@
             .netpsi-logo { font-size: 3rem; }
             .login-card { padding: 2rem 1.5rem; }
             .content { padding: 0 1rem; }
+            .record-btn { width: 60px; height: 60px; }
+            .record-text { font-size: 0.9rem; }
         }
     </style>
 </head>
 <body>
 
 <div class="netflix-bg"></div>
-
-<!-- Áudio do TU DUM -->
-<audio id="tudumAudio" preload="auto">
-    <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3" type="audio/mpeg">
-</audio>
-
-<!-- Música calma de fundo -->
-<audio id="calmMusic" loop preload="auto">
-    <source src="https://www.soundjay.com/nature/sounds/water-stream-01.mp3" type="audio/mpeg">
-</audio>
 
 <div id="loginScreen" class="login-container">
     <div class="netpsi-logo">NETPSI</div>
@@ -482,6 +502,7 @@
 <div id="dashboard" class="dashboard">
     <div class="nav-bar">
         <div class="nav-logo">NETPSI</div>
+        <div class="nav-producer">Rute Kautscher</div>
         <div class="user-info">
             <span id="currentUserDisplay"></span>
             <button class="btn-logout" id="logoutBtn">Sair</button>
@@ -500,29 +521,10 @@
     </div>
 </div>
 
-<button class="music-btn" id="musicToggleBtn">🎵</button>
-
 <script>
     let users = JSON.parse(localStorage.getItem('netpsi_users')) || {};
     let currentUser = null;
     let currentDate = new Date().toISOString().slice(0,10);
-    let musicPlaying = false;
-    const calmMusic = document.getElementById('calmMusic');
-    const tudumAudio = document.getElementById('tudumAudio');
-    const musicBtn = document.getElementById('musicToggleBtn');
-    
-    // Controle da música
-    musicBtn.addEventListener('click', () => {
-        if(musicPlaying) {
-            calmMusic.pause();
-            musicBtn.textContent = '🎵';
-            musicPlaying = false;
-        } else {
-            calmMusic.play().catch(e => console.log('Áudio não disponível'));
-            musicBtn.textContent = '🔊';
-            musicPlaying = true;
-        }
-    });
     
     const atividadesTCC = [
         "Registro de pensamentos disfuncionais: anote situação, emoção, pensamento automático.",
@@ -631,7 +633,13 @@
         let html = `
             <div class="section">
                 <h3>Filme de hoje</h3>
-                <div class="atividade-card" id="atividadeCard">
+                <div class="rec-button">
+                    <div class="record-btn" id="recordBtn">
+                        <div class="record-text">REC</div>
+                        <div class="record-sub">gravar</div>
+                    </div>
+                </div>
+                <div class="atividade-revelada" id="atividadeRevelada">
                     <div id="atividadeTexto">${data.atividade_tcc || getAtividadeAleatoria()}</div>
                 </div>
             </div>
@@ -674,8 +682,7 @@
         html += `
             <div class="section">
                 <h3>Sofá da preguiça</h3>
-                <textarea id="sofaPreguica" rows="2" style="width:100%; background:#2a2a2a; border:none; color:white; padding:0.8rem;">${data.sofa_preguica || ""}</textarea>
-                <small>O que procrastinei hoje?</small>
+                <textarea id="sofaPreguica" rows="2" style="width:100%; background:#2a2a2a; border:none; color:white; padding:0.8rem;" placeholder="O que procrastinei hoje?">${data.sofa_preguica || ""}</textarea>
             </div>
             <div class="section">
                 <h3>Elogie-se, você é uma estrela</h3>
@@ -701,10 +708,16 @@
         `;
         container.innerHTML = html;
         
-        // Cartão clicável da atividade
-        document.getElementById('atividadeCard')?.addEventListener('click', () => {
+        // Botão REC clicável
+        document.getElementById('recordBtn')?.addEventListener('click', () => {
             const novaAtividade = getAtividadeAleatoria();
             document.getElementById('atividadeTexto').innerText = novaAtividade;
+            const revelada = document.getElementById('atividadeRevelada');
+            revelada.classList.add('visible');
+            // Esconde o texto depois de 5 segundos (opcional)
+            setTimeout(() => {
+                revelada.classList.remove('visible');
+            }, 8000);
         });
         
         document.getElementById('addFilmeAntigoBtn')?.addEventListener('click', () => {
@@ -804,11 +817,6 @@
             currentUser = null;
             document.getElementById('dashboard').style.display = 'none';
             document.getElementById('loginScreen').style.display = 'flex';
-            if(musicPlaying) {
-                calmMusic.pause();
-                musicPlaying = false;
-                musicBtn.textContent = '🎵';
-            }
         };
     }
     
@@ -840,8 +848,6 @@
                 currentUser = user;
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
-                // Som do TU DUM
-                tudumAudio.play().catch(e => console.log('Áudio não disponível'));
                 initDashboard();
             } else {
                 loginError.innerText = "Usuário ou senha incorretos. Crie uma conta nova.";
@@ -855,7 +861,6 @@
                 currentUser = user;
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
-                tudumAudio.play().catch(e => console.log('Áudio não disponível'));
                 initDashboard();
             }
         }
