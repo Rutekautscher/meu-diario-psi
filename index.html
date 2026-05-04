@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -18,8 +19,57 @@
             font-family: 'Helvetica Neue', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
             font-weight: 300;
             line-height: 1.5;
+            overflow-x: hidden;
         }
 
+        /* ANIMAÇÃO DE ENTRADA NETFLIX */
+        .netflix-intro {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        .netflix-intro.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .netflix-intro-content {
+            text-align: center;
+            animation: introPulse 1.5s ease-in-out;
+        }
+
+        .netflix-intro-logo {
+            font-size: 5rem;
+            font-weight: 900;
+            color: #E50914;
+            text-shadow: 0 0 20px #E50914, 0 0 40px rgba(229,9,20,0.5);
+            letter-spacing: 5px;
+            animation: introGlow 1.5s ease-in-out;
+        }
+
+        @keyframes introPulse {
+            0% { transform: scale(1.5); opacity: 0; }
+            50% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.2); opacity: 0; }
+        }
+
+        @keyframes introGlow {
+            0% { text-shadow: 0 0 0 #E50914; }
+            50% { text-shadow: 0 0 30px #E50914, 0 0 60px rgba(229,9,20,0.8); }
+            100% { text-shadow: 0 0 0 #E50914; }
+        }
+
+        /* Fundo Netflix */
         .netflix-bg {
             position: fixed;
             top: 0;
@@ -54,6 +104,7 @@
             100% { background-position: 0% 50%; }
         }
 
+        /* Login */
         .login-container {
             min-height: 100vh;
             display: flex;
@@ -135,7 +186,7 @@
             border-radius: 8px;
             width: 100%;
             cursor: pointer;
-            transition: transform 0.2s, background 0.2s;
+            transition: all 0.2s;
         }
 
         .btn-red:hover {
@@ -189,6 +240,7 @@
             max-width: 320px;
         }
 
+        /* Dashboard */
         .dashboard {
             display: none;
             padding-bottom: 4rem;
@@ -330,6 +382,13 @@
             font-weight: 600;
         }
 
+        .section h4 {
+            color: #E50914;
+            margin: 0.8rem 0 0.5rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
         .two-columns {
             display: grid;
             grid-template-columns: 1fr;
@@ -368,42 +427,29 @@
             min-height: 70px;
         }
 
-        .tv-smart {
-            background: #2a2a2a;
-            border-radius: 20px;
-            padding: 1.5rem;
-            text-align: center;
+        /* Estrela autoestima */
+        .estrela-options {
+            display: flex;
+            gap: 1rem;
+            margin: 0.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .estrela-option {
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            border: 1px solid #E50914;
+            padding: 0.3rem 1rem;
+            background: #2a2a2a;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            transition: all 0.2s;
         }
 
-        .tv-smart:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 20px rgba(229,9,20,0.3);
+        .estrela-option.selected {
+            background: #E50914;
+            color: white;
         }
 
-        .tv-screen {
-            background: #0a0a0a;
-            border-radius: 12px;
-            padding: 1rem;
-            margin-bottom: 0.8rem;
-        }
-
-        .tv-screen span {
-            font-size: 1.2rem;
-            font-weight: 500;
-            color: #E50914;
-        }
-
-        .tv-stand {
-            width: 60px;
-            height: 8px;
-            background: #444;
-            margin: 0 auto;
-            border-radius: 4px;
-        }
-
+        /* Checklist vertical */
         .checklist-vertical {
             display: flex;
             flex-direction: column;
@@ -423,47 +469,125 @@
             margin-top: 0;
         }
 
-        .estrela-options {
-            display: flex;
-            gap: 1rem;
-            margin: 0.5rem 0;
-            flex-wrap: wrap;
-        }
-
-        .estrela-option {
-            padding: 0.3rem 1rem;
+        /* TV Smart */
+        .tv-smart {
             background: #2a2a2a;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.2s;
-        }
-
-        .estrela-option.selected {
-            background: #E50914;
-            color: white;
-        }
-
-        .claquete-btn {
-            cursor: pointer;
-            transition: transform 0.2s;
+            border-radius: 20px;
+            padding: 1.2rem;
             text-align: center;
-        }
-
-        .claquete-btn:hover {
-            transform: scale(1.05);
-        }
-
-        .atividade-revelada {
-            background: #2a2a2a;
-            padding: 0.8rem;
-            border-radius: 12px;
-            margin-top: 0.8rem;
-            text-align: center;
-            display: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
             border: 1px solid #E50914;
         }
 
+        .tv-smart:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(229,9,20,0.3);
+        }
+
+        .tv-screen {
+            background: #0a0a0a;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .tv-screen span {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #E50914;
+        }
+
+        .tv-stand {
+            width: 60px;
+            height: 8px;
+            background: #444;
+            margin: 0 auto;
+            border-radius: 4px;
+        }
+
+        /* Ícone de fita de cinema */
+        .film-strip-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .film-strip-icon:hover {
+            transform: scale(1.05);
+        }
+
+        /* Acordeon Emoções */
+        .emo-acordeon {
+            margin-bottom: 0.6rem;
+        }
+
+        .emo-header {
+            background: #2a2a2a;
+            padding: 0.7rem;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .emo-header h4 {
+            margin: 0;
+            color: #E50914;
+            font-size: 0.9rem;
+        }
+
+        .emo-content {
+            display: none;
+            padding: 0.8rem;
+            background: #252525;
+            border-radius: 10px;
+            margin-top: 0.4rem;
+        }
+
+        .emo-content.open {
+            display: block;
+        }
+
+        .emo-question {
+            margin-bottom: 0.8rem;
+        }
+
+        .emo-question label {
+            font-size: 0.7rem;
+            color: #aaa;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        /* Checkbox estilo cinza claro */
+        .checklist-vertical input[type="checkbox"],
+        .checkbox-group input[type="checkbox"] {
+            accent-color: #E50914;
+            width: 18px;
+            height: 18px;
+            background: #3a3a3a;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin: 0.5rem 0;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        /* Grid de testes */
         .testes-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -509,10 +633,11 @@
 
         .teste-card h4 {
             color: #E50914;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             margin-bottom: 0.2rem;
         }
 
+        /* Modal de teste */
         .teste-modal {
             display: none;
             position: fixed;
@@ -629,6 +754,126 @@
             color: #aaa;
         }
 
+        /* Ikigai Círculos */
+        .ikigai-circles {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .ikigai-row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .ikigai-circle {
+            background: #1f1f1f;
+            border: 2px solid #E50914;
+            border-radius: 20px;
+            padding: 1rem;
+            width: 220px;
+            text-align: center;
+            position: relative;
+        }
+
+        .ikigai-circle h4 {
+            color: #E50914;
+            font-size: 0.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .ikigai-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            margin: 0.5rem 0;
+        }
+
+        .circle-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #2a2a2a;
+            border: 1px solid #E50914;
+            color: #E50914;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .circle-btn:hover {
+            background: #E50914;
+            color: white;
+        }
+
+        /* Câmera para Meu IKIGAI */
+        .camera-container {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .camera-box {
+            background: #1f1f1f;
+            border: 3px solid #E50914;
+            border-radius: 20px;
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            text-align: center;
+        }
+
+        .camera-box::before {
+            content: "";
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 30px;
+            background: #E50914;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .camera-box::after {
+            content: "";
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 15px;
+            background: #1f1f1f;
+            border-radius: 8px;
+        }
+
+        .camera-lens {
+            background: #0a0a0a;
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #E50914;
+        }
+
+        .camera-lens span {
+            font-size: 2rem;
+            color: #E50914;
+        }
+
+        /* Estilo VHS */
         .vhs-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -669,11 +914,262 @@
             color: #E50914;
             margin-bottom: 0.5rem;
         }
+
+        /* Quarteto explicação */
+        .quarteto-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        @media (min-width: 768px) {
+            .quarteto-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .quarteto-card {
+            background: #2a2a2a;
+            padding: 1rem;
+            border-radius: 12px;
+            border-left: 3px solid #E50914;
+        }
+
+        .quarteto-card h4 {
+            color: #E50914;
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .quarteto-card p {
+            font-size: 0.75rem;
+            color: #ccc;
+            margin-bottom: 0.3rem;
+        }
+
+        .quarteto-card .exemplo {
+            font-size: 0.7rem;
+            color: #888;
+            font-style: italic;
+        }
+
+        /* Roda da Vida */
+        .roda-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .roda-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .roda-item {
+            background: #2a2a2a;
+            padding: 0.8rem;
+            border-radius: 12px;
+        }
+
+        .roda-item h4 {
+            color: #E50914;
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .roda-item p {
+            font-size: 0.7rem;
+            color: #aaa;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Coadjuvantes */
+        .esferas-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .esferas-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        .esfera-card {
+            background: #1f1f1f;
+            border-radius: 12px;
+            padding: 1rem;
+            border-left: 4px solid #E50914;
+        }
+
+        .esfera-card h4 {
+            color: #E50914;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .esfera-desc {
+            font-size: 0.75rem;
+            color: #aaa;
+            margin-bottom: 0.8rem;
+            cursor: pointer;
+        }
+
+        .esfera-desc:hover {
+            color: #E50914;
+        }
+
+        .desc-full {
+            display: none;
+            font-size: 0.7rem;
+            color: #ccc;
+            margin-bottom: 0.8rem;
+            padding: 0.5rem;
+            background: #2a2a2a;
+            border-radius: 8px;
+        }
+
+        .desc-full.open {
+            display: block;
+        }
+
+        .coadjuvante-input {
+            width: 100%;
+            padding: 0.4rem;
+            background: #2a2a2a;
+            border: none;
+            color: white;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            margin-top: 0.3rem;
+        }
+
+        /* Saga Flix */
+        .hormonios-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .hormonios-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .hormonio-card {
+            background: #2a2a2a;
+            padding: 1rem;
+            border-radius: 12px;
+        }
+
+        .hormonio-card h4 {
+            color: #E50914;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .hormonio-desc {
+            font-size: 0.75rem;
+            margin: 0.5rem 0;
+            color: #ccc;
+        }
+
+        .hormonio-check {
+            display: block;
+            margin: 0.3rem 0;
+            font-size: 0.75rem;
+        }
+
+        .hormonio-check input {
+            width: auto;
+            margin-right: 0.5rem;
+        }
+
+        .blocked-message {
+            text-align: center;
+            padding: 2rem;
+            background: #1f1f1f;
+            border-radius: 16px;
+            color: #E50914;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            margin: 0.3rem 0;
+            background: #333;
+            height: 4px;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]:focus {
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #E50914;
+            cursor: pointer;
+        }
+
+        .rating-value {
+            font-size: 0.7rem;
+            color: #E50914;
+            margin-left: 0.3rem;
+        }
+
+        /* Modal padrão */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background: #1f1f1f;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 550px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 1.5rem;
+            border-left: 4px solid #E50914;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+            color: #E50914;
+        }
     </style>
 </head>
 <body>
 <div class="netflix-bg"></div>
 <div class="netflix-bg-color" id="netflixColorBg"></div>
+
+<!-- ANIMAÇÃO DE ENTRADA NETFLIX -->
+<div id="netflixIntro" class="netflix-intro">
+    <div class="netflix-intro-content">
+        <div class="netflix-intro-logo">NETPSI</div>
+    </div>
+</div>
 
 <div id="loginScreen" class="login-container">
     <div class="netpsi-logo">NETPSI</div>
@@ -724,7 +1220,46 @@
 </div>
 
 <script>
-    // BANCO DE DADOS DOS TESTES (CARREGAMENTO SOB DEMANDA)
+    // ==================== SOM TUDUM ====================
+    function playTudum() {
+        try {
+            // Criar som sintético estilo Tudum
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const gainNode = audioCtx.createGain();
+            const osc = audioCtx.createOscillator();
+            osc.type = 'sine';
+            osc.frequency.value = 80;
+            gainNode.gain.value = 0.3;
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            osc.start();
+            gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 1.5);
+            osc.stop(audioCtx.currentTime + 1.5);
+            audioCtx.resume();
+        } catch(e) {
+            console.log('Áudio não suportado');
+        }
+    }
+
+    // ==================== ANIMAÇÃO DE ENTRADA ====================
+    function showNetflixIntro(callback) {
+        const intro = document.getElementById('netflixIntro');
+        if(!intro) {
+            if(callback) callback();
+            return;
+        }
+        playTudum();
+        intro.style.display = 'flex';
+        setTimeout(() => {
+            intro.classList.add('fade-out');
+            setTimeout(() => {
+                intro.style.display = 'none';
+                if(callback) callback();
+            }, 500);
+        }, 2000);
+    }
+
+    // ==================== BANCO DE DADOS DOS TESTES ====================
     const testesDatabase = {
         autoestima: {
             titulo: "AUTOESTIMA",
@@ -773,7 +1308,7 @@
             opcoes: ["Nunca", "Raramente", "Às vezes", "Frequentemente", "Sempre"],
             calcular: function(respostas) {
                 let total = respostas.reduce((a,b)=>a+b+1,0);
-                if(total <= 20) return "Nível baixo de burnout. Você está bem, continue cuidando da sua rotina.";
+                if(total <= 20) return "Nível baixo de burnout. Continue cuidando da sua rotina.";
                 if(total <= 35) return "Nível moderado. Há sinais de alerta. Revisar sua rotina e limites.";
                 return "Nível alto. Você está em processo de esgotamento. Busque apoio profissional.";
             }
@@ -794,7 +1329,7 @@
                 </div>
                 <div id="testeEtapa">
                     <p>${teste.descricao}</p>
-                    <p class="text-small" style="margin-top:0.5rem;">Atencao: Este teste tem carater informativo e de triagem. Nao substitui avaliacao profissional.</p>
+                    <p class="text-small" style="margin-top:0.5rem;">Atenção: Este teste tem caráter informativo e de triagem. Não substitui avaliação profissional.</p>
                     <button class="btn-red" id="iniciarTesteBtn" style="margin-top:1rem;">INICIAR TESTE</button>
                 </div>
             </div>
@@ -814,7 +1349,7 @@
                 <div class="opcoes" id="opcoesContainer"></div>
                 <div class="nav-buttons">
                     <button class="btn-outline" id="voltarBtn" ${perguntaAtual===0?'disabled style="opacity:0.5"':''}> VOLTAR</button>
-                    <button class="btn-red" id="proximoBtn">${perguntaAtual===teste.perguntas.length-1?'CALCULAR RESULTADO':'PROXIMA'}</button>
+                    <button class="btn-red" id="proximoBtn">${perguntaAtual===teste.perguntas.length-1?'CALCULAR RESULTADO':'PRÓXIMA'}</button>
                 </div>
             `;
             const opcoesDiv = document.getElementById('opcoesContainer');
@@ -854,7 +1389,7 @@
                             <h4>RESULTADO</h4>
                             <p>${resultado}</p>
                         </div>
-                        <p class="text-small">Atencao: Este resultado e apenas para fins informativos. Nenhum teste online substitui uma avaliacao psicologica ou neuropsicologica completa realizada por profissional qualificado.</p>
+                        <p class="text-small">Atenção: Este resultado é apenas para fins informativos. Nenhum teste online substitui uma avaliação psicológica ou neuropsicológica completa realizada por profissional qualificado.</p>
                         <div class="nav-buttons" style="margin-top:1rem;">
                             <button class="btn-outline" id="fazerNovamenteBtn">FAZER NOVAMENTE</button>
                             <button class="btn-red" id="fecharTesteBtn">FECHAR</button>
@@ -878,94 +1413,419 @@
         modal.querySelector('.close-modal')?.addEventListener('click', () => modal.remove());
     }
 
-    // PAGINA 0 - EPISODIO DE HOJE
-    function renderPagina0() {
-        document.getElementById('page0').innerHTML = `
-            <div class="section"><h3>Filme de hoje</h3><div class="claquete-container"><div class="claquete-btn" id="claqueteBtn"><div style="background:#E50914; width:70px; height:70px; border-radius:12px; display:flex; align-items:center; justify-content:center; margin:0 auto;"><span style="font-size:1.5rem; font-weight:bold;">REC</span></div></div></div><div class="exercicio-label">exercicio terapeutico</div><div class="atividade-revelada" id="atividadeRevelada"><div id="atividadeTexto"></div></div></div>
-            <div class="section"><div class="tv-smart" id="tvSmartBtn"><div class="tv-screen"><span>TV</span><br>COMO FOI O EPISODIO DE HOJE</div><div class="tv-stand"></div></div></div>
-            <div class="section"><h3>Como esta sua estrela hoje (autoestima)</h3><div class="estrela-options"><div class="estrela-option" data-estrela="brilhando">Brilhando</div><div class="estrela-option" data-estrela="apagada">Apagada</div></div><textarea id="estrelaRoteiro" placeholder="Descreva o roteiro..."></textarea></div>
-            <div class="two-columns"><div class="section"><h3>Checklist Saude Fisica</h3><div class="checklist-vertical"><label><input type="checkbox" id="fis_banho"> Tomei banho</label><label><input type="checkbox" id="fis_dentes"> Escovei os dentes</label><label><input type="checkbox" id="fis_agua"> Bebi agua (2L)</label><label><input type="checkbox" id="fis_comida"> Comi bem</label><label><input type="checkbox" id="fis_sol"> Tomei sol</label><label><input type="checkbox" id="fis_movimento"> Me movimentei</label></div></div>
-            <div class="section"><h3>Checklist Autocuidado</h3><div class="checklist-vertical"><label><input type="checkbox" id="auto_med"> Tomei medicamentos</label><label><input type="checkbox" id="auto_ter"> Fui a terapia</label><label><input type="checkbox" id="auto_amor"> Pratiquei amor-proprio</label><label><input type="checkbox" id="auto_lim"> Estabeleci limites</label><label><input type="checkbox" id="auto_aju"> Pedi ajuda</label><label><input type="checkbox" id="auto_detox"> Detox de tela</label><label><input type="checkbox" id="auto_skincare"> Skincare</label><label><input type="checkbox" id="auto_cama"> Arrumar a cama</label><label><input type="checkbox" id="auto_hobby"> Hobby</label></div></div></div>
-            <div class="two-columns"><div class="section"><h3>Elogie-se, voce e uma estrela</h3><textarea id="elogio1" placeholder="Elogio 1"></textarea><textarea id="elogio2" placeholder="Elogio 2"></textarea><textarea id="elogio3" placeholder="Elogio 3"></textarea></div>
-            <div class="section"><h3>Gratidao pelo episodio de hoje</h3><textarea id="gratidao1" placeholder="Gratidao 1"></textarea><textarea id="gratidao2" placeholder="Gratidao 2"></textarea><textarea id="gratidao3" placeholder="Gratidao 3"></textarea></div></div>
-            <div class="section"><h3>Como posso melhorar no episodio de amanha</h3><textarea id="melhorarAmanha" placeholder="O que posso fazer de diferente amanha"></textarea></div>
-            <div class="section"><h3>Sofa da Preguica</h3><textarea id="sofaPreguica" placeholder="O que procrastinei hoje"></textarea></div>
-            <div class="section"><h3>HD Sigiloso</h3><textarea id="cartaNaoEnviada" placeholder="Uma carta para nunca ser enviada"></textarea></div>
-        `;
-        document.getElementById('tvSmartBtn')?.addEventListener('click', () => alert("Abrir diario com texto e foto"));
-        document.getElementById('claqueteBtn')?.addEventListener('click', () => {
-            const exercicios = ["Escreva sobre um momento que voce se sentiu orgulhoso", "Descreva uma situacao de ansiedade e como lidou", "Escreva uma carta de perdao para si mesmo"];
-            const nova = exercicios[Math.floor(Math.random() * exercicios.length)];
-            document.getElementById('atividadeTexto').innerText = nova;
-            const el = document.getElementById('atividadeRevelada');
-            el.style.display = 'block';
-            setTimeout(() => el.style.display = 'none', 4000);
-        });
-        document.querySelectorAll('.estrela-option').forEach(opt => {
-            opt.onclick = () => {
-                document.querySelectorAll('.estrela-option').forEach(o => o.classList.remove('selected'));
-                opt.classList.add('selected');
-            };
-        });
-    }
+    // ==================== EMOÇÕES ====================
+    const emocoesList = ["alegria","tedio","medo","raiva","tristeza","nojo","frustracao","apatia","vergonha","ressentimento","inveja","carencia","esperanca","alivio","amor","paixao","impulso","orgulho","solidão","paciencia"];
+    const emocoesNomes = { alegria:"Alegria", tedio:"Tédio", medo:"Medo", raiva:"Raiva", tristeza:"Tristeza", nojo:"Nojo", frustracao:"Frustração", apatia:"Apatia", vergonha:"Vergonha", ressentimento:"Ressentimento", inveja:"Inveja", carencia:"Carência", esperanca:"Esperança", alivio:"Alívio", amor:"Amor", paixao:"Paixão", impulso:"Impulso", orgulho:"Orgulho", solidão:"Solidão", paciencia:"Paciência" };
 
-    // PAGINA 8 - TESTE DE ELENCO
-    function renderTestes() {
-        const producoes = ['autoestima', 'burnout'];
-        const pilotos = ['autoestima'];
-        let html = `
-            <div class="section">
-                <p class="text-small" style="background:#2a2a2a; padding:1rem; border-radius:8px;">ATENCAO: os testes abaixo tem carater informativo e de triagem. Nenhum deles substitui uma avaliacao neuropsicologica completa realizada por profissional qualificado.</p>
-            </div>
-            <div class="testes-grid">
-                <div class="testes-coluna"><h3>PRODUCOES DE STREAMING</h3>`;
-        producoes.forEach(p => {
-            html += `<div class="teste-card" data-teste="${p}"><h4>${p.toUpperCase()}</h4></div>`;
-        });
-        html += `</div><div class="testes-coluna"><h3>TESTE PILOTO</h3>`;
-        pilotos.forEach(p => {
-            html += `<div class="teste-card" data-teste="${p}"><h4>${p.toUpperCase()}</h4></div>`;
-        });
-        html += `</div></div>`;
-        document.getElementById('page8').innerHTML = html;
-        document.querySelectorAll('.teste-card').forEach(card => {
-            card.addEventListener('click', () => abrirTeste(card.dataset.teste));
-        });
-    }
-
-    // PAGINA 9 - ARQUIVOS
-    function renderArquivos() {
-        document.getElementById('page9').innerHTML = `<div class="vhs-container"><div class="vhs-card"><div class="vhs-date">---</div><div class="vhs-info">Nenhum episodio salvo</div></div></div>`;
-    }
-
-    // INICIALIZACAO
+    // ==================== DADOS DO USUÁRIO ====================
     let users = JSON.parse(localStorage.getItem('netpsi_users')) || {};
     let currentUser = null;
     let currentDate = new Date().toISOString().slice(0,10);
     let currentPage = 0;
-    const pageNames = ["EPISODIO", "TERMOMETRO", "PIPOCA", "PIPOQUEIRA", "SAGA", "COADJUVANTES", "RODA", "IKIGAI", "TESTES", "ARQUIVO"];
+    
+    const pageNames = ["EPISÓDIO", "CINEMOÇÕES", "PIPOCA", "PIPOQUEIRA", "NEURO FLIX", "COADJUVANTES", "DIAGNOSTIFLIX", "IKIGAI FLIX", "TESTES", "ARQUIVO X"];
     const pageKeys = ['page0','page1','page2','page3','page4','page5','page6','page7','page8','page9'];
+    
+    function getEmptyDiary() {
+        let emocoes = {};
+        emocoesList.forEach(e => { emocoes[e] = { intensidade: 0, gatilho: "", pensamentos: "", outra_forma: "", descricao: "" }; });
+        return {
+            atividade_reflexao: "",
+            estrela: "",
+            estrela_roteiro: "",
+            diario_texto: "",
+            diario_foto: null,
+            checklist_fisica: { banho: false, dentes: false, agua: false, comida: false, sol: false, movimento: false },
+            checklist_autocuidado: { medicamentos: false, terapia: false, amorProprio: false, limites: false, ajuda: false, detox: false, skincare: false, arrumarCama: false, hobby: false },
+            elogios: ["","",""],
+            gratidao: ["","",""],
+            sofa_preguica: "",
+            hd_sigiloso: "",
+            emocoes: emocoes,
+            plano_mudanca: null,
+            saga: {},
+            coadjuvantes: {},
+            roda_vida: null,
+            roda_vida_data: null,
+            ikigai_respostas: {},
+            ikigai_data: null,
+            pipoca_situacao: "",
+            pipoca_quadrantes: { aceito: "", agradeco: "", nao_faz_bem: "", faz_bem: "", deixo_ir: "", desfruto: "" }
+        };
+    }
+    
+    function saveAll() { if(currentUser) localStorage.setItem('netpsi_users', JSON.stringify(users)); }
     
     function changePage(page) {
         currentPage = page;
         for(let i=0;i<pageKeys.length;i++) document.getElementById(pageKeys[i]).classList.add('hidden');
         document.getElementById(pageKeys[page]).classList.remove('hidden');
         document.querySelectorAll('.page-btn').forEach((btn,idx)=>{ if(idx==page) btn.classList.add('active'); else btn.classList.remove('active'); });
-        if(page===9) { document.getElementById('netflixColorBg').classList.add('active'); renderArquivos(); }
+        if(page===9) document.getElementById('netflixColorBg').classList.add('active');
         else document.getElementById('netflixColorBg').classList.remove('active');
+        if(page===5) renderCoadjuvantes();
+        if(page===6) renderRodaVida();
+        if(page===7) renderIkigai();
+        if(page===8) renderTestes();
+        if(page===9) renderArquivos();
+    }
+    
+    // PÁGINA 0 - EPISÓDIO
+    function renderPagina0(data) {
+        document.getElementById('page0').innerHTML = `
+            <div class="section"><h3>EXERCÍCIO TERAPÊUTICO</h3>
+                <div class="film-strip-icon" id="exercicioBtn">
+                    <svg width="80" height="80" viewBox="0 0 100 100" fill="none">
+                        <rect x="10" y="20" width="80" height="60" fill="#2a2a2a" stroke="#E50914" stroke-width="2" rx="4"/>
+                        <rect x="10" y="20" width="80" height="15" fill="#E50914" rx="4"/>
+                        <rect x="15" y="25" width="10" height="8" fill="#fff" opacity="0.5"/>
+                        <rect x="35" y="25" width="10" height="8" fill="#fff" opacity="0.5"/>
+                        <rect x="55" y="25" width="10" height="8" fill="#fff" opacity="0.5"/>
+                        <rect x="75" y="25" width="10" height="8" fill="#fff" opacity="0.5"/>
+                        <circle cx="50" cy="50" r="15" fill="#E50914" opacity="0.3"/>
+                        <circle cx="50" cy="50" r="8" fill="#E50914"/>
+                    </svg>
+                </div>
+                <div class="atividade-revelada" id="atividadeRevelada" style="display:none;"><div id="atividadeTexto"></div></div>
+                <textarea id="reflexaoTexto" rows="3" placeholder="Escreva sua reflexão sobre o exercício...">${data.atividade_reflexao || ""}</textarea>
+            </div>
+            <div class="section"><div class="tv-smart" id="tvSmartBtn"><div class="tv-screen"><span>TV</span><br>COMO FOI O EPISÓDIO DE HOJE?</div><div class="tv-stand"></div></div></div>
+            <div class="section"><h3>Como está sua estrela hoje? (autoestima)</h3><div class="estrela-options"><div class="estrela-option ${data.estrela==='brilhando'?'selected':''}" data-estrela="brilhando">Brilhando</div><div class="estrela-option ${data.estrela==='apagada'?'selected':''}" data-estrela="apagada">Apagada</div></div><textarea id="estrelaRoteiro" placeholder="Descreva o roteiro...">${data.estrela_roteiro}</textarea></div>
+            <div class="two-columns"><div class="section"><h3>Checklist Saúde Física</h3><div class="checklist-vertical"><label><input type="checkbox" id="fis_banho" ${data.checklist_fisica.banho?'checked':''}> Tomei banho</label><label><input type="checkbox" id="fis_dentes" ${data.checklist_fisica.dentes?'checked':''}> Escovei dentes</label><label><input type="checkbox" id="fis_agua" ${data.checklist_fisica.agua?'checked':''}> Bebi água (2L)</label><label><input type="checkbox" id="fis_comida" ${data.checklist_fisica.comida?'checked':''}> Comi bem</label><label><input type="checkbox" id="fis_sol" ${data.checklist_fisica.sol?'checked':''}> Tomei sol</label><label><input type="checkbox" id="fis_movimento" ${data.checklist_fisica.movimento?'checked':''}> Me movimentei</label></div></div>
+            <div class="section"><h3>Checklist Autocuidado</h3><div class="checklist-vertical"><label><input type="checkbox" id="auto_med" ${data.checklist_autocuidado.medicamentos?'checked':''}> Tomei medicamentos</label><label><input type="checkbox" id="auto_ter" ${data.checklist_autocuidado.terapia?'checked':''}> Fui à terapia</label><label><input type="checkbox" id="auto_amor" ${data.checklist_autocuidado.amorProprio?'checked':''}> Pratiquei amor-próprio</label><label><input type="checkbox" id="auto_lim" ${data.checklist_autocuidado.limites?'checked':''}> Estabeleci limites</label><label><input type="checkbox" id="auto_aju" ${data.checklist_autocuidado.ajuda?'checked':''}> Pedi ajuda</label><label><input type="checkbox" id="auto_detox" ${data.checklist_autocuidado.detox?'checked':''}> Detox de tela</label><label><input type="checkbox" id="auto_skincare" ${data.checklist_autocuidado.skincare?'checked':''}> Skincare</label><label><input type="checkbox" id="auto_cama" ${data.checklist_autocuidado.arrumarCama?'checked':''}> Arrumar a cama</label><label><input type="checkbox" id="auto_hobby" ${data.checklist_autocuidado.hobby?'checked':''}> Hobby</label></div></div></div>
+            <div class="two-columns"><div class="section"><h3>Elogie-se, você é uma estrela</h3><textarea id="elogio1" placeholder="Elogio 1">${data.elogios[0]}</textarea><textarea id="elogio2" placeholder="Elogio 2">${data.elogios[1]}</textarea><textarea id="elogio3" placeholder="Elogio 3">${data.elogios[2]}</textarea></div>
+            <div class="section"><h3>Gratidão pelo episódio de hoje</h3><textarea id="gratidao1" placeholder="Gratidão 1">${data.gratidao[0]}</textarea><textarea id="gratidao2" placeholder="Gratidão 2">${data.gratidao[1]}</textarea><textarea id="gratidao3" placeholder="Gratidão 3">${data.gratidao[2]}</textarea></div></div>
+            <div class="section"><h3>Sofá da Preguiça</h3><textarea id="sofaPreguica" placeholder="O que procrastinei hoje?">${data.sofa_preguica || ""}</textarea></div>
+            <div class="section"><h3>HD Sigiloso</h3><textarea id="hdSigiloso" placeholder="Uma carta para nunca ser enviada">${data.hd_sigiloso || ""}</textarea></div>
+            <div class="section"><h3>Mudando o seriado da sua vida</h3><button class="btn-outline" id="openMudancaBtn">Plano de mudança</button></div>
+        `;
+        
+        document.getElementById('exercicioBtn')?.addEventListener('click', () => {
+            const exercicios = ["Escreva sobre um momento que você se sentiu orgulhoso.", "Descreva uma situação de ansiedade e como lidou.", "Escreva uma carta de perdão para si mesmo.", "Liste 3 qualidades que admira em si.", "Descreva um medo que gostaria de enfrentar."];
+            const nova = exercicios[Math.floor(Math.random() * exercicios.length)];
+            const el = document.getElementById('atividadeRevelada');
+            document.getElementById('atividadeTexto').innerText = nova;
+            el.style.display = 'block';
+            setTimeout(() => el.style.display = 'none', 5000);
+        });
+        
+        document.getElementById('tvSmartBtn')?.addEventListener('click', () => openDiarioModal(data));
+        
+        document.querySelectorAll('.estrela-option').forEach(opt => {
+            opt.onclick = () => {
+                document.querySelectorAll('.estrela-option').forEach(o => o.classList.remove('selected'));
+                opt.classList.add('selected');
+            };
+        });
+        
+        document.getElementById('openMudancaBtn')?.addEventListener('click', () => openMudancaModal(data));
+    }
+    
+    function openDiarioModal(data) {
+        let modal = document.createElement('div'); modal.className='modal';
+        modal.innerHTML = `<div class="modal-content"><div class="modal-header"><h3>Como foi o episódio de hoje?</h3><span class="close-modal">&times;</span></div><textarea id="modalDiarioText" rows="6">${data.diario_texto||""}</textarea><label>Adicionar foto</label><input type="file" id="modalPhoto" accept="image/*"><button class="btn-red" id="saveModalBtn">Salvar</button></div>`;
+        document.body.appendChild(modal); modal.style.display='flex';
+        modal.querySelector('.close-modal').onclick = () => modal.remove();
+        document.getElementById('saveModalBtn').onclick = () => {
+            let text = document.getElementById('modalDiarioText').value;
+            let file = document.getElementById('modalPhoto').files[0];
+            if(file){
+                let reader = new FileReader();
+                reader.onload = e => {
+                    if(users[currentUser].diarios[currentDate]) users[currentUser].diarios[currentDate].diario_texto = text;
+                    users[currentUser].diarios[currentDate].diario_foto = e.target.result;
+                    saveAll(); modal.remove(); loadDate(currentDate);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                if(users[currentUser].diarios[currentDate]) users[currentUser].diarios[currentDate].diario_texto = text;
+                saveAll(); modal.remove(); loadDate(currentDate);
+            }
+        };
+    }
+    
+    function openMudancaModal(data) {
+        let p = data.plano_mudanca || {};
+        let modal = document.createElement('div'); modal.className='modal';
+        modal.innerHTML = `<div class="modal-content"><div class="modal-header"><h3>Plano de mudança</h3><span class="close-modal">&times;</span></div><label>O que quero mudar?</label><textarea id="mudOque">${p.oQue||""}</textarea><label>Por que quero mudar?</label><textarea id="mudPorque">${p.porQue||""}</textarea><label>Obstáculos</label><textarea id="mudObs">${p.obs||""}</textarea><label>Recursos</label><textarea id="mudRec">${p.rec||""}</textarea><label>Plano de ação</label><textarea id="mudPlano">${p.plano||""}</textarea><label>Como avaliar?</label><textarea id="mudAval">${p.aval||""}</textarea><button class="btn-red" id="saveMudancaBtn">Salvar</button></div>`;
+        document.body.appendChild(modal); modal.style.display='flex';
+        modal.querySelector('.close-modal').onclick = () => modal.remove();
+        document.getElementById('saveMudancaBtn').onclick = () => {
+            if(users[currentUser].diarios[currentDate]) users[currentUser].diarios[currentDate].plano_mudanca = {
+                oQue: document.getElementById('mudOque').value,
+                porQue: document.getElementById('mudPorque').value,
+                obs: document.getElementById('mudObs').value,
+                rec: document.getElementById('mudRec').value,
+                plano: document.getElementById('mudPlano').value,
+                aval: document.getElementById('mudAval').value
+            };
+            saveAll(); modal.remove(); loadDate(currentDate);
+        };
+    }
+    
+    // PÁGINA 1 - CINEMOÇÕES
+    function renderPagina1(data) {
+        let html = `<div class="section"><h3>Catálogo emocional de hoje</h3><div class="grid-emocoes" style="display:grid; gap:0.8rem;">`;
+        emocoesList.forEach(emo => {
+            let e = data.emocoes[emo] || { intensidade:0, gatilho:"", pensamentos:"", outra_forma:"", descricao:"" };
+            html += `<div class="emo-acordeon"><div class="emo-header" data-emo="${emo}"><h4>${emocoesNomes[emo]}</h4><span class="emo-icon">+</span></div><div class="emo-content" id="emoContent_${emo}">
+                <div class="emo-question"><label>Intensidade (0-100%)</label><input type="range" id="emo_int_${emo}" min="0" max="100" value="${e.intensidade}"><span class="rating-value" id="emo_val_${emo}">${e.intensidade}%</span></div>
+                <div class="emo-question"><label>Gatilho</label><textarea id="emo_gat_${emo}">${e.gatilho}</textarea></div>
+                <div class="emo-question"><label>Pensamentos automáticos</label><textarea id="emo_pens_${emo}">${e.pensamentos}</textarea></div>
+                <div class="emo-question"><label>Como posso ver de outra forma?</label><textarea id="emo_outra_${emo}">${e.outra_forma}</textarea></div>
+                <div class="emo-question"><label>Descreva o que aconteceu</label><textarea id="emo_desc_${emo}">${e.descricao}</textarea></div>
+            </div></div>`;
+        });
+        html += `</div></div>`;
+        document.getElementById('page1').innerHTML = html;
+        document.querySelectorAll('.emo-header').forEach(h => {
+            h.onclick = () => {
+                let emo = h.dataset.emo;
+                let c = document.getElementById(`emoContent_${emo}`);
+                let i = h.querySelector('.emo-icon');
+                c.classList.toggle('open');
+                i.innerText = c.classList.contains('open') ? '-' : '+';
+            };
+        });
+        emocoesList.forEach(emo => {
+            let s = document.getElementById(`emo_int_${emo}`);
+            if(s) s.addEventListener('input', (e) => { document.getElementById(`emo_val_${emo}`).innerText = e.target.value + '%'; });
+        });
+    }
+    
+    // PÁGINA 2 - PIPOCA EDUCATIVA
+    function renderPagina2() {
+        document.getElementById('page2').innerHTML = `<div class="section"><h3>Razões por trás da desregulação</h3>
+            <div class="info-grid"><div class="info-card"><h4>Física</h4><div class="checklist-vertical"><label><input type="checkbox"> Fome - Sem glicose suficiente, o córtex pré-frontal funciona mal.</label><label><input type="checkbox"> Sede - Mesma desidratação reduz concentração e aumenta ansiedade.</label><label><input type="checkbox"> Falta de sono - A amígdala fica hiperativa.</label><label><input type="checkbox"> Doença ou infecção - Corpo redireciona energia para recuperação.</label><label><input type="checkbox"> Condições crônicas - Fator de estresse constante.</label><label><input type="checkbox"> Deficiências nutricionais - Carências ligadas a ansiedade.</label><label><input type="checkbox"> Falta de atividade física - Priva o corpo de endorfinas.</label></div></div>
+            <div class="info-card"><h4>Sensorial</h4><div class="checklist-vertical"><label><input type="checkbox"> Sobrecarga sensorial - Demasiados estímulos simultâneos.</label><label><input type="checkbox"> Dificuldades de processamento sensorial - Estímulos amplificados.</label><label><input type="checkbox"> Necessidades sensoriais não satisfeitas - Agitação sem causa aparente.</label><label><input type="checkbox"> Gatilhos sensoriais - Sons, texturas que ativam respostas automáticas.</label></div></div>
+            <div class="info-card"><h4>Emocional</h4><div class="checklist-vertical"><label><input type="checkbox"> Trauma não resolvido - Sistema nervoso hipervigilante.</label><label><input type="checkbox"> Estresse ou pressão - Esgota capacidade de resposta.</label><label><input type="checkbox"> Ansiedade - Sistema em alerta constante.</label><label><input type="checkbox"> Insegurança - Antecipa ameaças.</label><label><input type="checkbox"> Mudanças na rotina - Aumenta carga cognitiva.</label><label><input type="checkbox"> Emoções intensas não expressas - Acúmulo de pressão.</label><label><input type="checkbox"> Necessidade de conexão - Solidão ativa áreas de dor física.</label></div></div></div>
+            <p class="text-small" style="margin-top:1rem;">A desregulação não é fraqueza. É uma resposta do sistema nervoso a necessidades não atendidas.</p></div>`;
+    }
+    
+    // PÁGINA 3 - PIPOCA REGULADORA
+    function renderPagina3(data) {
+        let q = data.pipoca_quadrantes || {};
+        document.getElementById('page3').innerHTML = `<div class="section"><h3>Quando precisar ligar a pipoqueira</h3>
+            <div class="info-card" style="margin-bottom:1rem;"><h4>SITUAÇÃO</h4><textarea id="pipoca_situacao" placeholder="descreva...">${data.pipoca_situacao||""}</textarea></div>
+            <div class="two-columns"><div class="info-card"><h4>ACEITO</h4><textarea id="pipoca_aceito" placeholder="Aceito essa situação quando…">${q.aceito||""}</textarea></div>
+            <div class="info-card"><h4>AGRADEÇO</h4><textarea id="pipoca_agradeco" placeholder="Agradeço essa situação porque…">${q.agradeco||""}</textarea></div></div>
+            <div class="two-columns"><div class="info-card"><h4>NÃO ME FAZ BEM</h4><textarea id="pipoca_nao" placeholder="Não me faz bem...">${q.nao_faz_bem||""}</textarea></div>
+            <div class="info-card"><h4>FAZ-ME BEM</h4><textarea id="pipoca_faz" placeholder="Faz-me bem...">${q.faz_bem||""}</textarea></div></div>
+            <div class="two-columns"><div class="info-card"><h4>DEIXO IR</h4><textarea id="pipoca_deixo" placeholder="Pois…">${q.deixo_ir||""}</textarea></div>
+            <div class="info-card"><h4>DESFRUTO</h4><textarea id="pipoca_desfruto" placeholder="Desfruto da maneira…">${q.desfruto||""}</textarea></div></div>
+            <div style="text-align:center; margin-top:0.5rem;"><span style="color:#E50914;">NÃO PRECISO DISTO</span></div></div>`;
+    }
+    
+    // PÁGINA 4 - NEURO FLIX
+    function renderPagina4(data) {
+        let s = data.saga || {};
+        document.getElementById('page4').innerHTML = `<div class="section"><h3>Quarteto da felicidade</h3>
+            <div class="hormonios-grid"><div class="hormonio-card"><h4>DOPAMINA</h4><p class="hormonio-desc">Neurotransmissor do prazer e da recompensa. Motivador natural.</p><label class="hormonio-check"><input type="checkbox" ${s.dopamina1?'checked':''}> Durma de 7 a 9 horas</label><label class="hormonio-check"><input type="checkbox" ${s.dopamina2?'checked':''}> Celebre conquistas diárias</label><label class="hormonio-check"><input type="checkbox" ${s.dopamina3?'checked':''}> Faça exercícios diários</label></div>
+            <div class="hormonio-card"><h4>OCITOCINA</h4><p class="hormonio-desc">Neurotransmissor do amor e da conexão. Cria vínculos.</p><label class="hormonio-check"><input type="checkbox" ${s.ocitocina1?'checked':''}> Medite todas as manhãs</label><label class="hormonio-check"><input type="checkbox" ${s.ocitocina2?'checked':''}> Dê um abraço em alguém</label><label class="hormonio-check"><input type="checkbox" ${s.ocitocina3?'checked':''}> Faça um ato de generosidade</label></div>
+            <div class="hormonio-card"><h4>ENDORFINA</h4><p class="hormonio-desc">Neurotransmissor do alívio da dor e euforia. Analgésico natural.</p><label class="hormonio-check"><input type="checkbox" ${s.endorfina1?'checked':''}> Pratique hobbies</label><label class="hormonio-check"><input type="checkbox" ${s.endorfina2?'checked':''}> Ria com entes queridos</label><label class="hormonio-check"><input type="checkbox" ${s.endorfina3?'checked':''}> Dance ou cante</label></div>
+            <div class="hormonio-card"><h4>SEROTONINA</h4><p class="hormonio-desc">Neurotransmissor do bem-estar e humor. Traz serenidade.</p><label class="hormonio-check"><input type="checkbox" ${s.serotonina1?'checked':''}> Agradeça todos os dias</label><label class="hormonio-check"><input type="checkbox" ${s.serotonina2?'checked':''}> Desfrute da natureza</label><label class="hormonio-check"><input type="checkbox" ${s.serotonina3?'checked':''}> Relembre momentos importantes</label></div></div></div>`;
+    }
+    
+    // PÁGINA 5 - COADJUVANTES
+    function renderCoadjuvantes() {
+        let data = users[currentUser].diarios[currentDate] || getEmptyDiary();
+        let c = data.coadjuvantes || {};
+        const esferas = [
+            { nome: "ÍNTIMOS", desc: "São raros. Na maioria das vezes não passam de 2 ou 3 pessoas na vida toda. É aquele amigo que você não precisa falar todo dia mas quando se encontra parece que o tempo não passou." },
+            { nome: "NECESSÁRIOS", desc: "São os amigos do cotidiano. Estão presentes, fazem bem, alegram os dias. Você vai a festas com eles, compartilha conquistas, passa bons momentos." },
+            { nome: "ESTRATÉGICOS", desc: "São conexões que te fazem crescer. Podem ser mentores, pessoas de áreas diferentes, contatos que abrem portas e expandem sua visão de mundo." },
+            { nome: "INCONTORNÁVEIS", desc: "São pessoas que você não escolheu mas que estão na sua vida e precisa conviver. Chefe, colega de trabalho, vizinho, sogro." },
+            { nome: "SUPERADOS", desc: "São pessoas que um dia foram próximas mas a relação teve seu ciclo e acabou. Podem ainda cruzar seu caminho de vez em quando mas a dinâmica já não é a mesma." }
+        ];
+        let html = `<div class="section"><h3>Esferas da Amizade</h3><div class="esferas-grid">`;
+        esferas.forEach((e, idx) => {
+            html += `<div class="esfera-card"><h4>${e.nome}</h4><div class="esfera-desc" data-desc="${idx}">Ver descrição</div><div class="desc-full" id="desc_${idx}">${e.desc}</div><textarea class="coadjuvante-input" id="coadj_${idx}" placeholder="Coadjuvante (nomes)">${c[idx] || ""}</textarea></div>`;
+        });
+        html += `</div></div>`;
+        document.getElementById('page5').innerHTML = html;
+        document.querySelectorAll('.esfera-desc').forEach(d => {
+            d.onclick = () => { document.getElementById(`desc_${d.dataset.desc}`).classList.toggle('open'); };
+        });
+    }
+    
+    // PÁGINA 6 - DIAGNOSTIFLIX
+    function renderRodaVida() {
+        let data = users[currentUser].diarios[currentDate] || getEmptyDiary();
+        let roda = data.roda_vida || {};
+        let pode = (!data.roda_vida_data || new Date(data.roda_vida_data).getMonth() !== new Date().getMonth());
+        if(!pode){ document.getElementById('page6').innerHTML = `<div class="blocked-message">Você já avaliou sua vida este mês. Volte no mês que vem.</div>`; return; }
+        const topicos = ["Vida Profissional", "Vida Amorosa", "Amigos", "Família", "Espiritualidade", "Saúde Mental", "Inteligência Emocional", "Saúde Física", "Financeiro", "Intelectual", "Lazer", "Autoconhecimento", "Propósito", "Ambiente", "Alimentação", "Sono", "Tecnologia / Digital", "Higiene", "Sexualidade", "Produtividade"];
+        const explicacoes = ["Emprego, carreira, negócio, salário", "Relacionamento, namoro, casamento", "Íntimos, necessários, estratégicos", "Pais, filhos, irmãos, convívio", "Fé, religião, meditação", "Ansiedade, depressão, estresse", "Controle emocional, empatia", "Treino, exames, energia", "Poupança, dívidas, investimentos", "Leituras, cursos, idiomas", "Hobbies, viagens, descanso", "Identidade, medos, padrões", "Sonhos, metas, legado", "Quarto arrumado, organização", "Dieta, hidratação", "Qualidade, insônia", "Redes sociais, tempo de tela", "Cuidados pessoais, pele", "Identidade, saúde sexual", "Foco, organização, gestão"];
+        let html = `<div class="section"><h3>Avalie sua vida</h3><div class="roda-grid">`;
+        topicos.forEach((t, i) => {
+            html += `<div class="roda-item"><h4>${t}</h4><p>${explicacoes[i]}</p><input type="range" id="roda_${i}" min="1" max="10" value="${roda[i] || 5}"><span class="rating-value" id="roda_val_${i}">${roda[i] || 5}/10</span><textarea placeholder="Situação atual..." style="margin-top:0.5rem;" id="roda_sit_${i}">${roda[`sit_${i}`] || ""}</textarea><textarea placeholder="Como você quer estar futuramente?" style="margin-top:0.5rem;" id="roda_fut_${i}">${roda[`fut_${i}`] || ""}</textarea></div>`;
+        });
+        html += `</div><button class="btn-red" id="salvarRodaBtn">Salvar avaliação</button></div>`;
+        document.getElementById('page6').innerHTML = html;
+        for(let i=0;i<topicos.length;i++) {
+            let s = document.getElementById(`roda_${i}`);
+            if(s) s.addEventListener('input', (e) => { document.getElementById(`roda_val_${i}`).innerText = e.target.value + '/10'; });
+        }
+        document.getElementById('salvarRodaBtn')?.addEventListener('click', () => {
+            let novaRoda = {};
+            for(let i=0;i<topicos.length;i++) {
+                novaRoda[i] = parseInt(document.getElementById(`roda_${i}`)?.value) || 5;
+                novaRoda[`sit_${i}`] = document.getElementById(`roda_sit_${i}`)?.value || "";
+                novaRoda[`fut_${i}`] = document.getElementById(`roda_fut_${i}`)?.value || "";
+            }
+            if(users[currentUser].diarios[currentDate]) {
+                users[currentUser].diarios[currentDate].roda_vida = novaRoda;
+                users[currentUser].diarios[currentDate].roda_vida_data = new Date().toISOString();
+                saveAll(); alert("Avaliação salva! Volte mês que vem."); renderRodaVida();
+            }
+        });
+    }
+    
+    // PÁGINA 7 - IKIGAI FLIX
+    function renderIkigai() {
+        let data = users[currentUser].diarios[currentDate] || getEmptyDiary();
+        let pode = (!data.ikigai_data || (new Date() - new Date(data.ikigai_data) > 180*24*60*60*1000));
+        if(!pode){ document.getElementById('page7').innerHTML = `<div class="blocked-message">Você já fez seu IKIGAI neste semestre. Volte daqui a 6 meses.</div>`; return; }
+        let resp = data.ikigai_respostas || {};
+        let html = `<div class="section"><h3>Seu Ikigai (Razão de Ser)</h3><div class="ikigai-circles"><div class="ikigai-row"><div class="ikigai-circle"><h4>Aquilo que você ama</h4><div class="ikigai-buttons"><div class="circle-btn" data-tipo="pergunta" data-area="ama">?</div><div class="circle-btn" data-tipo="resposta" data-area="ama">R</div></div></div></div>
+            <div class="ikigai-row"><div class="ikigai-circle"><h4>Aquilo que você é bom</h4><div class="ikigai-buttons"><div class="circle-btn" data-tipo="pergunta" data-area="bom">?</div><div class="circle-btn" data-tipo="resposta" data-area="bom">R</div></div></div>
+            <div class="ikigai-circle"><h4>O que o mundo precisa</h4><div class="ikigai-buttons"><div class="circle-btn" data-tipo="pergunta" data-area="mundo">?</div><div class="circle-btn" data-tipo="resposta" data-area="mundo">R</div></div></div></div>
+            <div class="ikigai-row"><div class="ikigai-circle"><h4>Aquilo que você é pago para fazer</h4><div class="ikigai-buttons"><div class="circle-btn" data-tipo="pergunta" data-area="pago">?</div><div class="circle-btn" data-tipo="resposta" data-area="pago">R</div></div></div></div></div>
+            <div style="text-align:center; margin:1rem 0;"><h4 style="color:#E50914;">IKIGAI</h4></div>
+            <div class="quarteto-grid"><div class="quarteto-card"><h4>PAIXÃO</h4><p>Aquilo que você ama + aquilo que você faz bem.</p><div class="exemplo">Exemplo: Você ama cantar e também canta bem.</div><div class="ikigai-buttons" style="justify-content:flex-start; margin-top:0.5rem;"><div class="circle-btn" data-tipo="resposta" data-area="paixao">R</div></div></div>
+            <div class="quarteto-card"><h4>MISSÃO</h4><p>Aquilo que você ama + o que o mundo precisa.</p><div class="exemplo">Exemplo: Você ama ajudar pessoas e sente que o mundo precisa disso.</div><div class="ikigai-buttons" style="justify-content:flex-start; margin-top:0.5rem;"><div class="circle-btn" data-tipo="resposta" data-area="missao">R</div></div></div>
+            <div class="quarteto-card"><h4>PROFISSÃO</h4><p>Aquilo que você faz bem + aquilo pelo que você pode ser pago.</p><div class="exemplo">Exemplo: Você é boa em psicologia e recebe dinheiro por isso.</div><div class="ikigai-buttons" style="justify-content:flex-start; margin-top:0.5rem;"><div class="circle-btn" data-tipo="resposta" data-area="profissao">R</div></div></div>
+            <div class="quarteto-card"><h4>VOCAÇÃO</h4><p>O que o mundo precisa + aquilo pelo que você pode ser pago.</p><div class="exemplo">Exemplo: Você sente que o mundo precisa de psicólogos e recebe dinheiro por isso.</div><div class="ikigai-buttons" style="justify-content:flex-start; margin-top:0.5rem;"><div class="circle-btn" data-tipo="resposta" data-area="vocacao">R</div></div></div></div>
+            <div class="camera-container"><div class="camera-box"><div class="camera-lens"><span>🎞️</span></div><h4 style="color:#E50914;">Meu IKIGAI</h4><textarea id="ikigai_resposta" rows="4" placeholder="Escreva sua conclusão...">${resp.final || ""}</textarea></div></div>
+            <button class="btn-red" id="salvarIkigaiBtn">Salvar IKIGAI</button></div>`;
+        document.getElementById('page7').innerHTML = html;
+        document.querySelectorAll('.circle-btn').forEach(btn => {
+            btn.onclick = () => {
+                let tipo = btn.dataset.tipo, area = btn.dataset.area;
+                if(tipo === 'pergunta') openPerguntaModalIkigai(area);
+                else openRespostaModalIkigai(area, resp[area] || {});
+            };
+        });
+        document.getElementById('salvarIkigaiBtn')?.addEventListener('click', () => {
+            if(users[currentUser].diarios[currentDate]) {
+                users[currentUser].diarios[currentDate].ikigai_respostas = { ...resp, final: document.getElementById('ikigai_resposta').value };
+                users[currentUser].diarios[currentDate].ikigai_data = new Date().toISOString();
+                saveAll(); alert("IKIGAI salvo! Próxima jornada em 6 meses."); renderIkigai();
+            }
+        });
+    }
+    
+    function openPerguntaModalIkigai(area) {
+        let perguntas = { ama: ["Quais atividades trazem alegria?", "O que você faria sem ganhar?", "O que te faz perder a noção do tempo?"], bom: ["Quais seus talentos?", "O que as pessoas dizem que você é boa?"], mundo: ["O que o mundo precisa?", "Que mudança você quer ver?"], pago: ["Pelo que poderia ser paga?", "Que trabalho traria propósito?"] };
+        let qs = perguntas[area] || ["Reflexão sobre esta área"];
+        let modal = document.createElement('div'); modal.className = 'modal';
+        modal.innerHTML = `<div class="modal-content"><div class="modal-header"><h3>Reflexão</h3><span class="close-modal">&times;</span></div>${qs.map(q => `<p style="margin-bottom:0.8rem;">${q}</p>`).join('')}</div>`;
+        document.body.appendChild(modal); modal.style.display = 'flex';
+        modal.querySelector('.close-modal').onclick = () => modal.remove();
+    }
+    
+    function openRespostaModalIkigai(area, saved) {
+        let perguntas = { ama: ["Quais atividades trazem alegria?", "O que você faria sem ganhar?", "O que te faz perder a noção do tempo?"], bom: ["Quais seus talentos?", "O que as pessoas dizem que você é boa?"], mundo: ["O que o mundo precisa?", "Que mudança você quer ver?"], pago: ["Pelo que poderia ser paga?", "Que trabalho traria propósito?"], paixao: ["O que você ama fazer que também faz bem?"], missao: ["Como você pode unir o que ama com algo que o mundo precisa?"], profissao: ["Como transformar seu talento em trabalho?"], vocacao: ["Como unir necessidade do mundo com sustento?"] };
+        let qs = perguntas[area] || ["Escreva sua reflexão:"];
+        let modal = document.createElement('div'); modal.className = 'modal';
+        modal.innerHTML = `<div class="modal-content"><div class="modal-header"><h3>Minhas Respostas</h3><span class="close-modal">&times;</span></div>${qs.map((q, i) => `<p style="margin:0.5rem 0 0.2rem;">${q}</p><textarea id="resp_${i}">${saved[i] || ""}</textarea>`).join('')}<button class="btn-red" id="saveRespModal" style="margin-top:1rem;">Salvar</button></div>`;
+        document.body.appendChild(modal); modal.style.display = 'flex';
+        modal.querySelector('.close-modal').onclick = () => modal.remove();
+        document.getElementById('saveRespModal').onclick = () => {
+            let novas = {};
+            for(let i=0; i<qs.length; i++) novas[i] = document.getElementById(`resp_${i}`).value;
+            let data = users[currentUser].diarios[currentDate];
+            if(data) { if(!data.ikigai_respostas) data.ikigai_respostas = {}; data.ikigai_respostas[area] = novas; saveAll(); }
+            modal.remove();
+        };
+    }
+    
+    // PÁGINA 8 - TESTE DE ELENCO
+    function renderTestes() {
+        const producoes = ['autoestima', 'burnout'];
+        const pilotos = ['autoestima'];
+        let html = `<div class="section"><p class="text-small" style="background:#2a2a2a; padding:1rem; border-radius:8px;">ATENÇÃO: os testes abaixo têm caráter informativo e de triagem. Nenhum deles substitui uma avaliação neuropsicológica completa realizada por profissional qualificado.</p></div>
+            <div class="testes-grid"><div class="testes-coluna"><h3>PRODUÇÕES DE STREAMING</h3>`;
+        producoes.forEach(p => { html += `<div class="teste-card" data-teste="${p}"><h4>${p.toUpperCase()}</h4></div>`; });
+        html += `</div><div class="testes-coluna"><h3>TESTE PILOTO</h3>`;
+        pilotos.forEach(p => { html += `<div class="teste-card" data-teste="${p}"><h4>${p.toUpperCase()}</h4></div>`; });
+        html += `</div></div>`;
+        document.getElementById('page8').innerHTML = html;
+        document.querySelectorAll('.teste-card').forEach(card => { card.addEventListener('click', () => abrirTeste(card.dataset.teste)); });
+    }
+    
+    // PÁGINA 9 - ARQUIVO X
+    function renderArquivos() {
+        let diarios = users[currentUser]?.diarios || {};
+        let dates = Object.keys(diarios).sort().reverse();
+        let html = `<div class="vhs-container">`;
+        dates.forEach(d => { let dia = diarios[d]; let humor = dia?.estrela === 'brilhando' ? 8 : dia?.estrela === 'apagada' ? 3 : 5; html += `<div class="vhs-card" data-data="${d}"><div class="vhs-date">${d}</div><div class="vhs-info">Humor: ${humor}/10</div></div>`; });
+        html += `</div>`;
+        document.getElementById('page9').innerHTML = html;
+        document.querySelectorAll('.vhs-card').forEach(c => { c.onclick = () => { currentDate = c.dataset.data; loadDate(currentDate); changePage(0); }; });
+    }
+    
+    function captureFromDOM() {
+        let data = users[currentUser].diarios[currentDate] || getEmptyDiary();
+        data.atividade_reflexao = document.getElementById('reflexaoTexto')?.value || "";
+        data.estrela_roteiro = document.getElementById('estrelaRoteiro')?.value || "";
+        let sel = document.querySelector('.estrela-option.selected');
+        if(sel) data.estrela = sel.dataset.estrela;
+        data.elogios = [document.getElementById('elogio1')?.value || "", document.getElementById('elogio2')?.value || "", document.getElementById('elogio3')?.value || ""];
+        data.gratidao = [document.getElementById('gratidao1')?.value || "", document.getElementById('gratidao2')?.value || "", document.getElementById('gratidao3')?.value || ""];
+        data.sofa_preguica = document.getElementById('sofaPreguica')?.value || "";
+        data.hd_sigiloso = document.getElementById('hdSigiloso')?.value || "";
+        data.checklist_fisica = { banho:!!document.getElementById('fis_banho')?.checked, dentes:!!document.getElementById('fis_dentes')?.checked, agua:!!document.getElementById('fis_agua')?.checked, comida:!!document.getElementById('fis_comida')?.checked, sol:!!document.getElementById('fis_sol')?.checked, movimento:!!document.getElementById('fis_movimento')?.checked };
+        data.checklist_autocuidado = { medicamentos:!!document.getElementById('auto_med')?.checked, terapia:!!document.getElementById('auto_ter')?.checked, amorProprio:!!document.getElementById('auto_amor')?.checked, limites:!!document.getElementById('auto_lim')?.checked, ajuda:!!document.getElementById('auto_aju')?.checked, detox:!!document.getElementById('auto_detox')?.checked, skincare:!!document.getElementById('auto_skincare')?.checked, arrumarCama:!!document.getElementById('auto_cama')?.checked, hobby:!!document.getElementById('auto_hobby')?.checked };
+        emocoesList.forEach(emo => { data.emocoes[emo] = { intensidade: parseInt(document.getElementById(`emo_int_${emo}`)?.value)||0, gatilho: document.getElementById(`emo_gat_${emo}`)?.value||"", pensamentos: document.getElementById(`emo_pens_${emo}`)?.value||"", outra_forma: document.getElementById(`emo_outra_${emo}`)?.value||"", descricao: document.getElementById(`emo_desc_${emo}`)?.value||"" }; });
+        data.pipoca_situacao = document.getElementById('pipoca_situacao')?.value || "";
+        data.pipoca_quadrantes = { aceito: document.getElementById('pipoca_aceito')?.value, agradeco: document.getElementById('pipoca_agradeco')?.value, nao_faz_bem: document.getElementById('pipoca_nao')?.value, faz_bem: document.getElementById('pipoca_faz')?.value, deixo_ir: document.getElementById('pipoca_deixo')?.value, desfruto: document.getElementById('pipoca_desfruto')?.value };
+        data.saga = { dopamina1:!!document.querySelector('#page4 .hormonio-card:first-child input:nth-child(1)')?.checked, dopamina2:!!document.querySelector('#page4 .hormonio-card:first-child input:nth-child(2)')?.checked, dopamina3:!!document.querySelector('#page4 .hormonio-card:first-child input:nth-child(3)')?.checked };
+        for(let i=0;i<5;i++) { if(!data.coadjuvantes) data.coadjuvantes = {}; data.coadjuvantes[i] = document.getElementById(`coadj_${i}`)?.value || ""; }
+        users[currentUser].diarios[currentDate] = data;
+        saveAll();
+    }
+    
+    function loadDate(date) {
+        currentDate = date;
+        if(!users[currentUser].diarios) users[currentUser].diarios = {};
+        if(!users[currentUser].diarios[date]) users[currentUser].diarios[date] = getEmptyDiary();
+        let data = users[currentUser].diarios[date];
+        renderPagina0(data);
+        renderPagina1(data);
+        renderPagina2();
+        renderPagina3(data);
+        renderPagina4(data);
+        if(currentPage===5) renderCoadjuvantes();
+        if(currentPage===6) renderRodaVida();
+        if(currentPage===7) renderIkigai();
+        if(currentPage===8) renderTestes();
+        if(currentPage===9) renderArquivos();
+        updateHistorySelect();
+    }
+    
+    function updateHistorySelect() {
+        let select = document.getElementById('historySelect');
+        if(!select) return;
+        let dates = Object.keys(users[currentUser].diarios || {}).sort().reverse();
+        select.innerHTML = '<option value="hoje">Hoje</option>';
+        dates.forEach(d => { if(d !== new Date().toISOString().slice(0,10)) select.innerHTML += `<option value="${d}">${d}</option>`; });
+        select.value = currentDate === new Date().toISOString().slice(0,10) ? "hoje" : currentDate;
     }
     
     function initDashboard() {
-        renderPagina0();
-        renderTestes();
-        renderArquivos();
+        let today = new Date().toISOString().slice(0,10);
+        if(!users[currentUser].diarios) users[currentUser].diarios = {};
+        if(!users[currentUser].diarios[today]) users[currentUser].diarios[today] = getEmptyDiary();
+        currentDate = today;
+        loadDate(currentDate);
         document.getElementById('currentUserDisplay').innerText = currentUser;
-        document.getElementById('saveEntryBtn').onclick = () => alert("Episodio salvo");
-        document.getElementById('historySelect').onchange = (e) => console.log(e.target.value);
+        document.getElementById('saveEntryBtn').onclick = () => { captureFromDOM(); alert("Episódio salvo!"); loadDate(currentDate); };
+        document.getElementById('historySelect').onchange = (e) => { let val = e.target.value === "hoje" ? new Date().toISOString().slice(0,10) : e.target.value; captureFromDOM(); currentDate = val; loadDate(currentDate); };
         document.getElementById('logoutBtn').onclick = () => { currentUser = null; document.getElementById('dashboard').style.display = 'none'; document.getElementById('loginScreen').style.display = 'flex'; };
         let nav = document.getElementById('pageNav');
-        nav.innerHTML = pageNames.map((n,i)=>`<button class="page-btn ${i===0?'active':''}" data-page="${i}">${n}</button>`).join('');
-        document.querySelectorAll('.page-btn').forEach(btn => { btn.onclick = () => { changePage(parseInt(btn.dataset.page)); }; });
+        nav.innerHTML = pageNames.map((n,i) => `<button class="page-btn ${i===0?'active':''}" data-page="${i}">${n}</button>`).join('');
+        document.querySelectorAll('.page-btn').forEach(btn => { btn.onclick = () => { captureFromDOM(); changePage(parseInt(btn.dataset.page)); }; });
         changePage(0);
     }
     
@@ -974,16 +1834,38 @@
     document.getElementById('submitBtn').onclick = () => {
         let user = document.getElementById('loginUser').value.trim();
         let pass = document.getElementById('loginPass').value.trim();
-        if(!user||!pass){ document.getElementById('loginError').innerText="Preencha usuario e senha."; return; }
-        if(isLoginMode){
-            if(users[user] && users[user].senha===pass){ currentUser=user; document.getElementById('loginScreen').style.display='none'; document.getElementById('dashboard').style.display='block'; initDashboard(); }
-            else document.getElementById('loginError').innerText="Usuario ou senha incorretos.";
+        if(!user || !pass) { document.getElementById('loginError').innerText = "Preencha usuário e senha."; return; }
+        if(isLoginMode) {
+            if(users[user] && users[user].senha === pass) {
+                currentUser = user;
+                showNetflixIntro(() => {
+                    document.getElementById('loginScreen').style.display = 'none';
+                    document.getElementById('dashboard').style.display = 'block';
+                    initDashboard();
+                });
+            } else document.getElementById('loginError').innerText = "Usuário ou senha incorretos.";
         } else {
-            if(users[user]) document.getElementById('loginError').innerText="Usuario ja existe.";
-            else { users[user]={ senha:pass, diarios:{} }; localStorage.setItem('netpsi_users',JSON.stringify(users)); currentUser=user; document.getElementById('loginScreen').style.display='none'; document.getElementById('dashboard').style.display='block'; initDashboard(); }
+            if(users[user]) document.getElementById('loginError').innerText = "Usuário já existe.";
+            else {
+                users[user] = { senha: pass, diarios: {} };
+                localStorage.setItem('netpsi_users', JSON.stringify(users));
+                currentUser = user;
+                showNetflixIntro(() => {
+                    document.getElementById('loginScreen').style.display = 'none';
+                    document.getElementById('dashboard').style.display = 'block';
+                    initDashboard();
+                });
+            }
         }
     };
-    document.getElementById('switchBtn').onclick = () => { isLoginMode=!isLoginMode; document.getElementById('formTitle').innerText=isLoginMode?"Entrar na sua temporada":"Criar sua temporada"; document.getElementById('submitBtn').innerText=isLoginMode?"Entrar":"Criar conta"; document.getElementById('switchBtn').innerText=isLoginMode?"Criar sua temporada":"Ja tenho conta"; document.getElementById('loginError').innerText=""; };
+    document.getElementById('switchBtn').onclick = () => {
+        isLoginMode = !isLoginMode;
+        document.getElementById('formTitle').innerText = isLoginMode ? "Entrar na sua temporada" : "Criar sua temporada";
+        document.getElementById('submitBtn').innerText = isLoginMode ? "Entrar" : "Criar conta";
+        document.getElementById('switchBtn').innerText = isLoginMode ? "Criar sua temporada" : "Já tenho conta";
+        document.getElementById('loginError').innerText = "";
+    };
 </script>
 </body>
 </html>
+```
