@@ -5,110 +5,670 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>NETPSI - Seu Diário Terapêutico</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { background-color: #141414; color: #e5e5e5; font-family: 'Helvetica Neue', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif; font-weight: 300; line-height: 1.5; }
-        .netflix-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, #1a1a1a, #000000); z-index: -2; }
-        .netflix-bg-color { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(45deg, #0a0a0a, #1a0a0a, #1a1a1a, #0a0a0a); background-size: 400% 400%; z-index: -1; opacity: 0; transition: opacity 0.5s; animation: gradientMove 15s ease infinite; }
-        .netflix-bg-color.active { opacity: 1; }
-        @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        .login-container { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem 1.5rem; z-index: 1; }
-        .netpsi-logo { font-size: clamp(2.5rem, 10vw, 5rem); font-weight: 900; color: #E50914; text-shadow: 0 0 15px rgba(229,9,20,0.5), 0 0 30px rgba(229,9,20,0.3); letter-spacing: -2px; text-align: center; }
-        .tagline { font-size: clamp(0.9rem, 4vw, 1.2rem); font-weight: 300; color: #ccc; text-align: center; margin: 0.5rem 0 0.25rem; }
-        .producer { font-size: 0.7rem; color: #888; text-align: center; margin-bottom: 2rem; }
-        .login-card { background: rgba(0,0,0,0.8); border-radius: 12px; padding: 2rem 1.5rem; width: 100%; max-width: 400px; backdrop-filter: blur(12px); border: 1px solid rgba(229,9,20,0.3); }
-        .login-card h2 { margin-bottom: 1.5rem; font-size: 1.6rem; font-weight: 500; }
-        .input-group { margin-bottom: 1rem; }
-        .input-group input { width: 100%; padding: 0.9rem 1rem; background: #333; border: none; border-radius: 8px; color: white; font-size: 1rem; font-weight: 300; }
-        .input-group input:focus { outline: none; background: #454545; box-shadow: 0 0 0 2px #E50914; }
-        .btn-red { background: #E50914; color: white; border: none; padding: 0.8rem; font-size: 1rem; font-weight: 600; border-radius: 8px; width: 100%; cursor: pointer; transition: all 0.2s; }
-        .btn-red:hover { background: #f6121d; transform: scale(1.02); }
-        .btn-outline { background: transparent; border: 1px solid #E50914; color: #E50914; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s; }
-        .btn-outline:hover { background: rgba(229,9,20,0.15); }
-        .switch-btn { background: none; border: none; color: #b3b3b3; margin-top: 1rem; cursor: pointer; font-size: 0.85rem; width: 100%; }
-        .switch-btn:hover { color: #E50914; }
-        .error-msg { color: #E50914; font-size: 0.75rem; margin-top: 0.8rem; text-align: center; }
-        .login-footer { text-align: center; margin-top: 2rem; font-size: 0.75rem; color: #b3b3b3; line-height: 1.6; font-style: italic; max-width: 320px; }
-        .dashboard { display: none; padding-bottom: 4rem; z-index: 1; }
-        .nav-bar { background: linear-gradient(to bottom, #000000cc, #141414); padding: 0.8rem 1rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.8rem; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px); }
-        .nav-left { display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem; }
-        .nav-logo { font-size: 1.4rem; font-weight: 900; color: #E50914; letter-spacing: -1px; }
-        .page-nav { display: flex; flex-wrap: wrap; gap: 0.3rem; }
-        .page-btn { background: transparent; border: none; color: #aaa; padding: 0.3rem 0.7rem; cursor: pointer; font-size: 0.7rem; border-radius: 20px; transition: all 0.2s; }
-        .page-btn.active { background: #E50914; color: white; }
-        .page-btn:hover:not(.active) { background: rgba(229,9,20,0.3); color: white; }
-        .user-info { display: flex; align-items: center; gap: 0.8rem; }
-        .avatar { width: 32px; height: 32px; border-radius: 50%; background: #E50914; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 600; }
-        .btn-logout { background: #E50914; border: none; color: white; padding: 0.3rem 0.8rem; border-radius: 20px; cursor: pointer; font-size: 0.75rem; }
-        .save-bar { background: #1f1f1f; padding: 0.8rem 1rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.8rem; border-bottom: 1px solid #333; }
-        .btn-save { background: #E50914; color: white; border: none; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-size: 0.8rem; }
-        .history-select { background: #333; color: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: none; font-size: 0.75rem; }
-        .page-container { max-width: 1200px; margin: 1.5rem auto; padding: 0 1rem; }
-        .section { background: #1f1f1f; border-radius: 12px; padding: 1.2rem; margin-bottom: 1.2rem; border-left: 4px solid #E50914; }
-        .section h3 { color: #E50914; margin-bottom: 0.8rem; font-size: 1.1rem; font-weight: 600; }
-        .section h4 { color: #E50914; margin: 0.8rem 0 0.5rem; font-size: 0.95rem; font-weight: 500; }
-        .two-columns { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1rem; }
-        @media (min-width: 768px) { .two-columns { grid-template-columns: 1fr 1fr; } .page-btn { font-size: 0.8rem; padding: 0.4rem 1rem; } }
-        input, textarea, select { background: #2a2a2a; border: none; padding: 0.6rem; color: white; border-radius: 8px; width: 100%; font-size: 0.85rem; font-family: inherit; }
-        input:focus, textarea:focus { outline: none; box-shadow: 0 0 0 2px #E50914; }
-        textarea { resize: vertical; min-height: 70px; }
-        .claquete-container { display: flex; justify-content: center; margin: 1rem 0; }
-        .claquete-btn { cursor: pointer; transition: transform 0.2s; text-align: center; }
-        .claquete-btn:hover { transform: scale(1.05); }
-        .claquete-svg { width: 70px; height: 70px; }
-        .exercicio-label { font-size: 0.7rem; color: #888; text-align: center; margin-top: 0.3rem; }
-        .atividade-revelada { background: #2a2a2a; padding: 0.8rem; border-radius: 12px; margin-top: 0.8rem; text-align: center; display: none; border: 1px solid #E50914; }
-        .atividade-revelada.visible { display: block; animation: fadeIn 0.3s; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
-        .emo-acordeon { margin-bottom: 0.6rem; }
-        .emo-header { background: #2a2a2a; padding: 0.7rem; border-radius: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        .emo-header h4 { margin: 0; color: #E50914; font-size: 0.9rem; }
-        .emo-content { display: none; padding: 0.8rem; background: #252525; border-radius: 10px; margin-top: 0.4rem; }
-        .emo-content.open { display: block; }
-        .emo-question { margin-bottom: 0.8rem; }
-        .emo-question label { font-size: 0.7rem; color: #aaa; display: block; margin-bottom: 0.2rem; }
-        .estrela-options { display: flex; gap: 1rem; margin: 0.5rem 0; flex-wrap: wrap; }
-        .estrela-option { display: flex; align-items: center; gap: 0.4rem; cursor: pointer; padding: 0.3rem 1rem; background: #2a2a2a; border-radius: 30px; font-size: 0.8rem; }
-        .estrela-option.selected { background: #E50914; color: white; }
-        .checkbox-group { display: flex; gap: 0.8rem; flex-wrap: wrap; margin: 0.5rem 0; }
-        .checkbox-group label { display: flex; align-items: center; gap: 0.3rem; font-size: 0.8rem; cursor: pointer; }
-        .checkbox-group input { width: auto; }
-        .grid-emocoes { display: grid; grid-template-columns: 1fr; gap: 0.6rem; }
-        @media (min-width: 640px) { .grid-emocoes { grid-template-columns: repeat(2, 1fr); } }
-        .ikigai-container { display: flex; flex-direction: column; align-items: center; gap: 1rem; margin: 2rem 0; }
-        .ikigai-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; }
-        .ikigai-sphere { background: #1f1f1f; border: 2px solid #E50914; border-radius: 24px; padding: 1rem; width: 240px; text-align: center; }
-        .ikigai-title { font-size: 0.85rem; font-weight: 500; margin-bottom: 0.8rem; color: #ccc; }
-        .ikigai-buttons { display: flex; justify-content: center; gap: 1rem; margin: 0.8rem 0; }
-        .circle-btn { width: 38px; height: 38px; border-radius: 50%; background: #2a2a2a; border: 1px solid #E50914; color: #E50914; font-size: 1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-        .circle-btn:hover { background: #E50914; color: white; transform: scale(1.05); }
-        .ikigai-subtitle { font-size: 0.8rem; color: #E50914; margin-top: 0.5rem; display: flex; justify-content: center; gap: 0.8rem; }
-        .vhs-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1.2rem; }
-        .vhs-card { background: linear-gradient(145deg, #1a1a1a, #0f0f0f); border-radius: 12px; padding: 0.8rem; cursor: pointer; transition: all 0.2s; border: 1px solid #E50914; text-align: center; position: relative; overflow: hidden; }
-        .vhs-card::before { content: "SIDE A LOW QUALITY NOISE TAPE 90MIN"; position: absolute; bottom: 4px; left: 6px; font-size: 0.5rem; color: #666; opacity: 0.6; white-space: nowrap; }
-        .vhs-card:hover { transform: scale(1.02); box-shadow: 0 0 15px rgba(229,9,20,0.3); }
-        .vhs-date { font-size: 0.9rem; font-weight: 600; color: #E50914; margin-bottom: 0.5rem; }
-        .vhs-info { font-size: 0.7rem; color: #aaa; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; padding: 1rem; }
-        .modal-content { background: #1f1f1f; border-radius: 16px; width: 100%; max-width: 550px; max-height: 85vh; overflow-y: auto; padding: 1.5rem; border-left: 4px solid #E50914; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; color: #E50914; }
-        .close-modal { cursor: pointer; font-size: 1.5rem; line-height: 1; }
-        .hidden { display: none; }
-        .text-small { font-size: 0.7rem; color: #aaa; }
-        .blocked-message { text-align: center; padding: 2rem; background: #1f1f1f; border-radius: 16px; color: #E50914; }
-        .info-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 1rem; }
-        @media (min-width: 768px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
-        .info-card { background: #2a2a2a; padding: 0.8rem; border-radius: 12px; }
-        .info-card h4 { color: #E50914; margin-bottom: 0.5rem; font-size: 0.9rem; }
-        .info-card ul { list-style: none; padding-left: 0; }
-        .info-card li { font-size: 0.75rem; color: #ccc; padding: 0.2rem 0; padding-left: 1rem; position: relative; }
-        .info-card li::before { content: "•"; color: #E50914; position: absolute; left: 0; }
-        .intersections-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin: 1rem 0; }
-        .intersection-card { background: #2a2a2a; padding: 0.8rem; border-radius: 12px; text-align: center; }
-        .intersection-card h4 { color: #E50914; margin-bottom: 0.3rem; }
-        .center-ikigai { background: #2a2a2a; padding: 1rem; border-radius: 12px; text-align: center; margin: 1rem 0; }
-        input[type="range"] { width: 100%; margin: 0.3rem 0; background: #333; height: 3px; -webkit-appearance: none; }
-        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #E50914; cursor: pointer; }
-        .rating-value { font-size: 0.7rem; color: #E50914; margin-left: 0.3rem; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #141414;
+            color: #e5e5e5;
+            font-family: 'Helvetica Neue', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            font-weight: 300;
+            line-height: 1.5;
+        }
+
+        .netflix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, #1a1a1a, #000000);
+            z-index: -2;
+        }
+
+        .netflix-bg-color {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #0a0a0a, #1a0a0a, #1a1a1a, #0a0a0a);
+            background-size: 400% 400%;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s;
+            animation: gradientMove 15s ease infinite;
+        }
+
+        .netflix-bg-color.active {
+            opacity: 1;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1.5rem;
+            z-index: 1;
+        }
+
+        .netpsi-logo {
+            font-size: clamp(2.5rem, 10vw, 5rem);
+            font-weight: 900;
+            color: #E50914;
+            text-shadow: 0 0 15px rgba(229,9,20,0.5), 0 0 30px rgba(229,9,20,0.3);
+            letter-spacing: -2px;
+            text-align: center;
+        }
+
+        .tagline {
+            font-size: clamp(0.9rem, 4vw, 1.2rem);
+            font-weight: 300;
+            color: #ccc;
+            text-align: center;
+            margin: 0.5rem 0 0.25rem;
+        }
+
+        .producer {
+            font-size: 0.7rem;
+            color: #888;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-card {
+            background: rgba(0,0,0,0.8);
+            border-radius: 12px;
+            padding: 2rem 1.5rem;
+            width: 100%;
+            max-width: 400px;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(229,9,20,0.3);
+        }
+
+        .login-card h2 {
+            margin-bottom: 1.5rem;
+            font-size: 1.6rem;
+            font-weight: 500;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            background: #333;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 300;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            background: #454545;
+            box-shadow: 0 0 0 2px #E50914;
+        }
+
+        .btn-red {
+            background: #E50914;
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            width: 100%;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .btn-red:hover {
+            background: #f6121d;
+            transform: scale(1.02);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #E50914;
+            color: #E50914;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .btn-outline:hover {
+            background: rgba(229,9,20,0.15);
+        }
+
+        .switch-btn {
+            background: none;
+            border: none;
+            color: #b3b3b3;
+            margin-top: 1rem;
+            cursor: pointer;
+            font-size: 0.85rem;
+            width: 100%;
+        }
+
+        .switch-btn:hover {
+            color: #E50914;
+        }
+
+        .error-msg {
+            color: #E50914;
+            font-size: 0.75rem;
+            margin-top: 0.8rem;
+            text-align: center;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            color: #b3b3b3;
+            line-height: 1.6;
+            font-style: italic;
+            max-width: 320px;
+        }
+
+        .dashboard {
+            display: none;
+            padding-bottom: 4rem;
+            z-index: 1;
+        }
+
+        .nav-bar {
+            background: linear-gradient(to bottom, #000000cc, #141414);
+            padding: 0.8rem 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.8rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(8px);
+        }
+
+        .nav-left {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .nav-logo {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: #E50914;
+            letter-spacing: -1px;
+        }
+
+        .page-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+        }
+
+        .page-btn {
+            background: transparent;
+            border: none;
+            color: #aaa;
+            padding: 0.3rem 0.7rem;
+            cursor: pointer;
+            font-size: 0.7rem;
+            border-radius: 20px;
+            transition: all 0.2s;
+        }
+
+        .page-btn.active {
+            background: #E50914;
+            color: white;
+        }
+
+        .page-btn:hover:not(.active) {
+            background: rgba(229,9,20,0.3);
+            color: white;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            background: #000;
+            border: 2px solid #E50914;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: #E50914;
+            cursor: pointer;
+        }
+
+        .btn-logout {
+            background: #E50914;
+            border: none;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+
+        .save-bar {
+            background: #1f1f1f;
+            padding: 0.8rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .btn-save {
+            background: #E50914;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .history-select {
+            background: #333;
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            border: none;
+            font-size: 0.75rem;
+        }
+
+        .page-container {
+            max-width: 1200px;
+            margin: 1.5rem auto;
+            padding: 0 1rem;
+        }
+
+        .section {
+            background: #1f1f1f;
+            border-radius: 12px;
+            padding: 1.2rem;
+            margin-bottom: 1.2rem;
+            border-left: 4px solid #E50914;
+        }
+
+        .section h3 {
+            color: #E50914;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .two-columns {
+                grid-template-columns: 1fr 1fr;
+            }
+            .page-btn {
+                font-size: 0.8rem;
+                padding: 0.4rem 1rem;
+            }
+        }
+
+        input, textarea, select {
+            background: #2a2a2a;
+            border: none;
+            padding: 0.6rem;
+            color: white;
+            border-radius: 8px;
+            width: 100%;
+            font-size: 0.85rem;
+            font-family: inherit;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #E50914;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 70px;
+        }
+
+        .tv-smart {
+            background: #2a2a2a;
+            border-radius: 20px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #E50914;
+        }
+
+        .tv-smart:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(229,9,20,0.3);
+        }
+
+        .tv-screen {
+            background: #0a0a0a;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .tv-screen span {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #E50914;
+        }
+
+        .tv-stand {
+            width: 60px;
+            height: 8px;
+            background: #444;
+            margin: 0 auto;
+            border-radius: 4px;
+        }
+
+        .checklist-vertical {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .checklist-vertical label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .checklist-vertical input {
+            width: auto;
+            margin-top: 0;
+        }
+
+        .estrela-options {
+            display: flex;
+            gap: 1rem;
+            margin: 0.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .estrela-option {
+            padding: 0.3rem 1rem;
+            background: #2a2a2a;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .estrela-option.selected {
+            background: #E50914;
+            color: white;
+        }
+
+        .claquete-btn {
+            cursor: pointer;
+            transition: transform 0.2s;
+            text-align: center;
+        }
+
+        .claquete-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .atividade-revelada {
+            background: #2a2a2a;
+            padding: 0.8rem;
+            border-radius: 12px;
+            margin-top: 0.8rem;
+            text-align: center;
+            display: none;
+            border: 1px solid #E50914;
+        }
+
+        .testes-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .testes-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 1.5rem;
+            }
+        }
+
+        .testes-coluna {
+            background: #1f1f1f;
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .testes-coluna h3 {
+            color: #E50914;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        .teste-card {
+            background: #2a2a2a;
+            border-radius: 8px;
+            padding: 0.8rem;
+            margin-bottom: 0.8rem;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            border: 1px solid #444;
+        }
+
+        .teste-card:hover {
+            background: #3a3a3a;
+            transform: translateX(5px);
+            border-color: #E50914;
+        }
+
+        .teste-card h4 {
+            color: #E50914;
+            font-size: 0.9rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .teste-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .teste-modal-content {
+            background: #1f1f1f;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 1.5rem;
+            border-left: 4px solid #E50914;
+        }
+
+        .teste-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+            color: #E50914;
+        }
+
+        .close-modal {
+            cursor: pointer;
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #333;
+            border-radius: 2px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: #E50914;
+            transition: width 0.3s;
+        }
+
+        .pergunta-texto {
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
+        }
+
+        .opcoes {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .opcao {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.6rem;
+            background: #2a2a2a;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .opcao:hover {
+            background: #3a3a3a;
+        }
+
+        .opcao.selected {
+            background: #E50914;
+            color: white;
+        }
+
+        .opcao input {
+            width: auto;
+            margin: 0;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .resultado-area {
+            background: #2a2a2a;
+            padding: 1rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+        }
+
+        .text-small {
+            font-size: 0.7rem;
+            color: #aaa;
+        }
+
+        .vhs-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .vhs-card {
+            background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+            border-radius: 12px;
+            padding: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid #E50914;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .vhs-card::before {
+            content: "SIDE A LOW QUALITY NOISE TAPE";
+            position: absolute;
+            bottom: 4px;
+            left: 6px;
+            font-size: 0.5rem;
+            color: #666;
+            opacity: 0.6;
+            white-space: nowrap;
+        }
+
+        .vhs-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(229,9,20,0.3);
+        }
+
+        .vhs-date {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #E50914;
+            margin-bottom: 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -127,297 +687,303 @@
         <button class="switch-btn" id="switchBtn">Criar sua temporada</button>
         <div id="loginError" class="error-msg"></div>
     </div>
-    <div class="login-footer">Dados sigilosos,<br>aqui ninguém assiste sua série,<br>suas emoções são apenas suas.</div>
+    <div class="login-footer">
+        Dados sigilosos,<br>
+        aqui ninguém assiste sua série,<br>
+        suas emoções são apenas suas.
+    </div>
 </div>
 
 <div id="dashboard" class="dashboard">
     <div class="nav-bar">
-        <div class="nav-left"><div class="nav-logo">NETPSI</div><div class="page-nav" id="pageNav"></div></div>
-        <div class="user-info"><div class="avatar" id="avatar">🎬</div><span id="currentUserDisplay"></span><button class="btn-logout" id="logoutBtn">Sair</button></div>
+        <div class="nav-left">
+            <div class="nav-logo">NETPSI</div>
+            <div class="page-nav" id="pageNav"></div>
+        </div>
+        <div class="user-info">
+            <div class="avatar" id="avatarBtn">N</div>
+            <span id="currentUserDisplay"></span>
+            <button class="btn-logout" id="logoutBtn">Sair</button>
+        </div>
     </div>
-    <div class="save-bar"><button class="btn-save" id="saveEntryBtn">Salvar episódio de hoje</button><select id="historySelect" class="history-select"><option value="hoje">Hoje</option></select></div>
-    <div id="page0" class="page-container"></div><div id="page1" class="page-container hidden"></div><div id="page2" class="page-container hidden"></div>
-    <div id="page3" class="page-container hidden"></div><div id="page4" class="page-container hidden"></div><div id="page5" class="page-container hidden"></div>
-    <div id="page6" class="page-container hidden"></div><div id="page7" class="page-container hidden"></div>
+    <div class="save-bar">
+        <button class="btn-save" id="saveEntryBtn">Salvar episódio de hoje</button>
+        <select id="historySelect" class="history-select"><option value="hoje">Hoje</option></select>
+    </div>
+
+    <div id="page0" class="page-container"></div>
+    <div id="page1" class="page-container hidden"></div>
+    <div id="page2" class="page-container hidden"></div>
+    <div id="page3" class="page-container hidden"></div>
+    <div id="page4" class="page-container hidden"></div>
+    <div id="page5" class="page-container hidden"></div>
+    <div id="page6" class="page-container hidden"></div>
+    <div id="page7" class="page-container hidden"></div>
+    <div id="page8" class="page-container hidden"></div>
+    <div id="page9" class="page-container hidden"></div>
 </div>
 
 <script>
-// DADOS
-let users = JSON.parse(localStorage.getItem('netpsi_users')) || {};
-let currentUser = null;
-let currentDate = new Date().toISOString().slice(0,10);
-let currentPage = 0;
-const pageNames = ["EPISÓDIO DE HOJE","TERMÔMETRO DO EPISÓDIO","VOLTANDO A TRANSMISSÃO","PIPOCA REGULADA","SAGA FLIX","RODANDO O SERIADO","IKIGAI FLIX","ARQUIVO X"];
-const pageKeys = ['page0','page1','page2','page3','page4','page5','page6','page7'];
-
-const exercicios = ["Escreva sobre um momento que você se sentiu orgulhoso.","Descreva uma situação de ansiedade e como lidou.","Escreva uma carta de perdão para si mesmo.","Liste 3 qualidades que admira em si.","Descreva um medo que gostaria de enfrentar.","Escreva sobre algo que aprendeu sobre si esta semana.","Se pudesse dar um conselho ao seu eu do passado, o que diria?","Descreva uma situação em que foi resiliente.","Escreva sobre algo que quer deixar para trás.","Liste pequenas alegrias do seu dia."];
-function getExercicio() { return exercicios[Math.floor(Math.random() * exercicios.length)]; }
-
-const emocoesList = ["alegria","tedio","medo","raiva","tristeza","nojo","frustracao","apatia","vergonha","ressentimento","inveja","carencia","esperanca","alivio","amor","paixao","impulso","orgulho","solidão","paciencia"];
-const emocoesNomes = { alegria:"Alegria", tedio:"Tédio", medo:"Medo", raiva:"Raiva", tristeza:"Tristeza", nojo:"Nojo", frustracao:"Frustração", apatia:"Apatia", vergonha:"Vergonha", ressentimento:"Ressentimento", inveja:"Inveja", carencia:"Carência", esperanca:"Esperança", alivio:"Alívio", amor:"Amor", paixao:"Paixão", impulso:"Impulso", orgulho:"Orgulho", solidão:"Solidão", paciencia:"Paciência" };
-
-function getEmptyDiary() {
-    let emocoes = {};
-    emocoesList.forEach(e => { emocoes[e] = { intensidade: 0, gatilho: "", pensamentos: "", outra_forma: "", descricao: "" }; });
-    return {
-        atividade_tcc: getExercicio(), humor: 5, estrela: "", estrela_roteiro: "", diario_texto: "", diario_foto: null,
-        checklist_fisica: { banho: false, dentes: false, agua: false, comida: false, sol: false, movimento: false },
-        checklist_autocuidado: { medicamentos: false, terapia: false, amorProprio: false, limites: false, ajuda: false },
-        elogios: ["","",""], gratidao: ["","",""], melhorar_amanha: "", emocoes: emocoes,
-        plano_mudanca: null, carta_nao_enviada: "", roda_vida: null, roda_vida_data: null, ikigai: null, ikigai_data: null, ikigai_respostas: {},
-        pipoca: {}, saga: {}
+    // BANCO DE DADOS DOS TESTES (CARREGAMENTO SOB DEMANDA)
+    const testesDatabase = {
+        autoestima: {
+            titulo: "AUTOESTIMA",
+            descricao: "O teste de autoestima mede como você se enxerga, como você se trata e o quanto você acredita no seu próprio valor. Baseado na Escala de Autoestima de Rosenberg.",
+            perguntas: [
+                "Eu sinto que sou uma pessoa de valor, pelo menos no mesmo nível que as outras pessoas.",
+                "Eu sinto que tenho várias qualidades.",
+                "No geral eu acho que sou um fracasso.",
+                "Eu sou capaz de fazer as coisas tão bem quanto a maioria das pessoas.",
+                "Eu sinto que não tenho muito do que me orgulhar.",
+                "Eu tenho uma atitude positiva em relação a mim mesmo.",
+                "No geral estou satisfeito comigo mesmo.",
+                "Eu gostaria de ter mais respeito por mim mesmo.",
+                "Às vezes eu me sinto inútil.",
+                "Às vezes eu acho que não presto pra nada."
+            ],
+            opcoes: ["Discordo totalmente", "Discordo", "Concordo", "Concordo totalmente"],
+            calcular: function(respostas) {
+                let invertidas = [2, 4, 7, 8, 9];
+                let total = 0;
+                for(let i=0; i<respostas.length; i++) {
+                    let val = respostas[i] + 1;
+                    if(invertidas.includes(i)) val = 4 - val;
+                    total += val;
+                }
+                if(total <= 25) return "Autoestima baixa. Você tende a se desvalorizar, se criticar demais e duvidar do seu valor.";
+                if(total <= 30) return "Autoestima média. Você tem uma base razoável mas ainda oscila bastante dependendo das circunstâncias.";
+                return "Autoestima elevada. Você se conhece, se respeita e tem uma relação saudável consigo mesmo.";
+            }
+        },
+        burnout: {
+            titulo: "BURNOUT",
+            descricao: "O teste de burnout avalia o nível de esgotamento físico, emocional e mental. Baseado no Maslach Burnout Inventory.",
+            perguntas: [
+                "Me sinto emocionalmente esgotado pelo meu trabalho ou pelas minhas responsabilidades.",
+                "Me sinto cansado ao acordar sabendo que tenho mais um dia pela frente.",
+                "Sinto que estou no limite da minha capacidade emocional.",
+                "Me sinto frustrado com frequência sem conseguir identificar claramente o motivo.",
+                "Sinto que não tenho mais energia para me dedicar às pessoas ao meu redor.",
+                "Me sinto sobrecarregado com a quantidade de coisas que preciso dar conta.",
+                "Termino o dia completamente sem energia mesmo quando não fiz grandes esforços físicos.",
+                "Sinto que dar de mim mesmo está me custando muito.",
+                "Me sinto vazio emocionalmente com frequência.",
+                "Tenho dificuldade de me recuperar mesmo depois de descansar."
+            ],
+            opcoes: ["Nunca", "Raramente", "Às vezes", "Frequentemente", "Sempre"],
+            calcular: function(respostas) {
+                let total = respostas.reduce((a,b)=>a+b+1,0);
+                if(total <= 20) return "Nível baixo de burnout. Você está bem, continue cuidando da sua rotina.";
+                if(total <= 35) return "Nível moderado. Há sinais de alerta. Revisar sua rotina e limites.";
+                return "Nível alto. Você está em processo de esgotamento. Busque apoio profissional.";
+            }
+        }
     };
-}
-function saveAll() { if(currentUser) localStorage.setItem('netpsi_users', JSON.stringify(users)); }
 
-function changePage(page) {
-    currentPage = page;
-    for(let i=0;i<pageKeys.length;i++) document.getElementById(pageKeys[i]).classList.add('hidden');
-    document.getElementById(pageKeys[page]).classList.remove('hidden');
-    document.querySelectorAll('.page-btn').forEach((btn,idx)=>{ if(idx==page) btn.classList.add('active'); else btn.classList.remove('active'); });
-    if(page===7) { document.getElementById('netflixColorBg').classList.add('active'); renderArquivos(); }
-    else document.getElementById('netflixColorBg').classList.remove('active');
-    if(page===5) renderRodaVida();
-    if(page===6) renderIkigai();
-}
-
-// PÁGINA 0
-function renderPagina0(data) {
-    let html = `
-        <div class="section"><h3>Filme de hoje</h3><div class="claquete-container"><div class="claquete-btn" id="claqueteBtn"><svg class="claquete-svg" viewBox="0 0 100 100"><rect x="15" y="25" width="70" height="50" fill="#2a2a2a" stroke="#E50914" stroke-width="2" rx="3"/><rect x="15" y="25" width="70" height="15" fill="#E50914" rx="3"/><line x1="30" y1="32" x2="45" y2="32" stroke="white" stroke-width="2"/><line x1="55" y1="32" x2="70" y2="32" stroke="white" stroke-width="2"/><text x="32" y="60" fill="white" font-size="12" font-weight="bold">REC</text></svg></div></div><div class="exercicio-label">exercício terapêutico</div><div class="atividade-revelada" id="atividadeRevelada"><div id="atividadeTexto">${data.atividade_tcc}</div></div></div>
-        <div class="section"><h3>Humor crítico</h3><input type="range" id="humorSlider" min="0" max="10" value="${data.humor}"><span class="rating-value" id="humorValue">${data.humor}/10</span></div>
-        <div class="section"><h3>Como está sua estrela hoje?</h3><div class="estrela-options"><div class="estrela-option ${data.estrela==='brilhando'?'selected':''}" data-estrela="brilhando">Brilhando</div><div class="estrela-option ${data.estrela==='apagada'?'selected':''}" data-estrela="apagada">Apagada</div></div><textarea id="estrelaRoteiro" placeholder="Descreva o roteiro...">${data.estrela_roteiro}</textarea></div>
-        <div class="section"><button class="btn-outline" id="openDiarioBtn">📝 Como foi o episódio de hoje?</button></div>
-        <div class="two-columns"><div class="section"><h3>Checklist Saúde Física</h3><div class="checkbox-group"><label><input type="checkbox" id="fis_banho" ${data.checklist_fisica.banho?'checked':''}> Tomei banho</label><label><input type="checkbox" id="fis_dentes" ${data.checklist_fisica.dentes?'checked':''}> Escovei dentes</label><label><input type="checkbox" id="fis_agua" ${data.checklist_fisica.agua?'checked':''}> Bebi água</label></div><div class="checkbox-group"><label><input type="checkbox" id="fis_comida" ${data.checklist_fisica.comida?'checked':''}> Comi bem</label><label><input type="checkbox" id="fis_sol" ${data.checklist_fisica.sol?'checked':''}> Tomei sol</label><label><input type="checkbox" id="fis_movimento" ${data.checklist_fisica.movimento?'checked':''}> Me movimentei</label></div></div>
-        <div class="section"><h3>Checklist Autocuidado</h3><div class="checkbox-group"><label><input type="checkbox" id="auto_med" ${data.checklist_autocuidado.medicamentos?'checked':''}> Tomei medicamentos</label><label><input type="checkbox" id="auto_ter" ${data.checklist_autocuidado.terapia?'checked':''}> Fui à terapia</label></div><div class="checkbox-group"><label><input type="checkbox" id="auto_amor" ${data.checklist_autocuidado.amorProprio?'checked':''}> Pratiquei amor-próprio</label><label><input type="checkbox" id="auto_lim" ${data.checklist_autocuidado.limites?'checked':''}> Estabeleci limites</label></div><div class="checkbox-group"><label><input type="checkbox" id="auto_aju" ${data.checklist_autocuidado.ajuda?'checked':''}> Pedi ajuda</label></div></div></div>
-        <div class="two-columns"><div class="section"><h3>Elogie-se</h3><textarea id="elogio1" placeholder="Elogio 1">${data.elogios[0]}</textarea><textarea id="elogio2" placeholder="Elogio 2">${data.elogios[1]}</textarea><textarea id="elogio3" placeholder="Elogio 3">${data.elogios[2]}</textarea></div>
-        <div class="section"><h3>Gratidão</h3><textarea id="gratidao1" placeholder="Gratidão 1">${data.gratidao[0]}</textarea><textarea id="gratidao2" placeholder="Gratidão 2">${data.gratidao[1]}</textarea><textarea id="gratidao3" placeholder="Gratidão 3">${data.gratidao[2]}</textarea></div></div>
-        <div class="section"><h3>Como posso melhorar no episódio de amanhã?</h3><textarea id="melhorarAmanha">${data.melhorar_amanha}</textarea></div>
-        <div class="section"><h3>Mudando o seriado da sua vida</h3><button class="btn-outline" id="openMudancaBtn">Plano de mudança</button></div>
-        <div class="section"><h3>Roteiro que nunca enviei</h3><textarea id="cartaNaoEnviada" rows="3">${data.carta_nao_enviada || ""}</textarea></div>`;
-    document.getElementById('page0').innerHTML = html;
-    document.getElementById('claqueteBtn')?.addEventListener('click',()=>{ let nova=getExercicio(); document.getElementById('atividadeTexto').innerText=nova; let el=document.getElementById('atividadeRevelada'); el.classList.add('visible'); setTimeout(()=>el.classList.remove('visible'),4000); });
-    document.getElementById('humorSlider')?.addEventListener('input',(e)=>{ document.getElementById('humorValue').innerText=e.target.value+'/10'; let v=parseInt(e.target.value); document.getElementById('avatar').innerText=v<=3?'😔':v<=6?'😐':'😊'; });
-    document.querySelectorAll('.estrela-option').forEach(opt=>{ opt.onclick=()=>{ document.querySelectorAll('.estrela-option').forEach(o=>o.classList.remove('selected')); opt.classList.add('selected'); }; });
-    document.getElementById('openDiarioBtn')?.addEventListener('click',()=>openDiarioModal(data));
-    document.getElementById('openMudancaBtn')?.addEventListener('click',()=>openMudancaModal(data));
-}
-
-function openDiarioModal(data) {
-    let modal = document.createElement('div'); modal.className='modal';
-    modal.innerHTML=`<div class="modal-content"><div class="modal-header"><h3>Como foi o episódio de hoje?</h3><span class="close-modal">&times;</span></div><textarea id="modalDiarioText" rows="6">${data.diario_texto||""}</textarea><label>Adicionar foto</label><input type="file" id="modalPhoto" accept="image/*"><button class="btn-red" id="saveModalBtn">Salvar</button></div>`;
-    document.body.appendChild(modal); modal.style.display='flex';
-    modal.querySelector('.close-modal').onclick=()=>modal.remove();
-    document.getElementById('saveModalBtn').onclick=()=>{
-        let text = document.getElementById('modalDiarioText').value;
-        let file = document.getElementById('modalPhoto').files[0];
-        if(file){ let reader=new FileReader(); reader.onload=e=>{ if(users[currentUser].diarios[currentDate]) users[currentUser].diarios[currentDate].diario_texto=text; users[currentUser].diarios[currentDate].diario_foto=e.target.result; saveAll(); modal.remove(); loadDate(currentDate); }; reader.readAsDataURL(file); }
-        else{ if(users[currentUser].diarios[currentDate]) users[currentUser].diarios[currentDate].diario_texto=text; saveAll(); modal.remove(); loadDate(currentDate); }
-    };
-}
-
-function openMudancaModal(data) {
-    let p = data.plano_mudanca || {};
-    let modal = document.createElement('div'); modal.className='modal';
-    modal.innerHTML=`<div class="modal-content"><div class="modal-header"><h3>Plano de mudança</h3><span class="close-modal">&times;</span></div><label>O que quero mudar?</label><textarea id="mudOque">${p.oQue||""}</textarea><label>Por que quero mudar?</label><textarea id="mudPorque">${p.porQue||""}</textarea><label>Obstáculos</label><textarea id="mudObs">${p.obs||""}</textarea><label>Recursos</label><textarea id="mudRec">${p.rec||""}</textarea><label>Plano de ação</label><textarea id="mudPlano">${p.plano||""}</textarea><label>Como avaliar?</label><textarea id="mudAval">${p.aval||""}</textarea><button class="btn-red" id="saveMudancaBtn">Salvar</button></div>`;
-    document.body.appendChild(modal); modal.style.display='flex';
-    modal.querySelector('.close-modal').onclick=()=>modal.remove();
-    document.getElementById('saveMudancaBtn').onclick=()=>{
-        if(users[currentUser].diarios[currentDate]) users[currentUser].diarios[currentDate].plano_mudanca={ oQue:document.getElementById('mudOque').value, porQue:document.getElementById('mudPorque').value, obs:document.getElementById('mudObs').value, rec:document.getElementById('mudRec').value, plano:document.getElementById('mudPlano').value, aval:document.getElementById('mudAval').value };
-        saveAll(); modal.remove(); loadDate(currentDate);
-    };
-}
-
-// PÁGINA 1
-function renderPagina1(data) {
-    let html = `<div class="section"><h3>Termômetro das Emoções</h3><div class="grid-emocoes">`;
-    emocoesList.forEach(emo=>{
-        let e = data.emocoes[emo] || { intensidade:0, gatilho:"", pensamentos:"", outra_forma:"", descricao:"" };
-        html+=`<div class="emo-acordeon"><div class="emo-header" data-emo="${emo}"><h4>${emocoesNomes[emo]}</h4><span class="emo-icon">+</span></div><div class="emo-content" id="emoContent_${emo}"><div class="emo-question"><label>Intensidade (0-100%)</label><input type="range" id="emo_int_${emo}" min="0" max="100" value="${e.intensidade}"><span class="rating-value" id="emo_val_${emo}">${e.intensidade}%</span></div><div class="emo-question"><label>Gatilho</label><textarea id="emo_gat_${emo}">${e.gatilho}</textarea></div><div class="emo-question"><label>Pensamentos automáticos</label><textarea id="emo_pens_${emo}">${e.pensamentos}</textarea></div><div class="emo-question"><label>Como posso ver de outra forma?</label><textarea id="emo_outra_${emo}">${e.outra_forma}</textarea></div><div class="emo-question"><label>Descreva o que aconteceu</label><textarea id="emo_desc_${emo}">${e.descricao}</textarea></div></div></div>`;
-    });
-    html+=`</div></div>`;
-    document.getElementById('page1').innerHTML = html;
-    document.querySelectorAll('.emo-header').forEach(h=>{ h.onclick=()=>{ let emo=h.dataset.emo; let c=document.getElementById(`emoContent_${emo}`); let i=h.querySelector('.emo-icon'); c.classList.toggle('open'); i.innerText=c.classList.contains('open')?'-':'+'; }; });
-    emocoesList.forEach(emo=>{ let s=document.getElementById(`emo_int_${emo}`); if(s) s.addEventListener('input',(e)=>{ document.getElementById(`emo_val_${emo}`).innerText=e.target.value+'%'; }); });
-}
-
-// PÁGINA 2
-function renderPagina2() {
-    document.getElementById('page2').innerHTML = `<div class="section"><h3>Razões por trás da desregulação</h3><div class="info-grid"><div class="info-card"><h4>Física</h4><ul><li>Fome</li><li>Sede</li><li>Falta de sono</li><li>Doença ou infecção</li><li>Condições crônicas</li><li>Deficiências nutricionais</li><li>Falta de atividade física</li></ul></div><div class="info-card"><h4>Sensorial</h4><ul><li>Sobrecarga sensorial</li><li>Dificuldades de processamento</li><li>Necessidades sensoriais não satisfeitas</li><li>Gatilhos sensoriais</li></ul></div><div class="info-card"><h4>Emocional</h4><ul><li>Trauma não resolvido</li><li>Estresse ou pressão</li><li>Ansiedade</li><li>Insegurança</li><li>Mudanças na rotina</li><li>Emoções intensas</li><li>Necessidade de conexão</li></ul></div></div></div>`;
-}
-
-// PÁGINA 3
-function renderPagina3(data) {
-    let a = data.pipoca || {};
-    document.getElementById('page3').innerHTML = `<div class="section"><h3>Aplica quando você precisar</h3><div class="info-grid"><div class="info-card"><h4>ACEITO</h4><textarea id="pipoca_aceito">${a.aceito||""}</textarea></div><div class="info-card"><h4>AGRADEÇO</h4><textarea id="pipoca_agradeco">${a.agradeco||""}</textarea></div><div class="info-card"><h4>NÃO ME FAZ BEM</h4><textarea id="pipoca_nao">${a.nao||""}</textarea></div><div class="info-card"><h4>FAZ-ME BEM</h4><textarea id="pipoca_faz">${a.faz||""}</textarea></div><div class="info-card"><h4>DEIXO IR</h4><textarea id="pipoca_deixo">${a.deixo||""}</textarea></div><div class="info-card"><h4>DESFRUTO</h4><textarea id="pipoca_desfruto">${a.desfruto||""}</textarea></div></div><div class="section"><h4>SITUAÇÃO</h4><textarea id="pipoca_situacao">${a.situacao||""}</textarea></div></div>`;
-}
-
-// PÁGINA 4
-function renderPagina4(data) {
-    let s = data.saga || {};
-    document.getElementById('page4').innerHTML = `<div class="section"><h3>Saga do Seriado Feliz</h3><div class="info-grid"><div class="info-card"><h4>DOPAMINA</h4><ul><li>Durma de 7 a 9 horas</li><li>Celebre conquistas diárias</li><li>Faça exercícios diários</li></ul><textarea id="saga_dopamina" placeholder="Minhas anotações">${s.dopamina||""}</textarea></div><div class="info-card"><h4>OCITOCINA</h4><ul><li>Medite todas as manhãs</li><li>Dê um abraço em alguém</li><li>Faça um ato de generosidade</li></ul><textarea id="saga_ocitocina" placeholder="Minhas anotações">${s.ocitocina||""}</textarea></div><div class="info-card"><h4>ENDORFINA</h4><ul><li>Pratique hobbies</li><li>Ria com entes queridos</li><li>Dance, cante</li></ul><textarea id="saga_endorfina" placeholder="Minhas anotações">${s.endorfina||""}</textarea></div><div class="info-card"><h4>SEROTONINA</h4><ul><li>Agradeça todos os dias</li><li>Desfrute da natureza</li><li>Relembre momentos importantes</li></ul><textarea id="saga_serotonina" placeholder="Minhas anotações">${s.serotonina||""}</textarea></div></div></div>`;
-}
-
-// PÁGINA 5 (RODA)
-function renderRodaVida() {
-    let data = users[currentUser].diarios[currentDate] || getEmptyDiary();
-    let roda = data.roda_vida || {};
-    let pode = (!data.roda_vida_data || new Date(data.roda_vida_data).getMonth()!==new Date().getMonth() || new Date(data.roda_vida_data).getFullYear()!==new Date().getFullYear());
-    if(!pode){ document.getElementById('page5').innerHTML=`<div class="blocked-message">Você já preencheu a Roda este mês. Volte no mês que vem.</div>`; return; }
-    let html=`<div class="section"><h3>Roda do Seriado</h3><div class="info-grid">`;
-    ["Vitalidade","Habitação","Diversão","Plenitude","Felicidade","Espiritualidade","Saúde","Desenvolvimento","Intelectual","Emocional","Equilíbrio","Realização","Profissional"].forEach(cat=>{
-        html+=`<div class="info-card"><h4>${cat}</h4><input type="range" id="roda_${cat}" min="1" max="10" value="${roda[cat]||5}"><span class="rating-value" id="roda_val_${cat}">${roda[cat]||5}/10</span></div>`;
-    });
-    html+=`</div><textarea id="roda_plano" placeholder="Plano de ação" rows="4">${roda.plano||""}</textarea><button class="btn-red" id="salvarRodaBtn">Salvar Roda</button></div>`;
-    document.getElementById('page5').innerHTML = html;
-    document.querySelectorAll('[id^="roda_"]').forEach(el=>{ if(el.id!=='roda_plano' && el.type==='range') el.addEventListener('input',(e)=>{ document.getElementById(`roda_val_${el.id.replace('roda_','')}`).innerText=e.target.value+'/10'; }); });
-    document.getElementById('salvarRodaBtn')?.addEventListener('click',()=>{
-        let novaRoda={}; document.querySelectorAll('[id^="roda_"]').forEach(el=>{ if(el.id!=='roda_plano') novaRoda[el.id.replace('roda_','')]=parseInt(el.value); });
-        novaRoda.plano=document.getElementById('roda_plano').value;
-        if(users[currentUser].diarios[currentDate]){ users[currentUser].diarios[currentDate].roda_vida=novaRoda; users[currentUser].diarios[currentDate].roda_vida_data=new Date().toISOString(); saveAll(); alert("Roda salva! Volte mês que vem."); renderRodaVida(); }
-    });
-}
-
-// PÁGINA 6 (IKIGAI)
-function renderIkigai() {
-    let data = users[currentUser].diarios[currentDate] || getEmptyDiary();
-    let pode = (!data.ikigai_data || (new Date() - new Date(data.ikigai_data) > 180*24*60*60*1000));
-    if(!pode){ document.getElementById('page6').innerHTML=`<div class="blocked-message">Você já fez seu IKIGAI neste semestre. Volte daqui a 6 meses.</div>`; return; }
-    let resp = data.ikigai_respostas || {};
-    let html=`<div class="section"><h3>Seu Ikigai (Razão de Ser)</h3><p>O Ikigai é um conceito japonês que significa "razão de ser". É o ponto de encontro entre o que você ama, o que faz bem, o que o mundo precisa e pelo que pode ser recompensada.</p><div class="ikigai-container"><div class="ikigai-row"><div class="ikigai-sphere"><div class="ikigai-title">AQUILO QUE VOCÊ AMA</div><div class="ikigai-buttons"><div class="circle-btn" data-tipo="pergunta" data-area="ama">?</div><div class="circle-btn" data-tipo="resposta" data-area="ama">R</div></div><div class="ikigai-subtitle">PAIXÃO<div class="circle-btn" data-tipo="resposta" data-area="paixao" style="width:28px;height:28px;font-size:0.8rem;">R</div></div></div></div><div class="ikigai-row"><div class="ikigai-sphere"><div class="ikigai-title">AQUI O QUE VOCÊ É BOM</div><div class="ikigai-buttons"><div class="circle-btn" data-tipo="pergunta" data-area="bom">?</div><div class="circle-btn" data-tipo="resposta" data-area="bom">R</div></div><div class="ikigai-subtitle">PROFISSÃO<div class="circle-btn" data-tipo="resposta" data-area="profissao" style="width:28px;height:28px;font-size:0.8rem;">R</div></div></div><div class="ikigai-sphere"><div class="ikigai-title">AQUILO QUE O MUNDO PRECISA</div><div class="ikigai-buttons"><div class="circle-btn" data-tipo="pergunta" data-area="mundo">?</div><div class="circle-btn" data-tipo="resposta" data-area="mundo">R</div></div><div class="ikigai-subtitle">MISSÃO<div class="circle-btn" data-tipo="resposta" data-area="missao" style="width:28px;height:28px;font-size:0.8rem;">R</div></div></div></div><div class="ikigai-row"><div class="ikigai-sphere"><div class="ikigai-title">AQUILO QUE VOCÊ É PAGO PARA FAZER</div><div class="ikigai-buttons"><div class="circle-btn" data-tipo="pergunta" data-area="pago">?</div><div class="circle-btn" data-tipo="resposta" data-area="pago">R</div></div><div class="ikigai-subtitle">VOCAÇÃO<div class="circle-btn" data-tipo="resposta" data-area="vocacao" style="width:28px;height:28px;font-size:0.8rem;">R</div></div></div></div></div>`;
-    html+=`<div class="info-grid"><div class="info-card"><h4>O QUE VOCÊ AMA</h4><ul><li>Paixões</li><li>Interesses</li><li>Prazeres</li><li>Sonhos</li><li>Atividades que fazem perder o tempo</li></ul></div><div class="info-card"><h4>O QUE VOCÊ FAZ BEM</h4><ul><li>Habilidades</li><li>Talentos</li><li>Competências</li><li>Experiências</li><li>Pontos fortes</li></ul></div><div class="info-card"><h4>O QUE O MUNDO PRECISA</h4><ul><li>Necessidades sociais</li><li>Impacto</li><li>Propósito coletivo</li><li>Ajuda ao próximo</li><li>Contribuição</li></ul></div><div class="info-card"><h4>PELO QUE PODE RECEBER</h4><ul><li>Profissão</li><li>Trabalho</li><li>Serviços</li><li>Mercado</li><li>Sustento financeiro</li></ul></div></div>`;
-    html+=`<div class="intersections-grid"><div class="intersection-card"><h4>Paixão</h4><p>O que ama + O que faz bem</p></div><div class="intersection-card"><h4>Missão</h4><p>O que ama + O que mundo precisa</p></div><div class="intersection-card"><h4>Vocação</h4><p>Mundo precisa + Pelo que pode receber</p></div><div class="intersection-card"><h4>Profissão</h4><p>O que faz bem + Pelo que pode receber</p></div></div>`;
-    html+=`<div class="center-ikigai"><h4>Centro do Ikigai</h4><p>Razão de viver · Sentido da vida · Equilíbrio · Realização pessoal · Propósito de vida</p></div>`;
-    html+=`<div class="section"><h3>Qual é o seu IKIGAI?</h3><textarea id="ikigai_resposta" rows="4">${resp.final||""}</textarea><button class="btn-red" id="salvarIkigaiBtn">Salvar IKIGAI</button></div>`;
-    document.getElementById('page6').innerHTML = html;
-    document.querySelectorAll('.circle-btn').forEach(btn=>{
-        btn.onclick=()=>{ let tipo=btn.dataset.tipo, area=btn.dataset.area;
-            if(tipo==='pergunta') openPerguntaModal(area);
-            else openRespostaModal(area, resp[area]||{});
-        };
-    });
-    document.getElementById('salvarIkigaiBtn')?.addEventListener('click',()=>{
-        if(users[currentUser].diarios[currentDate]){ users[currentUser].diarios[currentDate].ikigai_respostas={...resp, final:document.getElementById('ikigai_resposta').value}; users[currentUser].diarios[currentDate].ikigai_data=new Date().toISOString(); saveAll(); alert("IKIGAI salvo! Próxima jornada em 6 meses."); renderIkigai(); }
-    });
-}
-
-function openPerguntaModal(area){
-    let perguntas={ ama:["Quais atividades trazem alegria?","O que você faria sem ganhar?","O que te faz perder a noção do tempo?","Que livros/filmes você gosta?","O que ama aprender?"], bom:["Quais seus talentos?","O que as pessoas dizem que você é boa?","Quais tarefas faz com facilidade?","Que ajuda as pessoas pedem?","O que sabe ensinar?"], mundo:["O que o mundo precisa?","Que mudança você quer ver?","Como pode ajudar alguém?","O que incomoda você?","Como usar seus dons?","Que causas te tocam?"], pago:["Pelo que poderia ser paga?","Que trabalho traria propósito?","Como unir amor e renda?","Que talentos o mercado precisa?","O que oferecer como serviço?","O que poderia ensinar?","Como transformar paixão em carreira?"] };
-    let qs = perguntas[area] || ["Pergunta para reflexão"];
-    let modal=document.createElement('div'); modal.className='modal'; modal.innerHTML=`<div class="modal-content"><div class="modal-header"><h3>Reflexão</h3><span class="close-modal">&times;</span></div>${qs.map(q=>`<div class="modal-question-item"><p class="modal-question-text">${q}</p></div>`).join('')}</div>`;
-    document.body.appendChild(modal); modal.style.display='flex'; modal.querySelector('.close-modal').onclick=()=>modal.remove();
-}
-function openRespostaModal(area, saved){
-    let perguntas={ ama:["Quais atividades trazem alegria?","O que você faria sem ganhar?","O que te faz perder a noção do tempo?","Que livros/filmes você gosta?","O que ama aprender?"], bom:["Quais seus talentos?","O que as pessoas dizem que você é boa?","Quais tarefas faz com facilidade?","Que ajuda as pessoas pedem?","O que sabe ensinar?"], mundo:["O que o mundo precisa?","Que mudança você quer ver?","Como pode ajudar alguém?","O que incomoda você?","Como usar seus dons?","Que causas te tocam?"], pago:["Pelo que poderia ser paga?","Que trabalho traria propósito?","Como unir amor e renda?","Que talentos o mercado precisa?","O que oferecer como serviço?","O que poderia ensinar?","Como transformar paixão em carreira?"], paixao:perguntas.ama, profissao:perguntas.bom, missao:perguntas.mundo, vocacao:perguntas.pago };
-    let qs = perguntas[area] || perguntas.ama;
-    let modal=document.createElement('div'); modal.className='modal'; modal.innerHTML=`<div class="modal-content"><div class="modal-header"><h3>Minhas Respostas</h3><span class="close-modal">&times;</span></div>${qs.map((q,i)=>`<div class="modal-question-item"><p class="modal-question-text">${q}</p><textarea id="resp_${i}">${saved[i]||""}</textarea></div>`).join('')}<button class="btn-red" id="saveRespModal">Salvar</button></div>`;
-    document.body.appendChild(modal); modal.style.display='flex';
-    modal.querySelector('.close-modal').onclick=()=>modal.remove();
-    document.getElementById('saveRespModal').onclick=()=>{
-        let novas={}; for(let i=0;i<qs.length;i++) novas[i]=document.getElementById(`resp_${i}`).value;
-        let data=users[currentUser].diarios[currentDate];
-        if(data){ if(!data.ikigai_respostas) data.ikigai_respostas={}; data.ikigai_respostas[area]=novas; saveAll(); }
-        modal.remove();
-    };
-}
-
-// PÁGINA 7 (ARQUIVOS)
-function renderArquivos(){
-    let diarios = users[currentUser].diarios || {};
-    let dates = Object.keys(diarios).sort().reverse();
-    let html=`<div class="vhs-container">`;
-    dates.forEach(d=>{ let dia=diarios[d]; let humor=dia?.humor||5; html+=`<div class="vhs-card" data-data="${d}"><div class="vhs-date">${d}</div><div class="vhs-info">Humor: ${humor}/10</div></div>`; });
-    html+=`</div>`;
-    document.getElementById('page7').innerHTML = html;
-    document.querySelectorAll('.vhs-card').forEach(c=>{ c.onclick=()=>{ currentDate=c.dataset.data; loadDate(currentDate); changePage(0); }; });
-}
-
-// CAPTURAR DADOS
-function captureFromDOM(){
-    let data = users[currentUser].diarios[currentDate] || getEmptyDiary();
-    if(currentPage===0){
-        data.humor = parseInt(document.getElementById('humorSlider')?.value) || 5;
-        data.estrela_roteiro = document.getElementById('estrelaRoteiro')?.value || "";
-        let sel = document.querySelector('.estrela-option.selected');
-        if(sel) data.estrela = sel.dataset.estrela;
-        data.elogios = [document.getElementById('elogio1')?.value||"", document.getElementById('elogio2')?.value||"", document.getElementById('elogio3')?.value||""];
-        data.gratidao = [document.getElementById('gratidao1')?.value||"", document.getElementById('gratidao2')?.value||"", document.getElementById('gratidao3')?.value||""];
-        data.melhorar_amanha = document.getElementById('melhorarAmanha')?.value || "";
-        data.carta_nao_enviada = document.getElementById('cartaNaoEnviada')?.value || "";
-        data.checklist_fisica = { banho:!!document.getElementById('fis_banho')?.checked, dentes:!!document.getElementById('fis_dentes')?.checked, agua:!!document.getElementById('fis_agua')?.checked, comida:!!document.getElementById('fis_comida')?.checked, sol:!!document.getElementById('fis_sol')?.checked, movimento:!!document.getElementById('fis_movimento')?.checked };
-        data.checklist_autocuidado = { medicamentos:!!document.getElementById('auto_med')?.checked, terapia:!!document.getElementById('auto_ter')?.checked, amorProprio:!!document.getElementById('auto_amor')?.checked, limites:!!document.getElementById('auto_lim')?.checked, ajuda:!!document.getElementById('auto_aju')?.checked };
+    function abrirTeste(testId) {
+        const teste = testesDatabase[testId];
+        if(!teste) return;
+        
+        let modal = document.createElement('div');
+        modal.className = 'teste-modal';
+        modal.innerHTML = `
+            <div class="teste-modal-content" id="testeModalContent">
+                <div class="teste-modal-header">
+                    <h3>${teste.titulo}</h3>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div id="testeEtapa">
+                    <p>${teste.descricao}</p>
+                    <p class="text-small" style="margin-top:0.5rem;">Atencao: Este teste tem carater informativo e de triagem. Nao substitui avaliacao profissional.</p>
+                    <button class="btn-red" id="iniciarTesteBtn" style="margin-top:1rem;">INICIAR TESTE</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        modal.style.display = 'flex';
+        
+        let respostas = [];
+        let perguntaAtual = 0;
+        
+        function mostrarPergunta() {
+            const etapaDiv = document.getElementById('testeEtapa');
+            const pergunta = teste.perguntas[perguntaAtual];
+            etapaDiv.innerHTML = `
+                <div class="progress-bar"><div class="progress-fill" style="width:${((perguntaAtual+1)/teste.perguntas.length)*100}%"></div></div>
+                <div class="pergunta-texto">${pergunta}</div>
+                <div class="opcoes" id="opcoesContainer"></div>
+                <div class="nav-buttons">
+                    <button class="btn-outline" id="voltarBtn" ${perguntaAtual===0?'disabled style="opacity:0.5"':''}> VOLTAR</button>
+                    <button class="btn-red" id="proximoBtn">${perguntaAtual===teste.perguntas.length-1?'CALCULAR RESULTADO':'PROXIMA'}</button>
+                </div>
+            `;
+            const opcoesDiv = document.getElementById('opcoesContainer');
+            teste.opcoes.forEach((opt, idx) => {
+                const div = document.createElement('div');
+                div.className = 'opcao';
+                if(respostas[perguntaAtual] === idx) div.classList.add('selected');
+                div.innerHTML = `<input type="radio" name="opcao" value="${idx}" ${respostas[perguntaAtual]===idx?'checked':''}> ${opt}`;
+                div.onclick = () => {
+                    document.querySelectorAll('.opcao').forEach(o => o.classList.remove('selected'));
+                    div.classList.add('selected');
+                    document.querySelector(`input[name="opcao"]`).checked = true;
+                    respostas[perguntaAtual] = idx;
+                };
+                opcoesDiv.appendChild(div);
+            });
+            
+            document.getElementById('voltarBtn')?.addEventListener('click', () => {
+                if(perguntaAtual > 0) {
+                    perguntaAtual--;
+                    mostrarPergunta();
+                }
+            });
+            document.getElementById('proximoBtn')?.addEventListener('click', () => {
+                if(respostas[perguntaAtual] === undefined) {
+                    alert('Por favor, selecione uma resposta.');
+                    return;
+                }
+                if(perguntaAtual < teste.perguntas.length - 1) {
+                    perguntaAtual++;
+                    mostrarPergunta();
+                } else {
+                    const resultado = teste.calcular(respostas);
+                    const etapaDiv = document.getElementById('testeEtapa');
+                    etapaDiv.innerHTML = `
+                        <div class="resultado-area">
+                            <h4>RESULTADO</h4>
+                            <p>${resultado}</p>
+                        </div>
+                        <p class="text-small">Atencao: Este resultado e apenas para fins informativos. Nenhum teste online substitui uma avaliacao psicologica ou neuropsicologica completa realizada por profissional qualificado.</p>
+                        <div class="nav-buttons" style="margin-top:1rem;">
+                            <button class="btn-outline" id="fazerNovamenteBtn">FAZER NOVAMENTE</button>
+                            <button class="btn-red" id="fecharTesteBtn">FECHAR</button>
+                        </div>
+                    `;
+                    document.getElementById('fazerNovamenteBtn')?.addEventListener('click', () => {
+                        respostas = [];
+                        perguntaAtual = 0;
+                        mostrarPergunta();
+                    });
+                    document.getElementById('fecharTesteBtn')?.addEventListener('click', () => modal.remove());
+                }
+            });
+        }
+        
+        document.getElementById('iniciarTesteBtn')?.addEventListener('click', () => {
+            respostas = [];
+            perguntaAtual = 0;
+            mostrarPergunta();
+        });
+        modal.querySelector('.close-modal')?.addEventListener('click', () => modal.remove());
     }
-    if(currentPage===1){
-        emocoesList.forEach(emo=>{
-            data.emocoes[emo] = { intensidade: parseInt(document.getElementById(`emo_int_${emo}`)?.value)||0, gatilho: document.getElementById(`emo_gat_${emo}`)?.value||"", pensamentos: document.getElementById(`emo_pens_${emo}`)?.value||"", outra_forma: document.getElementById(`emo_outra_${emo}`)?.value||"", descricao: document.getElementById(`emo_desc_${emo}`)?.value||"" };
+
+    // PAGINA 0 - EPISODIO DE HOJE
+    function renderPagina0() {
+        document.getElementById('page0').innerHTML = `
+            <div class="section"><h3>Filme de hoje</h3><div class="claquete-container"><div class="claquete-btn" id="claqueteBtn"><div style="background:#E50914; width:70px; height:70px; border-radius:12px; display:flex; align-items:center; justify-content:center; margin:0 auto;"><span style="font-size:1.5rem; font-weight:bold;">REC</span></div></div></div><div class="exercicio-label">exercicio terapeutico</div><div class="atividade-revelada" id="atividadeRevelada"><div id="atividadeTexto"></div></div></div>
+            <div class="section"><div class="tv-smart" id="tvSmartBtn"><div class="tv-screen"><span>TV</span><br>COMO FOI O EPISODIO DE HOJE</div><div class="tv-stand"></div></div></div>
+            <div class="section"><h3>Como esta sua estrela hoje (autoestima)</h3><div class="estrela-options"><div class="estrela-option" data-estrela="brilhando">Brilhando</div><div class="estrela-option" data-estrela="apagada">Apagada</div></div><textarea id="estrelaRoteiro" placeholder="Descreva o roteiro..."></textarea></div>
+            <div class="two-columns"><div class="section"><h3>Checklist Saude Fisica</h3><div class="checklist-vertical"><label><input type="checkbox" id="fis_banho"> Tomei banho</label><label><input type="checkbox" id="fis_dentes"> Escovei os dentes</label><label><input type="checkbox" id="fis_agua"> Bebi agua (2L)</label><label><input type="checkbox" id="fis_comida"> Comi bem</label><label><input type="checkbox" id="fis_sol"> Tomei sol</label><label><input type="checkbox" id="fis_movimento"> Me movimentei</label></div></div>
+            <div class="section"><h3>Checklist Autocuidado</h3><div class="checklist-vertical"><label><input type="checkbox" id="auto_med"> Tomei medicamentos</label><label><input type="checkbox" id="auto_ter"> Fui a terapia</label><label><input type="checkbox" id="auto_amor"> Pratiquei amor-proprio</label><label><input type="checkbox" id="auto_lim"> Estabeleci limites</label><label><input type="checkbox" id="auto_aju"> Pedi ajuda</label><label><input type="checkbox" id="auto_detox"> Detox de tela</label><label><input type="checkbox" id="auto_skincare"> Skincare</label><label><input type="checkbox" id="auto_cama"> Arrumar a cama</label><label><input type="checkbox" id="auto_hobby"> Hobby</label></div></div></div>
+            <div class="two-columns"><div class="section"><h3>Elogie-se, voce e uma estrela</h3><textarea id="elogio1" placeholder="Elogio 1"></textarea><textarea id="elogio2" placeholder="Elogio 2"></textarea><textarea id="elogio3" placeholder="Elogio 3"></textarea></div>
+            <div class="section"><h3>Gratidao pelo episodio de hoje</h3><textarea id="gratidao1" placeholder="Gratidao 1"></textarea><textarea id="gratidao2" placeholder="Gratidao 2"></textarea><textarea id="gratidao3" placeholder="Gratidao 3"></textarea></div></div>
+            <div class="section"><h3>Como posso melhorar no episodio de amanha</h3><textarea id="melhorarAmanha" placeholder="O que posso fazer de diferente amanha"></textarea></div>
+            <div class="section"><h3>Sofa da Preguica</h3><textarea id="sofaPreguica" placeholder="O que procrastinei hoje"></textarea></div>
+            <div class="section"><h3>HD Sigiloso</h3><textarea id="cartaNaoEnviada" placeholder="Uma carta para nunca ser enviada"></textarea></div>
+        `;
+        document.getElementById('tvSmartBtn')?.addEventListener('click', () => alert("Abrir diario com texto e foto"));
+        document.getElementById('claqueteBtn')?.addEventListener('click', () => {
+            const exercicios = ["Escreva sobre um momento que voce se sentiu orgulhoso", "Descreva uma situacao de ansiedade e como lidou", "Escreva uma carta de perdao para si mesmo"];
+            const nova = exercicios[Math.floor(Math.random() * exercicios.length)];
+            document.getElementById('atividadeTexto').innerText = nova;
+            const el = document.getElementById('atividadeRevelada');
+            el.style.display = 'block';
+            setTimeout(() => el.style.display = 'none', 4000);
+        });
+        document.querySelectorAll('.estrela-option').forEach(opt => {
+            opt.onclick = () => {
+                document.querySelectorAll('.estrela-option').forEach(o => o.classList.remove('selected'));
+                opt.classList.add('selected');
+            };
         });
     }
-    if(currentPage===3){
-        data.pipoca = { aceito:document.getElementById('pipoca_aceito')?.value, agradeco:document.getElementById('pipoca_agradeco')?.value, nao:document.getElementById('pipoca_nao')?.value, faz:document.getElementById('pipoca_faz')?.value, deixo:document.getElementById('pipoca_deixo')?.value, desfruto:document.getElementById('pipoca_desfruto')?.value, situacao:document.getElementById('pipoca_situacao')?.value };
+
+    // PAGINA 8 - TESTE DE ELENCO
+    function renderTestes() {
+        const producoes = ['autoestima', 'burnout'];
+        const pilotos = ['autoestima'];
+        let html = `
+            <div class="section">
+                <p class="text-small" style="background:#2a2a2a; padding:1rem; border-radius:8px;">ATENCAO: os testes abaixo tem carater informativo e de triagem. Nenhum deles substitui uma avaliacao neuropsicologica completa realizada por profissional qualificado.</p>
+            </div>
+            <div class="testes-grid">
+                <div class="testes-coluna"><h3>PRODUCOES DE STREAMING</h3>`;
+        producoes.forEach(p => {
+            html += `<div class="teste-card" data-teste="${p}"><h4>${p.toUpperCase()}</h4></div>`;
+        });
+        html += `</div><div class="testes-coluna"><h3>TESTE PILOTO</h3>`;
+        pilotos.forEach(p => {
+            html += `<div class="teste-card" data-teste="${p}"><h4>${p.toUpperCase()}</h4></div>`;
+        });
+        html += `</div></div>`;
+        document.getElementById('page8').innerHTML = html;
+        document.querySelectorAll('.teste-card').forEach(card => {
+            card.addEventListener('click', () => abrirTeste(card.dataset.teste));
+        });
     }
-    if(currentPage===4){
-        data.saga = { dopamina:document.getElementById('saga_dopamina')?.value, ocitocina:document.getElementById('saga_ocitocina')?.value, endorfina:document.getElementById('saga_endorfina')?.value, serotonina:document.getElementById('saga_serotonina')?.value };
+
+    // PAGINA 9 - ARQUIVOS
+    function renderArquivos() {
+        document.getElementById('page9').innerHTML = `<div class="vhs-container"><div class="vhs-card"><div class="vhs-date">---</div><div class="vhs-info">Nenhum episodio salvo</div></div></div>`;
     }
-    users[currentUser].diarios[currentDate] = data;
-    saveAll();
-}
 
-function loadDate(date){
-    currentDate = date;
-    if(!users[currentUser].diarios) users[currentUser].diarios = {};
-    if(!users[currentUser].diarios[date]) users[currentUser].diarios[date] = getEmptyDiary();
-    let data = users[currentUser].diarios[date];
-    renderPagina0(data);
-    renderPagina1(data);
-    renderPagina2();
-    renderPagina3(data);
-    renderPagina4(data);
-    updateHistorySelect();
-    if(currentPage===5) renderRodaVida();
-    if(currentPage===6) renderIkigai();
-    if(currentPage===7) renderArquivos();
-}
-
-function updateHistorySelect(){
-    let select = document.getElementById('historySelect');
-    if(!select) return;
-    let dates = Object.keys(users[currentUser].diarios || {}).sort().reverse();
-    select.innerHTML = '<option value="hoje">Hoje</option>';
-    dates.forEach(d=>{ if(d!==new Date().toISOString().slice(0,10)) select.innerHTML+=`<option value="${d}">${d}</option>`; });
-    select.value = currentDate===new Date().toISOString().slice(0,10) ? "hoje" : currentDate;
-}
-
-function initDashboard(){
-    let today = new Date().toISOString().slice(0,10);
-    if(!users[currentUser].diarios) users[currentUser].diarios = {};
-    if(!users[currentUser].diarios[today]) users[currentUser].diarios[today] = getEmptyDiary();
-    currentDate = today;
-    loadDate(currentDate);
-    document.getElementById('currentUserDisplay').innerText = currentUser;
-    document.getElementById('saveEntryBtn').onclick = ()=>{ captureFromDOM(); alert("Episódio salvo!"); loadDate(currentDate); };
-    document.getElementById('historySelect').onchange = (e)=>{ let val=e.target.value==="hoje"?new Date().toISOString().slice(0,10):e.target.value; captureFromDOM(); currentDate=val; loadDate(currentDate); };
-    document.getElementById('logoutBtn').onclick = ()=>{ currentUser=null; document.getElementById('dashboard').style.display='none'; document.getElementById('loginScreen').style.display='flex'; };
-    let nav=document.getElementById('pageNav');
-    nav.innerHTML = pageNames.map((n,i)=>`<button class="page-btn ${i===0?'active':''}" data-page="${i}">${n}</button>`).join('');
-    document.querySelectorAll('.page-btn').forEach(btn=>{ btn.onclick=()=>{ captureFromDOM(); changePage(parseInt(btn.dataset.page)); }; });
-    changePage(0);
-}
-
-// LOGIN
-let isLoginMode=true;
-document.getElementById('submitBtn').onclick = ()=>{
-    let user = document.getElementById('loginUser').value.trim();
-    let pass = document.getElementById('loginPass').value.trim();
-    if(!user||!pass){ document.getElementById('loginError').innerText="Preencha usuário e senha."; return; }
-    if(isLoginMode){
-        if(users[user] && users[user].senpa===pass){ currentUser=user; document.getElementById('loginScreen').style.display='none'; document.getElementById('dashboard').style.display='block'; initDashboard(); }
-        else document.getElementById('loginError').innerText="Usuário ou senha incorretos.";
-    } else {
-        if(users[user]) document.getElementById('loginError').innerText="Usuário já existe.";
-        else { users[user]={ senha:pass, diarios:{} }; localStorage.setItem('netpsi_users',JSON.stringify(users)); currentUser=user; document.getElementById('loginScreen').style.display='none'; document.getElementById('dashboard').style.display='block'; initDashboard(); }
+    // INICIALIZACAO
+    let users = JSON.parse(localStorage.getItem('netpsi_users')) || {};
+    let currentUser = null;
+    let currentDate = new Date().toISOString().slice(0,10);
+    let currentPage = 0;
+    const pageNames = ["EPISODIO", "TERMOMETRO", "PIPOCA", "PIPOQUEIRA", "SAGA", "COADJUVANTES", "RODA", "IKIGAI", "TESTES", "ARQUIVO"];
+    const pageKeys = ['page0','page1','page2','page3','page4','page5','page6','page7','page8','page9'];
+    
+    function changePage(page) {
+        currentPage = page;
+        for(let i=0;i<pageKeys.length;i++) document.getElementById(pageKeys[i]).classList.add('hidden');
+        document.getElementById(pageKeys[page]).classList.remove('hidden');
+        document.querySelectorAll('.page-btn').forEach((btn,idx)=>{ if(idx==page) btn.classList.add('active'); else btn.classList.remove('active'); });
+        if(page===9) { document.getElementById('netflixColorBg').classList.add('active'); renderArquivos(); }
+        else document.getElementById('netflixColorBg').classList.remove('active');
     }
-};
-document.getElementById('switchBtn').onclick = ()=>{ isLoginMode=!isLoginMode; document.getElementById('formTitle').innerText=isLoginMode?"Entrar na sua temporada":"Criar sua temporada"; document.getElementById('submitBtn').innerText=isLoginMode?"Entrar":"Criar conta"; document.getElementById('switchBtn').innerText=isLoginMode?"Criar sua temporada":"Já tenho conta"; document.getElementById('loginError').innerText=""; };
+    
+    function initDashboard() {
+        renderPagina0();
+        renderTestes();
+        renderArquivos();
+        document.getElementById('currentUserDisplay').innerText = currentUser;
+        document.getElementById('saveEntryBtn').onclick = () => alert("Episodio salvo");
+        document.getElementById('historySelect').onchange = (e) => console.log(e.target.value);
+        document.getElementById('logoutBtn').onclick = () => { currentUser = null; document.getElementById('dashboard').style.display = 'none'; document.getElementById('loginScreen').style.display = 'flex'; };
+        let nav = document.getElementById('pageNav');
+        nav.innerHTML = pageNames.map((n,i)=>`<button class="page-btn ${i===0?'active':''}" data-page="${i}">${n}</button>`).join('');
+        document.querySelectorAll('.page-btn').forEach(btn => { btn.onclick = () => { changePage(parseInt(btn.dataset.page)); }; });
+        changePage(0);
+    }
+    
+    // LOGIN
+    let isLoginMode = true;
+    document.getElementById('submitBtn').onclick = () => {
+        let user = document.getElementById('loginUser').value.trim();
+        let pass = document.getElementById('loginPass').value.trim();
+        if(!user||!pass){ document.getElementById('loginError').innerText="Preencha usuario e senha."; return; }
+        if(isLoginMode){
+            if(users[user] && users[user].senha===pass){ currentUser=user; document.getElementById('loginScreen').style.display='none'; document.getElementById('dashboard').style.display='block'; initDashboard(); }
+            else document.getElementById('loginError').innerText="Usuario ou senha incorretos.";
+        } else {
+            if(users[user]) document.getElementById('loginError').innerText="Usuario ja existe.";
+            else { users[user]={ senha:pass, diarios:{} }; localStorage.setItem('netpsi_users',JSON.stringify(users)); currentUser=user; document.getElementById('loginScreen').style.display='none'; document.getElementById('dashboard').style.display='block'; initDashboard(); }
+        }
+    };
+    document.getElementById('switchBtn').onclick = () => { isLoginMode=!isLoginMode; document.getElementById('formTitle').innerText=isLoginMode?"Entrar na sua temporada":"Criar sua temporada"; document.getElementById('submitBtn').innerText=isLoginMode?"Entrar":"Criar conta"; document.getElementById('switchBtn').innerText=isLoginMode?"Criar sua temporada":"Ja tenho conta"; document.getElementById('loginError').innerText=""; };
 </script>
 </body>
 </html>
