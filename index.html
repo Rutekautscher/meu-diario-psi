@@ -2,38 +2,69 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NETPSI - Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>NETPSI - Seu Diário Terapêutico</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #141414; font-family: Arial, sans-serif; }
-        .login-container { min-height: 100vh; display: flex; justify-content: center; align-items: center; flex-direction: column; }
-        .netpsi-logo { font-size: 4rem; font-weight: bold; color: #E50914; text-align: center; margin-bottom: 1rem; }
-        .tagline { color: #ccc; text-align: center; margin-bottom: 0.5rem; }
-        .producer { color: #888; font-size: 0.7rem; text-align: center; margin-bottom: 2rem; }
-        .login-card { background: rgba(0,0,0,0.8); padding: 2rem; border-radius: 8px; width: 90%; max-width: 350px; }
+        body { background-color: #141414; color: #e5e5e5; font-family: 'Helvetica Neue', Arial, sans-serif; }
+        .login-container { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; }
+        .netpsi-logo { font-size: 4rem; font-weight: 900; color: #E50914; text-shadow: 0 0 15px rgba(229,9,20,0.5); text-align: center; }
+        .tagline { font-size: 1rem; color: #ccc; text-align: center; margin: 0.5rem 0; }
+        .producer { font-size: 0.7rem; color: #888; text-align: center; margin-bottom: 2rem; }
+        .login-card { background: rgba(0,0,0,0.8); border-radius: 12px; padding: 2rem; width: 100%; max-width: 400px; }
+        .login-card h2 { margin-bottom: 1rem; font-size: 1.5rem; }
         .input-group { margin-bottom: 1rem; }
-        .input-group input { width: 100%; padding: 0.8rem; background: #333; border: none; border-radius: 4px; color: white; }
-        .btn-red { background: #E50914; color: white; border: none; padding: 0.8rem; border-radius: 4px; width: 100%; cursor: pointer; margin-top: 0.5rem; font-weight: bold; }
+        .input-group input { width: 100%; padding: 0.8rem; background: #333; border: none; border-radius: 8px; color: white; font-size: 1rem; }
+        .btn-red { background: #E50914; color: white; border: none; padding: 0.8rem; font-size: 1rem; font-weight: bold; border-radius: 8px; width: 100%; cursor: pointer; margin-top: 0.5rem; }
         .switch-btn { background: none; border: none; color: #b3b3b3; margin-top: 1rem; cursor: pointer; width: 100%; }
-        .error-msg { color: #E50914; font-size: 0.7rem; margin-top: 0.5rem; text-align: center; }
-        .login-footer { text-align: center; margin-top: 2rem; font-size: 0.7rem; color: #666; font-style: italic; }
+        .error-msg { color: #E50914; font-size: 0.75rem; margin-top: 0.5rem; text-align: center; }
+        .login-footer { text-align: center; margin-top: 2rem; font-size: 0.7rem; color: #b3b3b3; font-style: italic; }
         .dashboard { display: none; padding: 1rem; }
-        .nav-bar { background: #000; padding: 1rem; display: flex; justify-content: space-between; flex-wrap: wrap; }
-        .nav-logo { color: #E50914; font-size: 1.5rem; font-weight: bold; }
-        .btn-logout { background: #E50914; border: none; color: white; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; }
-        .welcome { text-align: center; padding: 2rem; background: #1f1f1f; border-radius: 8px; margin-top: 2rem; }
-        .welcome h2 { color: #E50914; margin-bottom: 1rem; }
+        .nav-bar { background: #000; padding: 1rem; display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center; }
+        .nav-logo { font-size: 1.5rem; font-weight: bold; color: #E50914; }
+        .page-nav { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+        .page-btn { background: #333; border: none; color: white; padding: 0.3rem 0.8rem; border-radius: 20px; cursor: pointer; font-size: 0.7rem; }
+        .page-btn.active { background: #E50914; }
+        .user-info { display: flex; align-items: center; gap: 0.5rem; }
+        .avatar { width: 32px; height: 32px; background: black; border: 2px solid #E50914; display: flex; align-items: center; justify-content: center; color: #E50914; font-weight: bold; }
+        .btn-logout { background: #E50914; border: none; color: white; padding: 0.3rem 0.8rem; border-radius: 20px; cursor: pointer; }
+        .save-bar { background: #1f1f1f; padding: 0.8rem; display: flex; justify-content: space-between; flex-wrap: wrap; margin-bottom: 1rem; }
+        .btn-save { background: #E50914; border: none; color: white; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; }
+        .history-select { background: #333; color: white; padding: 0.4rem; border-radius: 20px; border: none; }
+        .page-container { max-width: 1200px; margin: 0 auto; }
+        .section { background: #1f1f1f; border-radius: 12px; padding: 1rem; margin-bottom: 1rem; border-left: 4px solid #E50914; }
+        .section h3 { color: #E50914; margin-bottom: 0.5rem; font-size: 1rem; }
+        .hidden { display: none; }
+        .two-columns { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+        @media (min-width: 768px) { .two-columns { grid-template-columns: 1fr 1fr; } }
+        input, textarea { background: #2a2a2a; border: none; padding: 0.5rem; color: white; border-radius: 8px; width: 100%; margin-bottom: 0.5rem; }
+        .checklist-vertical { display: flex; flex-direction: column; gap: 0.3rem; }
+        .checklist-vertical label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; }
+        .estrela-options { display: flex; gap: 1rem; margin: 0.5rem 0; }
+        .estrela-option { background: #2a2a2a; padding: 0.3rem 1rem; border-radius: 20px; cursor: pointer; font-size: 0.8rem; }
+        .estrela-option.selected { background: #E50914; }
+        .tv-smart { background: #2a2a2a; border-radius: 20px; padding: 1rem; text-align: center; cursor: pointer; border: 1px solid #E50914; margin-bottom: 0.5rem; }
+        .tv-screen { background: #0a0a0a; border-radius: 10px; padding: 0.8rem; margin-bottom: 0.5rem; }
+        .emo-acordeon { margin-bottom: 0.5rem; }
+        .emo-header { background: #2a2a2a; padding: 0.5rem; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; }
+        .emo-header h4 { color: #E50914; font-size: 0.9rem; }
+        .emo-content { display: none; padding: 0.5rem; background: #252525; border-radius: 8px; margin-top: 0.3rem; }
+        .emo-content.open { display: block; }
+        .text-small { font-size: 0.7rem; color: #aaa; }
+        .blocked-message { text-align: center; padding: 2rem; background: #1f1f1f; border-radius: 16px; color: #E50914; }
+        .info-card { background: #2a2a2a; padding: 0.8rem; border-radius: 12px; margin-bottom: 0.8rem; }
+        .vhs-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
+        .vhs-card { background: linear-gradient(145deg, #1a1a1a, #0f0f0f); border-radius: 12px; padding: 0.8rem; cursor: pointer; border: 1px solid #E50914; text-align: center; }
+        .vhs-date { color: #E50914; font-weight: bold; }
     </style>
 </head>
 <body>
-
 <div id="loginScreen" class="login-container">
     <div class="netpsi-logo">NETPSI</div>
     <div class="tagline">Seu diário terapêutico pessoal</div>
     <div class="producer">Uma produção de Rute Kautscher</div>
     <div class="login-card">
-        <h2 id="formTitle" style="color:white; margin-bottom:1rem;">Entrar na sua temporada</h2>
+        <h2 id="formTitle">Entrar na sua temporada</h2>
         <div class="input-group"><input type="text" id="loginUser" placeholder="Seu usuário"></div>
         <div class="input-group"><input type="password" id="loginPass" placeholder="Senha"></div>
         <button class="btn-red" id="submitBtn">Entrar</button>
@@ -41,18 +72,6 @@
         <div id="loginError" class="error-msg"></div>
     </div>
     <div class="login-footer">Dados sigilosos, aqui ninguém assiste sua série, suas emoções são apenas suas.</div>
-</div>
-
-<div id="dashboard" class="dashboard">
-    <div class="nav-bar">
-        <div class="nav-logo">NETPSI</div>
-        <button class="btn-logout" id="logoutBtn">Sair</button>
-    </div>
-    <div class="welcome">
-        <h2>Bem-vinda ao NETPSI</h2>
-        <p>Seu diário terapêutico está pronto para uso.</p>
-        <p style="margin-top:1rem; color:#E50914;">As funcionalidades completas estão sendo finalizadas.</p>
-    </div>
 </div>
 
 <script>
@@ -72,6 +91,8 @@
                 currentUser = user;
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
+                document.getElementById('currentUserDisplay').innerText = user;
+                document.getElementById('avatarBtn').innerText = user.charAt(0).toUpperCase();
             } else {
                 document.getElementById('loginError').innerText = "Usuário ou senha incorretos.";
             }
@@ -79,11 +100,13 @@
             if(users[user]) {
                 document.getElementById('loginError').innerText = "Usuário já existe.";
             } else {
-                users[user] = { senha: pass };
+                users[user] = { senha: pass, diarios: {} };
                 localStorage.setItem('netpsi_users', JSON.stringify(users));
                 currentUser = user;
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
+                document.getElementById('currentUserDisplay').innerText = user;
+                document.getElementById('avatarBtn').innerText = user.charAt(0).toUpperCase();
             }
         }
     };
@@ -101,6 +124,73 @@
         document.getElementById('dashboard').style.display = 'none';
         document.getElementById('loginScreen').style.display = 'flex';
     };
+</script>
+
+<div id="dashboard" class="dashboard">
+    <div class="nav-bar">
+        <div class="nav-logo">NETPSI</div>
+        <div class="user-info">
+            <div class="avatar" id="avatarBtn">N</div>
+            <span id="currentUserDisplay"></span>
+            <button class="btn-logout" id="logoutBtn">Sair</button>
+        </div>
+    </div>
+    <div class="save-bar">
+        <button class="btn-save" id="saveEntryBtn">Salvar episódio</button>
+        <select id="historySelect" class="history-select"><option value="hoje">Hoje</option></select>
+    </div>
+    <div class="page-container">
+        <div class="section">
+            <h3>EXERCÍCIO TERAPÊUTICO</h3>
+            <div class="tv-smart" id="exercicioBtn">
+                <div class="tv-screen">CLIQUE AQUI<br>PARA SEU EXERCÍCIO</div>
+            </div>
+            <textarea id="reflexaoTexto" rows="3" placeholder="Escreva sua reflexão..."></textarea>
+        </div>
+        <div class="section">
+            <div class="tv-smart" id="tvSmartBtn">
+                <div class="tv-screen">TV<br>COMO FOI O EPISÓDIO DE HOJE?</div>
+            </div>
+        </div>
+        <div class="section">
+            <h3>Como está sua estrela hoje?</h3>
+            <div class="estrela-options">
+                <div class="estrela-option" data-estrela="brilhando">Brilhando</div>
+                <div class="estrela-option" data-estrela="apagada">Apagada</div>
+            </div>
+            <textarea id="estrelaRoteiro" placeholder="Descreva o roteiro..."></textarea>
+        </div>
+        <div class="two-columns">
+            <div class="section"><h3>Checklist Saúde Física</h3><div class="checklist-vertical"><label><input type="checkbox"> Tomei banho</label><label><input type="checkbox"> Escovei dentes</label><label><input type="checkbox"> Bebi água</label><label><input type="checkbox"> Comi bem</label><label><input type="checkbox"> Tomei sol</label><label><input type="checkbox"> Me movimentei</label></div></div>
+            <div class="section"><h3>Checklist Autocuidado</h3><div class="checklist-vertical"><label><input type="checkbox"> Tomei medicamentos</label><label><input type="checkbox"> Fui à terapia</label><label><input type="checkbox"> Pratiquei amor-próprio</label><label><input type="checkbox"> Estabeleci limites</label><label><input type="checkbox"> Pedi ajuda</label><label><input type="checkbox"> Detox de tela</label><label><input type="checkbox"> Skincare</label><label><input type="checkbox"> Arrumar a cama</label><label><input type="checkbox"> Hobby</label></div></div>
+        </div>
+        <div class="two-columns">
+            <div class="section"><h3>Elogie-se</h3><textarea placeholder="Elogio 1"></textarea><textarea placeholder="Elogio 2"></textarea><textarea placeholder="Elogio 3"></textarea></div>
+            <div class="section"><h3>Gratidão</h3><textarea placeholder="Gratidão 1"></textarea><textarea placeholder="Gratidão 2"></textarea><textarea placeholder="Gratidão 3"></textarea></div>
+        </div>
+        <div class="section"><h3>Sofá da Preguiça</h3><textarea placeholder="O que procrastinei hoje?"></textarea></div>
+        <div class="section"><h3>HD Sigiloso</h3><textarea placeholder="Uma carta para nunca ser enviada"></textarea></div>
+        <div class="section"><h3>Bem-vinda ao NETPSI</h3><p>Seu diário terapêutico está pronto. As demais páginas (CineMoções, Pipoca, Ikigai, Testes, Arquivos) serão adicionadas em breve.</p></div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('exercicioBtn')?.addEventListener('click', () => {
+        alert("Exercício do dia: Escreva sobre um momento que você se sentiu orgulhosa.");
+    });
+    document.getElementById('tvSmartBtn')?.addEventListener('click', () => {
+        let texto = prompt("Como foi o seu dia?", document.getElementById('modalDiarioText')?.value || "");
+        if(texto !== null) alert("Resposta salva: " + texto);
+    });
+    document.querySelectorAll('.estrela-option').forEach(opt => {
+        opt.onclick = () => {
+            document.querySelectorAll('.estrela-option').forEach(o => o.classList.remove('selected'));
+            opt.classList.add('selected');
+        };
+    });
+    document.getElementById('saveEntryBtn')?.addEventListener('click', () => {
+        alert("Episódio salvo com sucesso!");
+    });
 </script>
 </body>
 </html>
