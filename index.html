@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>NETPSI - Diário Terapêutico</title>
+    <title>NETPSI - Seu Diário Terapêutico</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #141414; color: #e5e5e5; font-family: 'Helvetica Neue', Arial, sans-serif; }
+        body { background-color: #141414; color: #e5e5e5; font-family: 'Helvetica Neue', Arial, sans-serif; }
+        
+        /* Login */
         .login-container { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; }
         .netpsi-logo { font-size: 4rem; font-weight: 900; color: #E50914; text-shadow: 0 0 15px rgba(229,9,20,0.5); text-align: center; }
         .tagline { font-size: 1rem; color: #ccc; text-align: center; margin: 0.5rem 0; }
@@ -24,13 +26,17 @@
         .switch-btn:hover { color: #E50914; }
         .error-msg { color: #E50914; font-size: 0.75rem; margin-top: 0.5rem; text-align: center; }
         .login-footer { text-align: center; margin-top: 2rem; font-size: 0.7rem; color: #b3b3b3; font-style: italic; line-height: 1.5; }
+        
+        /* Dashboard */
         .dashboard { display: none; padding-bottom: 2rem; }
         .nav-bar { background: linear-gradient(to bottom, #000000cc, #141414); padding: 0.8rem 1rem; display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center; gap: 0.5rem; position: sticky; top: 0; z-index: 100; }
         .nav-logo { font-size: 1.5rem; font-weight: bold; color: #E50914; letter-spacing: -1px; }
         .page-nav { display: flex; flex-wrap: wrap; gap: 0.3rem; }
-        .page-btn { background: transparent; border: none; color: #aaa; padding: 0.3rem 0.7rem; cursor: pointer; font-size: 0.7rem; border-radius: 20px; transition: all 0.2s; }
+        .page-btn { background: transparent; border: none; color: #aaa; padding: 0.3rem 0.5rem; cursor: pointer; font-size: 0.65rem; border-radius: 20px; transition: all 0.2s; white-space: nowrap; }
         .page-btn.active { background: #E50914; color: white; }
         .page-btn:hover:not(.active) { background: rgba(229,9,20,0.3); color: white; }
+        @media (min-width: 768px) { .page-btn { font-size: 0.75rem; padding: 0.4rem 0.8rem; } }
+        
         .user-info { display: flex; align-items: center; gap: 0.8rem; }
         .avatar { width: 36px; height: 36px; background: #000; border: 2px solid #E50914; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: bold; color: #E50914; }
         .btn-logout { background: #E50914; border: none; color: white; padding: 0.3rem 0.8rem; border-radius: 20px; cursor: pointer; font-size: 0.75rem; }
@@ -40,23 +46,28 @@
         .page-container { max-width: 1200px; margin: 1.5rem auto; padding: 0 1rem; }
         .section { background: #1f1f1f; border-radius: 12px; padding: 1rem; margin-bottom: 1rem; border-left: 4px solid #E50914; }
         .section h3 { color: #E50914; margin-bottom: 0.5rem; font-size: 1rem; font-weight: 600; }
+        .section h4 { color: #E50914; margin: 0.5rem 0 0.3rem; font-size: 0.85rem; }
         .hidden { display: none; }
         .two-columns { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1rem; }
-        @media (min-width: 768px) { .two-columns { grid-template-columns: 1fr 1fr; } .page-btn { font-size: 0.8rem; padding: 0.4rem 1rem; } }
+        @media (min-width: 768px) { .two-columns { grid-template-columns: 1fr 1fr; } }
+        
         input, textarea { background: #2a2a2a; border: none; padding: 0.5rem; color: white; border-radius: 8px; width: 100%; font-size: 0.85rem; font-family: inherit; margin-bottom: 0.5rem; }
         input:focus, textarea:focus { outline: none; box-shadow: 0 0 0 2px #E50914; }
         textarea { resize: vertical; min-height: 60px; }
+        
         .checklist-vertical { display: flex; flex-direction: column; gap: 0.3rem; }
         .checklist-vertical label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; cursor: pointer; }
         .checklist-vertical input { width: auto; margin-bottom: 0; }
+        
         .estrela-options { display: flex; gap: 1rem; margin: 0.5rem 0; flex-wrap: wrap; }
         .estrela-option { background: #2a2a2a; padding: 0.3rem 1rem; border-radius: 30px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s; }
         .estrela-option.selected { background: #E50914; color: white; }
+        
         .tv-smart { background: #2a2a2a; border-radius: 20px; padding: 1rem; text-align: center; cursor: pointer; transition: all 0.2s; border: 1px solid #E50914; margin-bottom: 0.5rem; }
         .tv-smart:hover { transform: scale(1.02); box-shadow: 0 0 15px rgba(229,9,20,0.3); }
         .tv-screen { background: #0a0a0a; border-radius: 10px; padding: 0.8rem; margin-bottom: 0.5rem; }
-        .tv-screen span { font-size: 0.9rem; font-weight: 500; color: #E50914; }
         .tv-stand { width: 50px; height: 6px; background: #444; margin: 0 auto; border-radius: 4px; }
+        
         .emo-acordeon { margin-bottom: 0.5rem; }
         .emo-header { background: #2a2a2a; padding: 0.5rem; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
         .emo-header h4 { margin: 0; color: #E50914; font-size: 0.85rem; }
@@ -64,59 +75,58 @@
         .emo-content.open { display: block; }
         .emo-question { margin-bottom: 0.5rem; }
         .emo-question label { font-size: 0.7rem; color: #aaa; display: block; margin-bottom: 0.2rem; }
+        
         .text-small { font-size: 0.7rem; color: #aaa; }
         .blocked-message { text-align: center; padding: 2rem; background: #1f1f1f; border-radius: 16px; color: #E50914; }
         .info-card { background: #2a2a2a; padding: 0.8rem; border-radius: 12px; margin-bottom: 0.8rem; }
         .info-card h4 { color: #E50914; margin-bottom: 0.3rem; font-size: 0.85rem; }
+        
         .vhs-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
         .vhs-card { background: linear-gradient(145deg, #1a1a1a, #0f0f0f); border-radius: 12px; padding: 0.8rem; cursor: pointer; transition: all 0.2s; border: 1px solid #E50914; text-align: center; position: relative; overflow: hidden; }
         .vhs-card::before { content: "SIDE A LOW QUALITY NOISE TAPE"; position: absolute; bottom: 4px; left: 6px; font-size: 0.5rem; color: #666; opacity: 0.6; white-space: nowrap; }
         .vhs-card:hover { transform: scale(1.02); box-shadow: 0 0 15px rgba(229,9,20,0.3); }
         .vhs-date { font-size: 0.85rem; font-weight: 600; color: #E50914; margin-bottom: 0.3rem; }
+        
         .grid-emocoes { display: grid; grid-template-columns: 1fr; gap: 0.5rem; }
         @media (min-width: 640px) { .grid-emocoes { grid-template-columns: repeat(2, 1fr); } }
-        .ikigai-container { display: flex; flex-direction: column; align-items: center; gap: 1rem; margin: 1rem 0; }
-        .ikigai-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; }
-        .ikigai-sphere { background: #1f1f1f; border: 2px solid #E50914; border-radius: 20px; padding: 0.8rem; width: 220px; text-align: center; }
-        .ikigai-title { font-size: 0.75rem; font-weight: 500; margin-bottom: 0.5rem; color: #ccc; }
-        .circle-btn { width: 30px; height: 30px; border-radius: 50%; background: #2a2a2a; border: 1px solid #E50914; color: #E50914; font-size: 0.8rem; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; margin: 0.2rem; }
-        .circle-btn:hover { background: #E50914; color: white; transform: scale(1.05); }
-        .ikigai-subtitle { font-size: 0.7rem; color: #E50914; margin-top: 0.3rem; }
-        .quarteto-grid { display: grid; grid-template-columns: 1fr; gap: 0.8rem; margin: 1rem 0; }
-        @media (min-width: 768px) { .quarteto-grid { grid-template-columns: repeat(2, 1fr); } }
-        .quarteto-card { background: #2a2a2a; padding: 0.8rem; border-radius: 12px; border-left: 3px solid #E50914; }
-        .quarteto-card h4 { color: #E50914; font-size: 0.85rem; margin-bottom: 0.2rem; }
-        .quarteto-card p { font-size: 0.7rem; color: #ccc; }
-        .camera-container { display: flex; justify-content: center; margin: 1.5rem 0; }
-        .camera-box { background: #1f1f1f; border: 3px solid #E50914; border-radius: 16px; padding: 1rem; width: 100%; max-width: 400px; text-align: center; position: relative; }
-        .camera-box::before { content: ""; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); width: 50px; height: 25px; background: #E50914; border-radius: 8px 8px 0 0; }
-        .camera-lens { background: #0a0a0a; width: 50px; height: 50px; border-radius: 50%; margin: 0 auto 0.5rem; display: flex; align-items: center; justify-content: center; border: 2px solid #E50914; }
-        .roda-grid { display: grid; grid-template-columns: 1fr; gap: 0.8rem; margin: 1rem 0; }
-        @media (min-width: 768px) { .roda-grid { grid-template-columns: repeat(2, 1fr); } }
-        .roda-item { background: #2a2a2a; padding: 0.8rem; border-radius: 12px; }
-        .roda-item h4 { color: #E50914; font-size: 0.85rem; margin-bottom: 0.2rem; }
-        .roda-item p { font-size: 0.65rem; color: #aaa; margin-bottom: 0.3rem; }
-        .esferas-grid { display: grid; grid-template-columns: 1fr; gap: 0.8rem; }
-        @media (min-width: 768px) { .esferas-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); } }
-        .esfera-card { background: #1f1f1f; border-radius: 12px; padding: 0.8rem; border-left: 4px solid #E50914; }
-        .esfera-card h4 { color: #E50914; font-size: 0.85rem; margin-bottom: 0.3rem; }
-        .esfera-desc { font-size: 0.7rem; color: #aaa; margin-bottom: 0.5rem; cursor: pointer; }
-        .desc-full { display: none; font-size: 0.65rem; color: #ccc; margin-bottom: 0.5rem; padding: 0.4rem; background: #2a2a2a; border-radius: 8px; }
-        .desc-full.open { display: block; }
-        .hormonios-grid { display: grid; grid-template-columns: 1fr; gap: 0.8rem; margin-top: 0.5rem; }
-        @media (min-width: 768px) { .hormonios-grid { grid-template-columns: repeat(2, 1fr); } }
-        .hormonio-card { background: #2a2a2a; padding: 0.8rem; border-radius: 12px; }
-        .hormonio-card h4 { color: #E50914; font-size: 0.85rem; margin-bottom: 0.3rem; }
-        .hormonio-desc { font-size: 0.7rem; margin: 0.3rem 0; color: #ccc; }
-        .hormonio-check { display: block; margin: 0.2rem 0; font-size: 0.7rem; }
-        .hormonio-check input { width: auto; margin-right: 0.3rem; }
-        input[type="range"] { width: 100%; margin: 0.3rem 0; background: #333; height: 3px; -webkit-appearance: none; }
-        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: #E50914; cursor: pointer; }
-        .rating-value { font-size: 0.65rem; color: #E50914; margin-left: 0.3rem; }
+        
+        .progress-bar-bg { width: 100%; height: 8px; background: #333; border-radius: 4px; overflow: hidden; margin: 0.3rem 0; }
+        .progress-fill { height: 100%; width: 0%; border-radius: 4px; transition: width 0.3s; }
+        .progress-fill.critico { background: #8B0000; }
+        .progress-fill.atencao { background: #FF8C00; }
+        .progress-fill.regular { background: #FFD700; }
+        .progress-fill.bom { background: #228B22; }
+        
+        .pergunta-card { background: #2a2a2a; border-radius: 10px; margin-bottom: 0.5rem; overflow: hidden; }
+        .pergunta-header { background: #333; padding: 0.6rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; }
+        .pergunta-header:hover { background: #3a3a3a; }
+        .pergunta-header h4 { margin: 0; font-size: 0.8rem; color: #E50914; }
+        .pergunta-content { display: none; padding: 0.8rem; background: #252525; }
+        .pergunta-content.open { display: block; }
+        .sugestoes-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.5rem 0; }
+        .chip { background: #3a3a3a; padding: 0.3rem 0.6rem; border-radius: 20px; font-size: 0.7rem; cursor: pointer; transition: all 0.2s; }
+        .chip:hover { background: #E50914; color: white; }
+        
+        .ikigai-section { margin-bottom: 1.5rem; }
+        .ikigai-explicacao { font-size: 0.8rem; color: #ccc; margin-bottom: 0.5rem; font-style: italic; }
+        .ikigai-perguntas { display: flex; flex-direction: column; gap: 0.5rem; }
+        .resultado-ikigai { background: #2a2a2a; padding: 1rem; border-radius: 12px; margin-top: 1rem; border-left: 4px solid #E50914; }
+        
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; padding: 1rem; }
         .modal-content { background: #1f1f1f; border-radius: 16px; width: 100%; max-width: 500px; max-height: 85vh; overflow-y: auto; padding: 1rem; border-left: 4px solid #E50914; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; color: #E50914; }
         .close-modal { cursor: pointer; font-size: 1.3rem; }
+        
+        input[type="range"] { width: 100%; margin: 0.3rem 0; background: #333; height: 4px; -webkit-appearance: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #E50914; cursor: pointer; }
+        .rating-value { font-size: 0.7rem; color: #E50914; margin-left: 0.3rem; }
+        
+        .ikigai-circles { display: flex; flex-direction: column; align-items: center; gap: 1rem; margin: 1rem 0; }
+        .ikigai-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; }
+        .ikigai-sphere { background: #1f1f1f; border: 2px solid #E50914; border-radius: 20px; padding: 0.8rem; width: 220px; text-align: center; }
+        .ikigai-title { font-size: 0.75rem; font-weight: 500; margin-bottom: 0.5rem; color: #ccc; }
+        .circle-btn { width: 30px; height: 30px; border-radius: 50%; background: #2a2a2a; border: 1px solid #E50914; color: #E50914; font-size: 0.8rem; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; margin: 0.2rem; }
+        .circle-btn:hover { background: #E50914; color: white; }
     </style>
 </head>
 <body>
@@ -154,24 +164,31 @@
 </div>
 
 <script>
+    // DADOS GLOBAIS
     let users = JSON.parse(localStorage.getItem('netpsi_users')) || {};
     let currentUser = null;
     let currentDate = new Date().toISOString().slice(0,10);
     let currentPage = 0;
-    const pageNames = ["EPISÓDIO", "CINEMOÇÕES", "PIPOCA", "PIPOQUEIRA", "NEURO FLIX", "COADJUVANTES", "DIAGNOSTIFLIX", "IKIGAI FLIX", "ARQUIVOS"];
+    const pageNames = ["EPISODIO", "CINEMOCOES", "CRISEPLAY", "REPLAY", "NEUROFLIX", "COADJUVANTES", "DIAGNOSTIFLIX", "IKIGAIFLIX", "ARQUIVOX"];
     const pageKeys = ['page0','page1','page2','page3','page4','page5','page6','page7','page8'];
     
-    const emocoesList = ["Alegria","Tédio","Medo","Raiva","Tristeza","Nojo","Frustração","Apatia","Vergonha","Ressentimento","Inveja","Carência","Esperança","Alívio","Amor","Paixão","Impulso","Orgulho","Solidão","Paciência"];
+    const emocoesList = ["Alegria","Tedio","Medo","Raiva","Tristeza","Nojo","Frustracao","Apatia","Vergonha","Ressentimento","Inveja","Carencia","Esperanca","Alivio","Amor","Paixao","Impulso","Orgulho","Solidão","Paciencia"];
     
     function getEmptyDiary() {
         let emocoes = {};
         emocoesList.forEach(e => { emocoes[e] = { intensidade: 0, gatilho: "", pensamentos: "", outra_forma: "", descricao: "" }; });
         return {
-            estrela: "", estrela_roteiro: "", diario_texto: "",
+            estrela: "", estrela_roteiro: "", diario_texto: "", reflexao: "",
             checklist_fisica: { banho:false, dentes:false, agua:false, comida:false, sol:false, movimento:false },
             checklist_autocuidado: { medicamentos:false, terapia:false, amorProprio:false, limites:false, ajuda:false, detox:false, skincare:false, arrumarCama:false, hobby:false },
-            elogios: ["","",""], gratidao: ["","",""], sofa_preguica: "", hd_sigiloso: "", emocoes: emocoes,
-            ikigai_respostas: {}, ikigai_data: null, roda_vida: null, roda_vida_data: null, coadjuvantes: {}, saga: {}, pipoca: {}
+            criseplay: {},
+            replay: {},
+            elogios: ["","",""], gratidao: ["","",""], sofa_preguica: "", hd_sigiloso: "",
+            emocoes: emocoes,
+            ikigai_respostas: {}, ikigai_data: null,
+            roda_vida: {}, roda_vida_data: null,
+            coadjuvantes: {},
+            saga: {}
         };
     }
     
@@ -187,41 +204,36 @@
         if(page===3) renderPagina3();
         if(page===4) renderPagina4();
         if(page===5) renderPagina5();
-        if(page===6) renderRodaVida();
-        if(page===7) renderIkigai();
+        if(page===6) renderDiagnostiFlix();
+        if(page===7) renderIkigaiFlix();
         if(page===8) renderArquivos();
     }
     
+    // PAGINA 0 - EPISODIO
     function renderPagina0() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
         document.getElementById('page0').innerHTML = `
-            <div class="section"><h3>EXERCÍCIO TERAPÊUTICO</h3><div class="tv-smart" id="exercicioBtn"><div class="tv-screen">CLIQUE AQUI<br>PARA SEU EXERCÍCIO</div></div><textarea id="reflexaoTexto" rows="3" placeholder="Escreva sua reflexão...">${data.reflexao||""}</textarea></div>
-            <div class="section"><div class="tv-smart" id="tvSmartBtn"><div class="tv-screen">TV<br>COMO FOI O EPISÓDIO DE HOJE?</div><div class="tv-stand"></div></div></div>
-            <div class="section"><h3>Como está sua estrela hoje?</h3><div class="estrela-options"><div class="estrela-option ${data.estrela==='brilhando'?'selected':''}" data-estrela="brilhando">Brilhando</div><div class="estrela-option ${data.estrela==='apagada'?'selected':''}" data-estrela="apagada">Apagada</div></div><textarea id="estrelaRoteiro" placeholder="Descreva o roteiro...">${data.estrela_roteiro}</textarea></div>
-            <div class="two-columns"><div class="section"><h3>Checklist Saúde Física</h3><div class="checklist-vertical"><label><input type="checkbox" id="fis_banho" ${data.checklist_fisica.banho?'checked':''}> Tomei banho</label><label><input type="checkbox" id="fis_dentes" ${data.checklist_fisica.dentes?'checked':''}> Escovei dentes</label><label><input type="checkbox" id="fis_agua" ${data.checklist_fisica.agua?'checked':''}> Bebi água</label><label><input type="checkbox" id="fis_comida" ${data.checklist_fisica.comida?'checked':''}> Comi bem</label><label><input type="checkbox" id="fis_sol" ${data.checklist_fisica.sol?'checked':''}> Tomei sol</label><label><input type="checkbox" id="fis_movimento" ${data.checklist_fisica.movimento?'checked':''}> Me movimentei</label></div></div>
-            <div class="section"><h3>Checklist Autocuidado</h3><div class="checklist-vertical"><label><input type="checkbox" id="auto_med" ${data.checklist_autocuidado.medicamentos?'checked':''}> Tomei medicamentos</label><label><input type="checkbox" id="auto_ter" ${data.checklist_autocuidado.terapia?'checked':''}> Fui à terapia</label><label><input type="checkbox" id="auto_amor" ${data.checklist_autocuidado.amorProprio?'checked':''}> Pratiquei amor-próprio</label><label><input type="checkbox" id="auto_lim" ${data.checklist_autocuidado.limites?'checked':''}> Estabeleci limites</label><label><input type="checkbox" id="auto_aju" ${data.checklist_autocuidado.ajuda?'checked':''}> Pedi ajuda</label><label><input type="checkbox" id="auto_detox" ${data.checklist_autocuidado.detox?'checked':''}> Detox de tela</label><label><input type="checkbox" id="auto_skincare" ${data.checklist_autocuidado.skincare?'checked':''}> Skincare</label><label><input type="checkbox" id="auto_cama" ${data.checklist_autocuidado.arrumarCama?'checked':''}> Arrumar a cama</label><label><input type="checkbox" id="auto_hobby" ${data.checklist_autocuidado.hobby?'checked':''}> Hobby</label></div></div></div>
-            <div class="two-columns"><div class="section"><h3>Elogie-se, você é uma estrela</h3><textarea id="elogio1" placeholder="Elogio 1">${data.elogios[0]}</textarea><textarea id="elogio2" placeholder="Elogio 2">${data.elogios[1]}</textarea><textarea id="elogio3" placeholder="Elogio 3">${data.elogios[2]}</textarea></div>
-            <div class="section"><h3>Gratidão pelo episódio de hoje</h3><textarea id="gratidao1" placeholder="Gratidão 1">${data.gratidao[0]}</textarea><textarea id="gratidao2" placeholder="Gratidão 2">${data.gratidao[1]}</textarea><textarea id="gratidao3" placeholder="Gratidão 3">${data.gratidao[2]}</textarea></div></div>
-            <div class="section"><h3>Sofá da Preguiça</h3><textarea id="sofaPreguica" placeholder="O que procrastinei hoje?">${data.sofa_preguica||""}</textarea></div>
+            <div class="section"><h3>EXERCICIO TERAPEUTICO</h3><div class="tv-smart" id="exercicioBtn"><div class="tv-screen">CLIQUE AQUI<br>PARA SEU EXERCICIO</div></div><textarea id="reflexaoTexto" rows="3" placeholder="Escreva sua reflexao...">${data.reflexao||""}</textarea></div>
+            <div class="section"><div class="tv-smart" id="tvSmartBtn"><div class="tv-screen">TV<br>COMO FOI O EPISODIO DE HOJE?</div><div class="tv-stand"></div></div></div>
+            <div class="section"><h3>Como esta sua estrela hoje?</h3><div class="estrela-options"><div class="estrela-option ${data.estrela==='brilhando'?'selected':''}" data-estrela="brilhando">Brilhando</div><div class="estrela-option ${data.estrela==='apagada'?'selected':''}" data-estrela="apagada">Apagada</div></div><textarea id="estrelaRoteiro" placeholder="Descreva o roteiro...">${data.estrela_roteiro}</textarea></div>
+            <div class="two-columns"><div class="section"><h3>Checklist Saude Fisica</h3><div class="checklist-vertical"><label><input type="checkbox" id="fis_banho" ${data.checklist_fisica.banho?'checked':''}> Tomei banho</label><label><input type="checkbox" id="fis_dentes" ${data.checklist_fisica.dentes?'checked':''}> Escovei dentes</label><label><input type="checkbox" id="fis_agua" ${data.checklist_fisica.agua?'checked':''}> Bebi agua</label><label><input type="checkbox" id="fis_comida" ${data.checklist_fisica.comida?'checked':''}> Comi bem</label><label><input type="checkbox" id="fis_sol" ${data.checklist_fisica.sol?'checked':''}> Tomei sol</label><label><input type="checkbox" id="fis_movimento" ${data.checklist_fisica.movimento?'checked':''}> Me movimentei</label></div></div>
+            <div class="section"><h3>Checklist Autocuidado</h3><div class="checklist-vertical"><label><input type="checkbox" id="auto_med" ${data.checklist_autocuidado.medicamentos?'checked':''}> Tomei medicamentos</label><label><input type="checkbox" id="auto_ter" ${data.checklist_autocuidado.terapia?'checked':''}> Fui a terapia</label><label><input type="checkbox" id="auto_amor" ${data.checklist_autocuidado.amorProprio?'checked':''}> Pratiquei amor-proprio</label><label><input type="checkbox" id="auto_lim" ${data.checklist_autocuidado.limites?'checked':''}> Estabeleci limites</label><label><input type="checkbox" id="auto_aju" ${data.checklist_autocuidado.ajuda?'checked':''}> Pedi ajuda</label><label><input type="checkbox" id="auto_detox" ${data.checklist_autocuidado.detox?'checked':''}> Detox de tela</label><label><input type="checkbox" id="auto_skincare" ${data.checklist_autocuidado.skincare?'checked':''}> Skincare</label><label><input type="checkbox" id="auto_cama" ${data.checklist_autocuidado.arrumarCama?'checked':''}> Arrumar a cama</label><label><input type="checkbox" id="auto_hobby" ${data.checklist_autocuidado.hobby?'checked':''}> Hobby</label></div></div></div>
+            <div class="two-columns"><div class="section"><h3>Elogie-se, voce e uma estrela</h3><textarea id="elogio1" placeholder="Elogio 1">${data.elogios[0]}</textarea><textarea id="elogio2" placeholder="Elogio 2">${data.elogios[1]}</textarea><textarea id="elogio3" placeholder="Elogio 3">${data.elogios[2]}</textarea></div>
+            <div class="section"><h3>Gratidao pelo episodio de hoje</h3><textarea id="gratidao1" placeholder="Gratidao 1">${data.gratidao[0]}</textarea><textarea id="gratidao2" placeholder="Gratidao 2">${data.gratidao[1]}</textarea><textarea id="gratidao3" placeholder="Gratidao 3">${data.gratidao[2]}</textarea></div></div>
+            <div class="section"><h3>Sofa da Preguica</h3><textarea id="sofaPreguica" placeholder="O que procrastinei hoje?">${data.sofa_preguica||""}</textarea></div>
             <div class="section"><h3>HD Sigiloso</h3><textarea id="hdSigiloso" placeholder="Uma carta para nunca ser enviada">${data.hd_sigiloso||""}</textarea></div>
         `;
         document.getElementById('exercicioBtn')?.addEventListener('click', () => {
-            const exs = ["Escreva sobre um momento que você se sentiu orgulhosa", "Descreva uma situação de ansiedade e como lidou", "Escreva uma carta de perdão para si mesma"];
+            const exs = ["Escreva sobre um momento que voce se sentiu orgulhosa", "Descreva uma situacao de ansiedade e como lidou", "Escreva uma carta de perdao para si mesma"];
             alert(exs[Math.floor(Math.random() * exs.length)]);
         });
         document.getElementById('tvSmartBtn')?.addEventListener('click', () => openDiarioModal());
         document.querySelectorAll('.estrela-option').forEach(opt => {
-            opt.onclick = () => {
-                document.querySelectorAll('.estrela-option').forEach(o => o.classList.remove('selected'));
-                opt.classList.add('selected');
-            };
+            opt.onclick = () => { document.querySelectorAll('.estrela-option').forEach(o => o.classList.remove('selected')); opt.classList.add('selected'); };
         });
         document.querySelectorAll('#page0 input, #page0 textarea').forEach(el => {
-            if(el.id && el.tagName === 'INPUT' && el.type === 'checkbox') {
-                el.addEventListener('change', () => capturePage0());
-            } else if(el.id && (el.tagName === 'TEXTAREA' || (el.tagName === 'INPUT' && el.type !== 'checkbox'))) {
-                el.addEventListener('input', () => capturePage0());
-            }
+            if(el.id && el.tagName === 'INPUT' && el.type === 'checkbox') el.addEventListener('change', () => capturePage0());
+            else if(el.id && (el.tagName === 'TEXTAREA' || (el.tagName === 'INPUT' && el.type !== 'checkbox'))) el.addEventListener('input', () => capturePage0());
         });
     }
     
@@ -237,22 +249,15 @@
         data.sofa_preguica = document.getElementById('sofaPreguica')?.value || "";
         data.hd_sigiloso = document.getElementById('hdSigiloso')?.value || "";
         data.checklist_fisica = {
-            banho: !!document.getElementById('fis_banho')?.checked,
-            dentes: !!document.getElementById('fis_dentes')?.checked,
-            agua: !!document.getElementById('fis_agua')?.checked,
-            comida: !!document.getElementById('fis_comida')?.checked,
-            sol: !!document.getElementById('fis_sol')?.checked,
-            movimento: !!document.getElementById('fis_movimento')?.checked
+            banho: !!document.getElementById('fis_banho')?.checked, dentes: !!document.getElementById('fis_dentes')?.checked,
+            agua: !!document.getElementById('fis_agua')?.checked, comida: !!document.getElementById('fis_comida')?.checked,
+            sol: !!document.getElementById('fis_sol')?.checked, movimento: !!document.getElementById('fis_movimento')?.checked
         };
         data.checklist_autocuidado = {
-            medicamentos: !!document.getElementById('auto_med')?.checked,
-            terapia: !!document.getElementById('auto_ter')?.checked,
-            amorProprio: !!document.getElementById('auto_amor')?.checked,
-            limites: !!document.getElementById('auto_lim')?.checked,
-            ajuda: !!document.getElementById('auto_aju')?.checked,
-            detox: !!document.getElementById('auto_detox')?.checked,
-            skincare: !!document.getElementById('auto_skincare')?.checked,
-            arrumarCama: !!document.getElementById('auto_cama')?.checked,
+            medicamentos: !!document.getElementById('auto_med')?.checked, terapia: !!document.getElementById('auto_ter')?.checked,
+            amorProprio: !!document.getElementById('auto_amor')?.checked, limites: !!document.getElementById('auto_lim')?.checked,
+            ajuda: !!document.getElementById('auto_aju')?.checked, detox: !!document.getElementById('auto_detox')?.checked,
+            skincare: !!document.getElementById('auto_skincare')?.checked, arrumarCama: !!document.getElementById('auto_cama')?.checked,
             hobby: !!document.getElementById('auto_hobby')?.checked
         };
         saveAll();
@@ -261,25 +266,25 @@
     function openDiarioModal() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
         let modal = document.createElement('div'); modal.className='modal';
-        modal.innerHTML = `<div class="modal-content"><div class="modal-header"><h3>Como foi o episódio de hoje?</h3><span class="close-modal">&times;</span></div><textarea id="modalDiarioText" rows="5">${data.diario_texto||""}</textarea><button class="btn-red" id="saveModalBtn">Salvar</button></div>`;
+        modal.innerHTML = `<div class="modal-content"><div class="modal-header"><h3>Como foi o episodio de hoje?</h3><span class="close-modal">&times;</span></div><textarea id="modalDiarioText" rows="5">${data.diario_texto||""}</textarea><button class="btn-red" id="saveModalBtn">Salvar</button></div>`;
         document.body.appendChild(modal); modal.style.display='flex';
         modal.querySelector('.close-modal').onclick = () => modal.remove();
         document.getElementById('saveModalBtn').onclick = () => {
             if(users[currentUser].diarios[currentDate]) users[currentUser].diarios[currentDate].diario_texto = document.getElementById('modalDiarioText').value;
-            saveAll();
-            modal.remove();
+            saveAll(); modal.remove();
         };
     }
     
+    // PAGINA 1 - CINEMOCOES
     function renderPagina1() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
-        let html = `<div class="section"><h3>Catálogo emocional de hoje</h3><div class="grid-emocoes">`;
+        let html = `<div class="section"><h3>Catalogo emocional de hoje</h3><div class="grid-emocoes">`;
         emocoesList.forEach(emo => {
             let e = data.emocoes[emo] || { intensidade:0, gatilho:"", pensamentos:"", outra_forma:"", descricao:"" };
             html += `<div class="emo-acordeon"><div class="emo-header" data-emo="${emo}"><h4>${emo}</h4><span>+</span></div><div class="emo-content" id="emoContent_${emo}">
                 <div class="emo-question"><label>Intensidade (0-100%)</label><input type="range" id="emo_int_${emo}" min="0" max="100" value="${e.intensidade}"><span class="rating-value" id="emo_val_${emo}">${e.intensidade}%</span></div>
                 <div class="emo-question"><label>Gatilho</label><textarea id="emo_gat_${emo}">${e.gatilho}</textarea></div>
-                <div class="emo-question"><label>Pensamentos automáticos</label><textarea id="emo_pens_${emo}">${e.pensamentos}</textarea></div>
+                <div class="emo-question"><label>Pensamentos automaticos</label><textarea id="emo_pens_${emo}">${e.pensamentos}</textarea></div>
                 <div class="emo-question"><label>Como posso ver de outra forma?</label><textarea id="emo_outra_${emo}">${e.outra_forma}</textarea></div>
                 <div class="emo-question"><label>Descreva o que aconteceu</label><textarea id="emo_desc_${emo}">${e.descricao}</textarea></div>
             </div></div>`;
@@ -314,69 +319,97 @@
         });
     }
     
+    // PAGINA 2 - CRISEPLAY (antiga Pipoca)
     function renderPagina2() {
-        document.getElementById('page2').innerHTML = `<div class="section"><h3>Razões por trás da desregulação</h3>
-            <div class="info-card"><h4>Física</h4><div class="checklist-vertical"><label><input type="checkbox" id="fisica_fome"> Fome - Sem glicose, o córtex pré-frontal funciona mal.</label><label><input type="checkbox" id="fisica_sede"> Sede - Desidratação reduz concentração.</label><label><input type="checkbox" id="fisica_sono"> Falta de sono - Amígdala fica hiperativa.</label></div></div>
-            <div class="info-card"><h4>Sensorial</h4><div class="checklist-vertical"><label><input type="checkbox" id="sensorial_sobrecarga"> Sobrecarga sensorial</label><label><input type="checkbox" id="sensorial_gatilhos"> Gatilhos sensoriais</label></div></div>
-            <div class="info-card"><h4>Emocional</h4><div class="checklist-vertical"><label><input type="checkbox" id="emocional_trauma"> Trauma não resolvido</label><label><input type="checkbox" id="emocional_estresse"> Estresse ou pressão</label><label><input type="checkbox" id="emocional_ansiedade"> Ansiedade</label></div></div>
-            <p class="text-small">A desregulação não é fraqueza. É uma resposta do sistema nervoso a necessidades não atendidas.</p></div>`;
-    }
-    
-    function renderPagina3() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
-        let p = data.pipoca || {};
-        document.getElementById('page3').innerHTML = `<div class="section"><h3>Ligue a pipoqueira quando precisar</h3>
-            <textarea id="pipoca_situacao" placeholder="SITUAÇÃO - descreva...">${p.situacao||""}</textarea>
-            <div class="two-columns"><div class="info-card"><h4>ACEITO</h4><textarea id="pipoca_aceito" placeholder="Aceito essa situação quando…">${p.aceito||""}</textarea></div>
-            <div class="info-card"><h4>AGRADEÇO</h4><textarea id="pipoca_agradeco" placeholder="Agradeço essa situação porque…">${p.agradeco||""}</textarea></div></div>
-            <div class="two-columns"><div class="info-card"><h4>NÃO ME FAZ BEM</h4><textarea id="pipoca_nao" placeholder="Não me faz bem...">${p.nao_faz_bem||""}</textarea></div>
-            <div class="info-card"><h4>FAZ-ME BEM</h4><textarea id="pipoca_faz" placeholder="Faz-me bem...">${p.faz_bem||""}</textarea></div></div>
-            <div class="two-columns"><div class="info-card"><h4>DEIXO IR</h4><textarea id="pipoca_deixo" placeholder="Pois…">${p.deixo_ir||""}</textarea></div>
-            <div class="info-card"><h4>DESFRUTO</h4><textarea id="pipoca_desfruto" placeholder="Desfruto da maneira…">${p.desfruto||""}</textarea></div></div>
-            <div style="text-align:center; margin-top:0.5rem;"><span style="color:#E50914;">NÃO PRECISO DISTO</span></div></div>`;
-        ['pipoca_situacao','pipoca_aceito','pipoca_agradeco','pipoca_nao','pipoca_faz','pipoca_deixo','pipoca_desfruto'].forEach(id => {
-            let el = document.getElementById(id);
-            if(el) el.addEventListener('input', () => {
+        let c = data.criseplay || {};
+        document.getElementById('page2').innerHTML = `<div class="section"><h3>Razoes por tras da desregulacao</h3>
+            <div class="info-card"><h4>Fisica</h4><div class="checklist-vertical"><label><input type="checkbox" id="fis_fome" ${c.fome?'checked':''}> Fome - Sem glicose, o cortex pre-frontal funciona mal.</label>
+            <label><input type="checkbox" id="fis_sede" ${c.sede?'checked':''}> Sede - Desidratacao reduz concentracao.</label>
+            <label><input type="checkbox" id="fis_sono" ${c.sono?'checked':''}> Falta de sono - Amigdala fica hiperativa.</label>
+            <label><input type="checkbox" id="fis_dor" ${c.dor?'checked':''}> Dor fisica ou desconforto corporal.</label></div></div>
+            <div class="info-card"><h4>Sensorial</h4><div class="checklist-vertical"><label><input type="checkbox" id="sens_sobrecarga" ${c.sobrecarga?'checked':''}> Sobrecarga sensorial</label>
+            <label><input type="checkbox" id="sens_gatilhos" ${c.gatilhos?'checked':''}> Gatilhos sensoriais</label>
+            <label><input type="checkbox" id="sens_mudancas" ${c.mudancas?'checked':''}> Mudancas inesperadas no ambiente</label></div></div>
+            <div class="info-card"><h4>Emocional</h4><div class="checklist-vertical"><label><input type="checkbox" id="emo_trauma" ${c.trauma?'checked':''}> Trauma nao resolvido</label>
+            <label><input type="checkbox" id="emo_estresse" ${c.estresse?'checked':''}> Estresse ou pressao</label>
+            <label><input type="checkbox" id="emo_ansiedade" ${c.ansiedade?'checked':''}> Ansiedade</label>
+            <label><input type="checkbox" id="emo_frustracao" ${c.frustracao?'checked':''}> Frustracao emocional</label>
+            <label><input type="checkbox" id="emo_solidão" ${c.solidão?'checked':''}> Solidão ou desconexao emocional</label>
+            <label><input type="checkbox" id="emo_cobranca" ${c.cobranca?'checked':''}> Excesso de autocobranca</label></div></div>
+            <p class="text-small">A desregulacao nao e fraqueza. E uma resposta do sistema nervoso a necessidades nao atendidas.</p></div>`;
+        ['fome','sede','sono','dor','sobrecarga','gatilhos','mudancas','trauma','estresse','ansiedade','frustracao','solidão','cobranca'].forEach(id => {
+            let el = document.getElementById(`fis_${id}`) || document.getElementById(`sens_${id}`) || document.getElementById(`emo_${id}`);
+            if(el) el.addEventListener('change', () => {
                 let data = users[currentUser].diarios[currentDate];
-                if(data) {
-                    if(!data.pipoca) data.pipoca = {};
-                    data.pipoca[id.replace('pipoca_','')] = el.value;
-                    saveAll();
-                }
+                if(data) { if(!data.criseplay) data.criseplay = {}; data.criseplay[id] = el.checked; saveAll(); }
             });
         });
     }
     
+    // PAGINA 3 - REPLAY DECODIFICADO
+    function renderPagina3() {
+        let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
+        let r = data.replay || {};
+        document.getElementById('page3').innerHTML = `<div class="section"><h3>Reconstruindo a cena</h3>
+            <textarea id="replay_situacao" placeholder="SITUACAO - descreva...">${r.situacao||""}</textarea>
+            <div class="two-columns"><div class="info-card"><h4>ACEITO</h4><textarea id="replay_aceito" placeholder="Aceito essa situacao quando…">${r.aceito||""}</textarea></div>
+            <div class="info-card"><h4>AGRADEÇO</h4><textarea id="replay_agradeco" placeholder="Agradeco essa situacao porque…">${r.agradeco||""}</textarea></div></div>
+            <div class="two-columns"><div class="info-card"><h4>NAO ME FAZ BEM</h4><textarea id="replay_nao" placeholder="Nao me faz bem...">${r.nao_faz_bem||""}</textarea></div>
+            <div class="info-card"><h4>FAZ-ME BEM</h4><textarea id="replay_faz" placeholder="Faz-me bem...">${r.faz_bem||""}</textarea></div></div>
+            <div class="two-columns"><div class="info-card"><h4>DEIXO IR</h4><textarea id="replay_deixo" placeholder="Pois…">${r.deixo_ir||""}</textarea></div>
+            <div class="info-card"><h4>DESFRUTO</h4><textarea id="replay_desfruto" placeholder="Desfruto da maneira…">${r.desfruto||""}</textarea></div></div>
+            <div style="text-align:center; margin-top:0.5rem;"><span style="color:#E50914;">NAO PRECISO DISTO</span></div></div>`;
+        ['situacao','aceito','agradeco','nao','faz','deixo','desfruto'].forEach(id => {
+            let el = document.getElementById(`replay_${id}`);
+            if(el) el.addEventListener('input', () => {
+                let data = users[currentUser].diarios[currentDate];
+                if(data) { if(!data.replay) data.replay = {}; data.replay[id] = el.value; saveAll(); }
+            });
+        });
+    }
+    
+    // PAGINA 4 - NEUROFLIX
     function renderPagina4() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
         let s = data.saga || {};
         document.getElementById('page4').innerHTML = `<div class="section"><h3>Quarteto da felicidade</h3>
-            <div class="hormonios-grid"><div class="hormonio-card"><h4>DOPAMINA</h4><p class="hormonio-desc">Neurotransmissor do prazer e da recompensa.</p><label class="hormonio-check"><input type="checkbox" id="dop1" ${s.dop1?'checked':''}> Durma de 7 a 9 horas</label><label class="hormonio-check"><input type="checkbox" id="dop2" ${s.dop2?'checked':''}> Celebre conquistas diárias</label><label class="hormonio-check"><input type="checkbox" id="dop3" ${s.dop3?'checked':''}> Faça exercícios diários</label></div>
-            <div class="hormonio-card"><h4>OCITOCINA</h4><p class="hormonio-desc">Neurotransmissor do amor e da conexão.</p><label class="hormonio-check"><input type="checkbox" id="oci1" ${s.oci1?'checked':''}> Medite todas as manhãs</label><label class="hormonio-check"><input type="checkbox" id="oci2" ${s.oci2?'checked':''}> Dê um abraço em alguém</label><label class="hormonio-check"><input type="checkbox" id="oci3" ${s.oci3?'checked':''}> Faça um ato de generosidade</label></div>
-            <div class="hormonio-card"><h4>ENDORFINA</h4><p class="hormonio-desc">Neurotransmissor do alívio da dor e euforia.</p><label class="hormonio-check"><input type="checkbox" id="end1" ${s.end1?'checked':''}> Pratique hobbies</label><label class="hormonio-check"><input type="checkbox" id="end2" ${s.end2?'checked':''}> Ria com entes queridos</label><label class="hormonio-check"><input type="checkbox" id="end3" ${s.end3?'checked':''}> Dance ou cante</label></div>
-            <div class="hormonio-card"><h4>SEROTONINA</h4><p class="hormonio-desc">Neurotransmissor do bem-estar e humor.</p><label class="hormonio-check"><input type="checkbox" id="ser1" ${s.ser1?'checked':''}> Agradeça todos os dias</label><label class="hormonio-check"><input type="checkbox" id="ser2" ${s.ser2?'checked':''}> Desfrute da natureza</label><label class="hormonio-check"><input type="checkbox" id="ser3" ${s.ser3?'checked':''}> Relembre momentos importantes</label></div></div></div>`;
+            <div class="hormonios-grid" style="display:grid;grid-template-columns:1fr;gap:0.8rem;"><div class="info-card"><h4>DOPAMINA</h4><p class="text-small">Neurotransmissor do prazer e da recompensa.</p><label class="checklist-vertical" style="display:flex;gap:0.3rem;"><input type="checkbox" id="dop1" ${s.dop1?'checked':''}> Durma de 7 a 9 horas</label>
+            <label class="checklist-vertical"><input type="checkbox" id="dop2" ${s.dop2?'checked':''}> Celebre conquistas diarias</label>
+            <label class="checklist-vertical"><input type="checkbox" id="dop3" ${s.dop3?'checked':''}> Faca exercicios diarios</label></div>
+            <div class="info-card"><h4>OCITOCINA</h4><p class="text-small">Neurotransmissor do amor e da conexao.</p><label class="checklist-vertical"><input type="checkbox" id="oci1" ${s.oci1?'checked':''}> Medite todas as manhas</label>
+            <label><input type="checkbox" id="oci2" ${s.oci2?'checked':''}> De um abraco em alguem</label>
+            <label><input type="checkbox" id="oci3" ${s.oci3?'checked':''}> Faca um ato de generosidade</label></div>
+            <div class="info-card"><h4>ENDORFINA</h4><p class="text-small">Neurotransmissor do alivio da dor e euforia.</p><label><input type="checkbox" id="end1" ${s.end1?'checked':''}> Pratique hobbies</label>
+            <label><input type="checkbox" id="end2" ${s.end2?'checked':''}> Ria com entes queridos</label>
+            <label><input type="checkbox" id="end3" ${s.end3?'checked':''}> Dance ou cante</label></div>
+            <div class="info-card"><h4>SEROTONINA</h4><p class="text-small">Neurotransmissor do bem-estar e humor.</p><label><input type="checkbox" id="ser1" ${s.ser1?'checked':''}> Agradeca todos os dias</label>
+            <label><input type="checkbox" id="ser2" ${s.ser2?'checked':''}> Desfrute da natureza</label>
+            <label><input type="checkbox" id="ser3" ${s.ser3?'checked':''}> Relembre momentos importantes</label></div></div></div>`;
         for(let i=1;i<=3;i++) {
-            let el = document.getElementById(`dop${i}`); if(el) el.addEventListener('change', () => { let data = users[currentUser].diarios[currentDate]; if(data) { if(!data.saga) data.saga = {}; data.saga[`dop${i}`] = el.checked; saveAll(); } });
-            el = document.getElementById(`oci${i}`); if(el) el.addEventListener('change', () => { let data = users[currentUser].diarios[currentDate]; if(data) { if(!data.saga) data.saga = {}; data.saga[`oci${i}`] = el.checked; saveAll(); } });
-            el = document.getElementById(`end${i}`); if(el) el.addEventListener('change', () => { let data = users[currentUser].diarios[currentDate]; if(data) { if(!data.saga) data.saga = {}; data.saga[`end${i}`] = el.checked; saveAll(); } });
-            el = document.getElementById(`ser${i}`); if(el) el.addEventListener('change', () => { let data = users[currentUser].diarios[currentDate]; if(data) { if(!data.saga) data.saga = {}; data.saga[`ser${i}`] = el.checked; saveAll(); } });
+            ['dop','oci','end','ser'].forEach(prefix => {
+                let el = document.getElementById(`${prefix}${i}`);
+                if(el) el.addEventListener('change', () => {
+                    let data = users[currentUser].diarios[currentDate];
+                    if(data) { if(!data.saga) data.saga = {}; data.saga[`${prefix}${i}`] = el.checked; saveAll(); }
+                });
+            });
         }
     }
     
+    // PAGINA 5 - COADJUVANTES
     function renderPagina5() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
         let c = data.coadjuvantes || {};
-        const esferas = ["ÍNTIMOS", "NECESSÁRIOS", "ESTRATÉGICOS", "INCONTORNÁVEIS", "SUPERADOS"];
-        const descricoes = [
-            "São raros. Não passam de 2 ou 3 pessoas na vida toda. É aquele amigo que você pode mostrar suas fraquezas, seus medos, sem medo de julgamento.",
-            "São os amigos do cotidiano. Estão presentes, fazem bem, alegram os dias. Você vai a festas com eles, compartilha conquistas.",
-            "São conexões que te fazem crescer. Podem ser mentores, pessoas de áreas diferentes, contatos que abrem portas.",
-            "São pessoas que você não escolheu mas que estão na sua vida e precisa conviver. Chefe, colega de trabalho, vizinho.",
-            "São pessoas que um dia foram próximas mas a relação teve seu ciclo e acabou. O trabalho é lidar com leveza, sem mágoa."
-        ];
-        let html = `<div class="section"><h3>Esferas da Amizade</h3><div class="esferas-grid">`;
+        const esferas = ["INTIMOS", "NECESSARIOS", "ESTRATEGICOS", "INCONTORNAVEIS", "SUPERADOS"];
+        const descricoes = ["Sao raros. Nao passam de 2 ou 3 pessoas na vida toda. E aquele amigo que voce pode mostrar suas fraquezas, seus medos, sem medo de julgamento.",
+            "Sao os amigos do cotidiano. Estao presentes, fazem bem, alegram os dias. Voce vai a festas com eles, compartilha conquistas.",
+            "Sao conexoes que te fazem crescer. Podem ser mentores, pessoas de areas diferentes, contatos que abrem portas.",
+            "Sao pessoas que voce nao escolheu mas que estao na sua vida e precisa conviver. Chefe, colega de trabalho, vizinho.",
+            "Sao pessoas que um dia foram proximas mas a relacao teve seu ciclo e acabou. O trabalho e lidar com leveza, sem magoa."];
+        let html = `<div class="section"><h3>Esferas da Amizade</h3><div class="esferas-grid" style="display:grid;gap:0.8rem;">`;
         for(let i=0;i<esferas.length;i++) {
-            html += `<div class="esfera-card"><h4>${esferas[i]}</h4><div class="esfera-desc" data-desc="${i}">Ver descrição</div><div class="desc-full" id="desc_${i}">${descricoes[i]}</div><input type="text" class="coadjuvante-input" id="coadj_${i}" placeholder="Coadjuvante (nomes)" value="${c[i]||""}"></div>`;
+            html += `<div class="info-card"><h4>${esferas[i]}</h4><div class="esfera-desc" style="cursor:pointer;color:#aaa;font-size:0.7rem;" data-desc="${i}">Ver descricao</div><div class="desc-full" id="desc_${i}" style="display:none;">${descricoes[i]}</div><input type="text" id="coadj_${i}" placeholder="Coadjuvante (nomes)" value="${c[i]||""}" style="width:100%;margin-top:0.3rem;"></div>`;
         }
         html += `</div></div>`;
         document.getElementById('page5').innerHTML = html;
@@ -387,108 +420,229 @@
                 if(data) { if(!data.coadjuvantes) data.coadjuvantes = {}; data.coadjuvantes[i] = inp.value; saveAll(); }
             });
             let descBtn = document.querySelector(`.esfera-desc[data-desc="${i}"]`);
-            if(descBtn) descBtn.onclick = () => document.getElementById(`desc_${i}`).classList.toggle('open');
+            if(descBtn) descBtn.onclick = () => {
+                let d = document.getElementById(`desc_${i}`);
+                d.style.display = d.style.display === 'none' || d.style.display === '' ? 'block' : 'none';
+            };
         }
     }
     
-    function renderRodaVida() {
+    // PAGINA 6 - DIAGNOSTIFLIX (com nova estrutura)
+    const areasDiagnostiFlix = [
+        "Vida Profissional", "Vida Amorosa", "Amigos", "Familia", "Espiritualidade", "Saude Mental", "Inteligencia Emocional",
+        "Saude Fisica", "Financeiro", "Intelectual", "Lazer", "Autoconhecimento", "Proposito", "Ambiente", "Alimentacao",
+        "Sono", "Tecnologia Digital", "Higiene", "Sexualidade", "Produtividade"
+    ];
+    
+    function renderDiagnostiFlix() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
-        let pode = (!data.roda_vida_data || new Date(data.roda_vida_data).getMonth() !== new Date().getMonth());
-        if(!pode) { document.getElementById('page6').innerHTML = `<div class="blocked-message">Você já avaliou sua vida este mês. Volte no mês que vem.</div>`; return; }
         let roda = data.roda_vida || {};
-        const topicos = ["Vida Profissional", "Vida Amorosa", "Amigos", "Família", "Espiritualidade", "Saúde Mental", "Inteligência Emocional", "Saúde Física", "Financeiro", "Intelectual", "Lazer", "Autoconhecimento", "Propósito", "Ambiente", "Alimentação", "Sono", "Tecnologia", "Higiene", "Sexualidade", "Produtividade"];
-        let html = `<div class="section"><h3>Avalie sua vida</h3><div class="roda-grid">`;
-        for(let i=0;i<topicos.length;i++) {
-            html += `<div class="roda-item"><h4>${topicos[i]}</h4><input type="range" id="roda_${i}" min="1" max="10" value="${roda[i]||5}"><span class="rating-value" id="roda_val_${i}">${roda[i]||5}/10</span><textarea placeholder="Situação atual..." id="roda_sit_${i}">${roda[`sit_${i}`]||""}</textarea><textarea placeholder="Como você quer estar futuramente?" id="roda_fut_${i}">${roda[`fut_${i}`]||""}</textarea></div>`;
+        let pode = (!data.roda_vida_data || new Date(data.roda_vida_data).getMonth() !== new Date().getMonth());
+        if(!pode) { document.getElementById('page6').innerHTML = `<div class="blocked-message">Voce ja avaliou sua vida este mes. Volte no mes que vem.</div>`; return; }
+        
+        let html = `<div class="section"><h3>Avalie sua vida</h3>`;
+        for(let i=0;i<areasDiagnostiFlix.length;i++) {
+            let area = areasDiagnostiFlix[i];
+            let nota = roda[i] || 5;
+            let corClass = nota <= 3 ? 'critico' : nota <= 5 ? 'atencao' : nota <= 7 ? 'regular' : 'bom';
+            html += `<div class="info-card" style="margin-bottom:1rem;">
+                <h4>${area}</h4>
+                <div class="flex-between" style="display:flex;justify-content:space-between;"><span>Nota: <span id="nota_val_${i}">${nota}</span>/10</span></div>
+                <div class="progress-bar-bg"><div class="progress-fill ${corClass}" id="progress_${i}" style="width:${nota*10}%"></div></div>
+                <input type="range" id="roda_${i}" min="0" max="10" value="${nota}" style="width:100%;">
+                <div id="perguntas_container_${i}" style="margin-top:0.8rem;"></div>
+            </div>`;
         }
-        html += `</div><button class="btn-red" id="salvarRodaBtn">Salvar avaliação</button></div>`;
+        html += `<button class="btn-red" id="salvarRodaBtn" style="margin-top:0.5rem;">Salvar avaliacao</button></div>`;
         document.getElementById('page6').innerHTML = html;
-        for(let i=0;i<topicos.length;i++) {
-            let s = document.getElementById(`roda_${i}`);
-            if(s) s.addEventListener('input', (e) => { document.getElementById(`roda_val_${i}`).innerText = e.target.value + '/10'; });
-            let sit = document.getElementById(`roda_sit_${i}`);
-            if(sit) sit.addEventListener('input', () => { let data = users[currentUser].diarios[currentDate]; if(data && data.roda_vida) data.roda_vida[`sit_${i}`] = sit.value; saveAll(); });
-            let fut = document.getElementById(`roda_fut_${i}`);
-            if(fut) fut.addEventListener('input', () => { let data = users[currentUser].diarios[currentDate]; if(data && data.roda_vida) data.roda_vida[`fut_${i}`] = fut.value; saveAll(); });
+        
+        for(let i=0;i<areasDiagnostiFlix.length;i++) {
+            let slider = document.getElementById(`roda_${i}`);
+            if(slider) {
+                slider.addEventListener('input', (e) => {
+                    let val = parseInt(e.target.value);
+                    document.getElementById(`nota_val_${i}`).innerText = val;
+                    let classe = val <= 3 ? 'critico' : val <= 5 ? 'atencao' : val <= 7 ? 'regular' : 'bom';
+                    let progress = document.getElementById(`progress_${i}`);
+                    if(progress) { progress.style.width = (val*10)+'%'; progress.className = 'progress-fill '+classe; }
+                    let data = users[currentUser].diarios[currentDate];
+                    if(data && data.roda_vida) data.roda_vida[i] = val;
+                });
+            }
+            renderPerguntasArea(i, roda);
         }
+        
         document.getElementById('salvarRodaBtn')?.addEventListener('click', () => {
             let novaRoda = {};
-            for(let i=0;i<topicos.length;i++) {
+            for(let i=0;i<areasDiagnostiFlix.length;i++) {
                 novaRoda[i] = parseInt(document.getElementById(`roda_${i}`)?.value) || 5;
-                novaRoda[`sit_${i}`] = document.getElementById(`roda_sit_${i}`)?.value || "";
-                novaRoda[`fut_${i}`] = document.getElementById(`roda_fut_${i}`)?.value || "";
+                for(let j=0;j<perguntasAreas[i].length;j++) {
+                    let resp = document.getElementById(`resp_${i}_${j}`);
+                    if(resp) novaRoda[`resp_${i}_${j}`] = resp.value;
+                }
             }
             if(users[currentUser].diarios[currentDate]) {
                 users[currentUser].diarios[currentDate].roda_vida = novaRoda;
                 users[currentUser].diarios[currentDate].roda_vida_data = new Date().toISOString();
-                saveAll(); alert("Avaliação salva! Volte mês que vem."); renderRodaVida();
+                saveAll(); alert("Avaliacao salva! Volte mes que vem."); renderDiagnostiFlix();
             }
         });
     }
     
-    function renderIkigai() {
+    const perguntasAreas = {
+        0: [{ pergunta: "Sinto que meu trabalho tem sentido?", sugestoes: ["Me sinto perdida", "Gosto do que faco", "Quero mudar de area", "Nao me sinto reconhecida", "Sinto proposito no meu trabalho"] },
+            { pergunta: "Estou crescendo profissionalmente?", sugestoes: ["Estou estagnada", "Tenho evoluido aos poucos", "Quero aprender mais", "Me sinto atrasada", "Estou orgulhosa da minha evolucao"] }],
+        1: [{ pergunta: "Me sinto amada e respeitada?", sugestoes: ["Me sinto sozinha", "Existe carinho", "Falta dialogo", "Tenho medo", "Me sinto acolhida"] },
+            { pergunta: "Existe reciprocidade?", sugestoes: ["Dou muito e recebo pouco", "Somos equilibrados", "Me sinto sobrecarregada", "Ele/ela se importa comigo"] }]
+    };
+    
+    function renderPerguntasArea(idx, roda) {
+        let container = document.getElementById(`perguntas_container_${idx}`);
+        if(!container) return;
+        let perguntas = perguntasAreas[idx] || [{ pergunta: "Como voce avalia esta area?", sugestoes: ["Precisa melhorar", "Estou satisfeita", "Quero mudar"] }];
+        let html = '';
+        for(let j=0;j<perguntas.length;j++) {
+            let respAtual = roda[`resp_${idx}_${j}`] || "";
+            html += `<div class="pergunta-card"><div class="pergunta-header" data-pergunta="${idx}_${j}"><h4>Cena desbloqueada: ${perguntas[j].pergunta}</h4><span style="font-size:1rem;">+</span></div>
+                <div class="pergunta-content" id="pergunta_content_${idx}_${j}"><textarea id="resp_${idx}_${j}" placeholder="Escreva sua reflexao..." rows="2">${respAtual}</textarea>
+                <div class="sugestoes-chips">${perguntas[j].sugestoes.map(s => `<div class="chip" data-target="resp_${idx}_${j}" data-texto="${s}">${s}</div>`).join('')}</div></div></div>`;
+        }
+        container.innerHTML = html;
+        for(let j=0;j<perguntas.length;j++) {
+            let header = document.querySelector(`.pergunta-header[data-pergunta="${idx}_${j}"]`);
+            if(header) header.onclick = () => {
+                let content = document.getElementById(`pergunta_content_${idx}_${j}`);
+                content.classList.toggle('open');
+                let icon = header.querySelector('span');
+                icon.innerText = content.classList.contains('open') ? '-' : '+';
+            };
+            document.querySelectorAll(`.chip[data-target="resp_${idx}_${j}"]`).forEach(chip => {
+                chip.onclick = () => {
+                    let textarea = document.getElementById(chip.dataset.target);
+                    if(textarea) textarea.value = (textarea.value ? textarea.value + " " : "") + chip.dataset.texto;
+                };
+            });
+            let textarea = document.getElementById(`resp_${idx}_${j}`);
+            if(textarea) textarea.addEventListener('input', () => {
+                let data = users[currentUser].diarios[currentDate];
+                if(data && data.roda_vida) data.roda_vida[`resp_${idx}_${j}`] = textarea.value;
+                saveAll();
+            });
+        }
+    }
+    
+    // PAGINA 7 - IKIGAIFLIX
+    function renderIkigaiFlix() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
         let pode = (!data.ikigai_data || (new Date() - new Date(data.ikigai_data) > 180*24*60*60*1000));
-        if(!pode) { document.getElementById('page7').innerHTML = `<div class="blocked-message">Você já fez seu IKIGAI neste semestre. Volte daqui a 6 meses.</div>`; return; }
+        if(!pode) { document.getElementById('page7').innerHTML = `<div class="blocked-message">Voce ja fez seu IKIGAI neste semestre. Volte daqui a 6 meses.</div>`; return; }
         let resp = data.ikigai_respostas || {};
-        let html = `<div class="section"><h3>Seu Ikigai (Razão de Ser)</h3>
-            <div class="ikigai-container"><div class="ikigai-row"><div class="ikigai-sphere"><div class="ikigai-title">Aquilo que você ama</div><div class="circle-btn" data-tipo="pergunta" data-area="ama">?</div><div class="circle-btn" data-tipo="resposta" data-area="ama">R</div></div></div>
-            <div class="ikigai-row"><div class="ikigai-sphere"><div class="ikigai-title">Aquilo que você é bom</div><div class="circle-btn" data-tipo="pergunta" data-area="bom">?</div><div class="circle-btn" data-tipo="resposta" data-area="bom">R</div></div>
+        
+        let html = `<div class="section"><h3>Seu Ikigai (Razao de Ser)</h3>
+            <p class="text-small" style="margin-bottom:1rem;">Seu proposito nao nasce de uma unica resposta. Ele aparece no encontro entre partes da sua vida.</p>
+            <div class="ikigai-circles"><div class="ikigai-row"><div class="ikigai-sphere"><div class="ikigai-title">Aquilo que voce ama</div><div class="circle-btn" data-tipo="pergunta" data-area="ama">?</div><div class="circle-btn" data-tipo="resposta" data-area="ama">R</div></div></div>
+            <div class="ikigai-row"><div class="ikigai-sphere"><div class="ikigai-title">No que voce e boa</div><div class="circle-btn" data-tipo="pergunta" data-area="boa">?</div><div class="circle-btn" data-tipo="resposta" data-area="boa">R</div></div>
             <div class="ikigai-sphere"><div class="ikigai-title">O que o mundo precisa</div><div class="circle-btn" data-tipo="pergunta" data-area="mundo">?</div><div class="circle-btn" data-tipo="resposta" data-area="mundo">R</div></div></div>
-            <div class="ikigai-row"><div class="ikigai-sphere"><div class="ikigai-title">Aquilo que é pago para fazer</div><div class="circle-btn" data-tipo="pergunta" data-area="pago">?</div><div class="circle-btn" data-tipo="resposta" data-area="pago">R</div></div></div></div>
-            <div class="quarteto-grid"><div class="quarteto-card"><h4>PAIXÃO</h4><p>Aquilo que você ama + aquilo que você faz bem.</p><div class="circle-btn" data-tipo="resposta" data-area="paixao">R</div></div>
-            <div class="quarteto-card"><h4>MISSÃO</h4><p>Aquilo que você ama + o que o mundo precisa.</p><div class="circle-btn" data-tipo="resposta" data-area="missao">R</div></div>
-            <div class="quarteto-card"><h4>PROFISSÃO</h4><p>Aquilo que você faz bem + aquilo pelo que pode ser pago.</p><div class="circle-btn" data-tipo="resposta" data-area="profissao">R</div></div>
-            <div class="quarteto-card"><h4>VOCAÇÃO</h4><p>O que o mundo precisa + aquilo pelo que pode ser pago.</p><div class="circle-btn" data-tipo="resposta" data-area="vocacao">R</div></div></div>
-            <div class="camera-container"><div class="camera-box"><div class="camera-lens">CAM</div><h4>Meu IKIGAI</h4><textarea id="ikigai_resposta" rows="4" placeholder="Escreva sua conclusão...">${resp.final||""}</textarea></div></div>
+            <div class="ikigai-row"><div class="ikigai-sphere"><div class="ikigai-title">Pelo que voce pode ser paga</div><div class="circle-btn" data-tipo="pergunta" data-area="paga">?</div><div class="circle-btn" data-tipo="resposta" data-area="paga">R</div></div></div></div>`;
+        
+        // Secoes expandidas com perguntas e sugestoes
+        const secoes = [
+            { id: "ama", titulo: "O QUE VOCE AMA", explicacao: "Sao atividades, assuntos ou experiencias que fazem voce se sentir viva emocionalmente.",
+              perguntas: ["O que me faz sentir viva?", "O que eu faria de graca?", "O que me empolga naturalmente?", "O que eu nunca me canso de aprender?"],
+              sugestoes: ["Psicologia", "Musica", "Ajudar pessoas", "Escrever", "Arte", "Criancas", "Ensinar", "Saude mental", "Criatividade", "Comunicacao"] },
+            { id: "boa", titulo: "NO QUE VOCE E BOA", explicacao: "Sao habilidades naturais ou desenvolvidas que voce executa bem.",
+              perguntas: ["Pelo que as pessoas me procuram?", "O que faco com facilidade?", "Em quais areas me destaco?", "O que aprendo rapidamente?"],
+              sugestoes: ["Escutar", "Organizar", "Cuidar", "Comunicar", "Criar", "Liderar", "Ensinar", "Resolver problemas", "Acolher", "Escrever"] },
+            { id: "mundo", titulo: "O QUE O MUNDO PRECISA", explicacao: "Sao problemas, necessidades ou dores que despertam sua vontade de contribuir.",
+              perguntas: ["Que problemas me tocam emocionalmente?", "Como quero ajudar pessoas?", "O que gostaria de transformar no mundo?", "Que impacto quero deixar?"],
+              sugestoes: ["Saude mental", "Educacao", "Inclusao", "Amor", "Escuta", "Seguranca emocional", "Autoconhecimento", "Criancas", "Fe", "Relacoes saudaveis"] },
+            { id: "paga", titulo: "PELO QUE VOCE PODE SER PAGA", explicacao: "Sao habilidades, conhecimentos ou servicos que possuem valor profissional.",
+              perguntas: ["Pelo que as pessoas pagariam?", "O que posso transformar em profissao?", "Que habilidade minha gera valor?", "O que consigo oferecer com consistencia?"],
+              sugestoes: ["Atendimento psicologico", "Escrita", "Redes sociais", "Aulas", "Arte", "Consultoria", "Comunicacao", "Musica", "Terapia", "Criacao de conteudo"] }
+        ];
+        
+        html += `<div class="resultado-ikigai" style="margin-top:1rem;"><h4>Investigue seu proposito</h4>`;
+        for(let s of secoes) {
+            html += `<div class="ikigai-section"><h4>${s.titulo}</h4><p class="ikigai-explicacao">${s.explicacao}</p>
+                <div class="ikigai-perguntas">${s.perguntas.map(p => `<div class="pergunta-card"><div class="pergunta-header" data-area="${s.id}" data-pergunta="${p}"><span>${p}</span><span style="font-size:1rem;">+</span></div>
+                <div class="pergunta-content" id="pergunta_${s.id}_${p.replace(/ /g,'_')}"><textarea id="resp_${s.id}_${p.replace(/ /g,'_')}" rows="2" placeholder="Escreva sua resposta...">${resp[`${s.id}_${p}`]||""}</textarea>
+                <div class="sugestoes-chips">${s.sugestoes.map(sug => `<div class="chip" data-target="resp_${s.id}_${p.replace(/ /g,'_')}" data-texto="${sug}">${sug}</div>`).join('')}</div></div></div>`).join('')}</div></div>`;
+        }
+        html += `<div class="camera-box" style="background:#1f1f1f;border:3px solid #E50914;border-radius:16px;padding:1rem;text-align:center;margin:1rem 0;"><div style="background:#0a0a0a;width:50px;height:50px;border-radius:50%;margin:0 auto 0.5rem;display:flex;align-items:center;justify-content:center;border:2px solid #E50914;">CAM</div>
+            <h4>Meu IKIGAI</h4><textarea id="ikigai_final" rows="4" placeholder="Escreva sua conclusao...">${resp.final||""}</textarea></div>
             <button class="btn-red" id="salvarIkigaiBtn">Salvar IKIGAI</button></div>`;
         document.getElementById('page7').innerHTML = html;
+        
+        for(let s of secoes) {
+            for(let p of s.perguntas) {
+                let header = document.querySelector(`.pergunta-header[data-pergunta="${p}"]`);
+                if(header) header.onclick = () => {
+                    let content = document.getElementById(`pergunta_${s.id}_${p.replace(/ /g,'_')}`);
+                    content.classList.toggle('open');
+                    let icon = header.querySelectorAll('span')[1];
+                    icon.innerText = content.classList.contains('open') ? '-' : '+';
+                };
+                let textarea = document.getElementById(`resp_${s.id}_${p.replace(/ /g,'_')}`);
+                if(textarea) textarea.addEventListener('input', () => {
+                    let data = users[currentUser].diarios[currentDate];
+                    if(data && data.ikigai_respostas) data.ikigai_respostas[`${s.id}_${p}`] = textarea.value;
+                    saveAll();
+                });
+                document.querySelectorAll(`.chip[data-target="resp_${s.id}_${p.replace(/ /g,'_')}"]`).forEach(chip => {
+                    chip.onclick = () => {
+                        let ta = document.getElementById(chip.dataset.target);
+                        if(ta) ta.value = (ta.value ? ta.value + " " : "") + chip.dataset.texto;
+                    };
+                });
+            }
+        }
+        
+        document.getElementById('salvarIkigaiBtn')?.addEventListener('click', () => {
+            if(users[currentUser].diarios[currentDate]) {
+                let respostas = users[currentUser].diarios[currentDate].ikigai_respostas || {};
+                respostas.final = document.getElementById('ikigai_final').value;
+                users[currentUser].diarios[currentDate].ikigai_respostas = respostas;
+                users[currentUser].diarios[currentDate].ikigai_data = new Date().toISOString();
+                saveAll(); alert("IKIGAI salvo! Proxima jornada em 6 meses."); renderIkigaiFlix();
+            }
+        });
+        
         document.querySelectorAll('.circle-btn').forEach(btn => {
             btn.onclick = () => {
                 let tipo = btn.dataset.tipo, area = btn.dataset.area;
                 if(tipo === 'pergunta') openPerguntaIkigai(area);
-                else openRespostaIkigai(area, resp[area] || {});
+                else openRespostaIkigai(area, resp);
             };
-        });
-        document.getElementById('salvarIkigaiBtn')?.addEventListener('click', () => {
-            if(users[currentUser].diarios[currentDate]) {
-                users[currentUser].diarios[currentDate].ikigai_respostas = { ...resp, final: document.getElementById('ikigai_resposta').value };
-                users[currentUser].diarios[currentDate].ikigai_data = new Date().toISOString();
-                saveAll(); alert("IKIGAI salvo! Próxima jornada em 6 meses."); renderIkigai();
-            }
         });
     }
     
     function openPerguntaIkigai(area) {
-        let perguntas = { ama: ["Quais atividades trazem alegria?", "O que você faria sem ganhar?", "O que te faz perder a noção do tempo?"], bom: ["Quais seus talentos?", "O que as pessoas dizem que você é boa?"], mundo: ["O que o mundo precisa?", "Que mudança você quer ver?"], pago: ["Pelo que poderia ser paga?", "Que trabalho traria propósito?"] };
-        let qs = perguntas[area] || ["Reflexão sobre esta área"];
+        let perguntas = { ama: ["O que me faz sentir viva?", "O que eu faria de graca?", "O que me empolga naturalmente?"], boa: ["Pelo que as pessoas me procuram?", "O que faco com facilidade?"], mundo: ["Que problemas me tocam?", "Como quero ajudar?"], paga: ["Pelo que as pessoas pagariam?", "O que posso transformar em profissao?"] };
+        let qs = perguntas[area] || ["Reflexao sobre esta area"];
         let modal = document.createElement('div'); modal.className='modal';
-        modal.innerHTML = `<div class="modal-content"><div class="modal-header"><h3>Reflexão</h3><span class="close-modal">&times;</span></div>${qs.map(q => `<p style="margin-bottom:0.8rem;">${q}</p>`).join('')}</div>`;
+        modal.innerHTML = `<div class="modal-content"><div class="modal-header"><h3>Reflexao</h3><span class="close-modal">&times;</span></div>${qs.map(q => `<p style="margin-bottom:0.8rem;">${q}</p>`).join('')}</div>`;
         document.body.appendChild(modal); modal.style.display='flex';
         modal.querySelector('.close-modal').onclick = () => modal.remove();
     }
     
-    function openRespostaIkigai(area, saved) {
-        let perguntas = { ama: ["Quais atividades trazem alegria?", "O que você faria sem ganhar?"], bom: ["Quais seus talentos?"], mundo: ["O que o mundo precisa?"], pago: ["Pelo que poderia ser paga?"], paixao: ["O que você ama fazer que também faz bem?"], missao: ["Como unir o que ama com algo que o mundo precisa?"], profissao: ["Como transformar seu talento em trabalho?"], vocacao: ["Como unir necessidade do mundo com sustento?"] };
-        let qs = perguntas[area] || ["Escreva sua reflexão:"];
+    function openRespostaIkigai(area, resp) {
         let modal = document.createElement('div'); modal.className='modal';
-        modal.innerHTML = `<div class="modal-content"><div class="modal-header"><h3>Minhas Respostas</h3><span class="close-modal">&times;</span></div>${qs.map((q, i) => `<p style="margin:0.5rem 0 0.2rem;">${q}</p><textarea id="resp_${i}">${saved[i] || ""}</textarea>`).join('')}<button class="btn-red" id="saveRespModal" style="margin-top:1rem;">Salvar</button></div>`;
+        modal.innerHTML = `<div class="modal-content"><div class="modal-header"><h3>Minhas Respostas</h3><span class="close-modal">&times;</span></div><textarea id="modalResp" rows="4" placeholder="Sua resposta...">${resp[area]||""}</textarea><button class="btn-red" id="saveModalResp">Salvar</button></div>`;
         document.body.appendChild(modal); modal.style.display='flex';
         modal.querySelector('.close-modal').onclick = () => modal.remove();
-        document.getElementById('saveRespModal').onclick = () => {
-            let novas = {};
-            for(let i=0; i<qs.length; i++) novas[i] = document.getElementById(`resp_${i}`).value;
+        document.getElementById('saveModalResp').onclick = () => {
             let data = users[currentUser].diarios[currentDate];
-            if(data) { if(!data.ikigai_respostas) data.ikigai_respostas = {}; data.ikigai_respostas[area] = novas; saveAll(); }
+            if(data) { if(!data.ikigai_respostas) data.ikigai_respostas = {}; data.ikigai_respostas[area] = document.getElementById('modalResp').value; saveAll(); }
             modal.remove();
         };
     }
     
+    // PAGINA 8 - ARQUIVO X
     function renderArquivos() {
         let diarios = users[currentUser]?.diarios || {};
         let dates = Object.keys(diarios).sort().reverse();
         let html = `<div class="vhs-container">`;
-        dates.forEach(d => { html += `<div class="vhs-card" data-data="${d}"><div class="vhs-date">${d}</div><div class="vhs-info">Episódio salvo</div></div>`; });
+        dates.forEach(d => { html += `<div class="vhs-card" data-data="${d}"><div class="vhs-date">${d}</div><div class="vhs-info">Episodio salvo</div></div>`; });
         html += `</div>`;
         document.getElementById('page8').innerHTML = html;
         document.querySelectorAll('.vhs-card').forEach(c => { c.onclick = () => { currentDate = c.dataset.data; loadDate(); changePage(0); }; });
@@ -502,8 +656,8 @@
         renderPagina3();
         renderPagina4();
         renderPagina5();
-        if(currentPage===6) renderRodaVida();
-        if(currentPage===7) renderIkigai();
+        if(currentPage===6) renderDiagnostiFlix();
+        if(currentPage===7) renderIkigaiFlix();
         if(currentPage===8) renderArquivos();
         updateHistorySelect();
     }
@@ -525,7 +679,7 @@
         loadDate();
         document.getElementById('currentUserDisplay').innerText = currentUser;
         document.getElementById('avatarBtn').innerText = currentUser.charAt(0).toUpperCase();
-        document.getElementById('saveEntryBtn').onclick = () => { capturePage0(); alert("Episódio salvo!"); };
+        document.getElementById('saveEntryBtn').onclick = () => { capturePage0(); alert("Episodio salvo!"); };
         document.getElementById('historySelect').onchange = (e) => { let val = e.target.value === "hoje" ? new Date().toISOString().slice(0,10) : e.target.value; capturePage0(); currentDate = val; loadDate(); };
         document.getElementById('logoutBtn').onclick = () => { currentUser = null; document.getElementById('dashboard').style.display = 'none'; document.getElementById('loginScreen').style.display = 'flex'; };
         let nav = document.getElementById('pageNav');
@@ -534,21 +688,21 @@
         changePage(0);
     }
     
-    // LOGIN
+    // LOGIN COM TECLA ENTER
     let isLoginMode = true;
-    document.getElementById('submitBtn').onclick = () => {
+    function handleLogin() {
         let user = document.getElementById('loginUser').value.trim();
         let pass = document.getElementById('loginPass').value.trim();
-        if(!user || !pass) { document.getElementById('loginError').innerText = "Preencha usuário e senha."; return; }
+        if(!user || !pass) { document.getElementById('loginError').innerText = "Preencha usuario e senha."; return; }
         if(isLoginMode) {
             if(users[user] && users[user].senha === pass) {
                 currentUser = user;
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
                 initDashboard();
-            } else { document.getElementById('loginError').innerText = "Usuário ou senha incorretos."; }
+            } else { document.getElementById('loginError').innerText = "Usuario ou senha incorretos."; }
         } else {
-            if(users[user]) { document.getElementById('loginError').innerText = "Usuário já existe."; }
+            if(users[user]) { document.getElementById('loginError').innerText = "Usuario ja existe."; }
             else {
                 users[user] = { senha: pass, diarios: {} };
                 localStorage.setItem('netpsi_users', JSON.stringify(users));
@@ -558,12 +712,17 @@
                 initDashboard();
             }
         }
-    };
+    }
+    
+    document.getElementById('submitBtn').onclick = handleLogin;
+    document.getElementById('loginPass').addEventListener('keypress', (e) => { if(e.key === 'Enter') handleLogin(); });
+    document.getElementById('loginUser').addEventListener('keypress', (e) => { if(e.key === 'Enter') handleLogin(); });
+    
     document.getElementById('switchBtn').onclick = () => {
         isLoginMode = !isLoginMode;
         document.getElementById('formTitle').innerText = isLoginMode ? "Entrar na sua temporada" : "Criar sua temporada";
         document.getElementById('submitBtn').innerText = isLoginMode ? "Entrar" : "Criar conta";
-        document.getElementById('switchBtn').innerText = isLoginMode ? "Criar sua temporada" : "Já tenho conta";
+        document.getElementById('switchBtn').innerText = isLoginMode ? "Criar sua temporada" : "Ja tenho conta";
         document.getElementById('loginError').innerText = "";
     };
 </script>
