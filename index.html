@@ -2,93 +2,38 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>NETPSI - Seu Diário Terapêutico</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NETPSI - Login</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: #141414; color: #e5e5e5; font-family: 'Helvetica Neue', Arial, sans-serif; }
-        .login-container { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; }
-        .netpsi-logo { font-size: 4rem; font-weight: 900; color: #E50914; text-shadow: 0 0 15px rgba(229,9,20,0.5); text-align: center; }
-        .tagline { font-size: 1rem; color: #ccc; text-align: center; margin: 0.5rem 0; }
-        .producer { font-size: 0.7rem; color: #888; text-align: center; margin-bottom: 2rem; }
-        .login-card { background: rgba(0,0,0,0.8); border-radius: 12px; padding: 2rem; width: 100%; max-width: 400px; }
+        body { background: #141414; font-family: Arial, sans-serif; }
+        .login-container { min-height: 100vh; display: flex; justify-content: center; align-items: center; flex-direction: column; }
+        .netpsi-logo { font-size: 4rem; font-weight: bold; color: #E50914; text-align: center; margin-bottom: 1rem; }
+        .tagline { color: #ccc; text-align: center; margin-bottom: 0.5rem; }
+        .producer { color: #888; font-size: 0.7rem; text-align: center; margin-bottom: 2rem; }
+        .login-card { background: rgba(0,0,0,0.8); padding: 2rem; border-radius: 8px; width: 90%; max-width: 350px; }
         .input-group { margin-bottom: 1rem; }
-        .input-group input { width: 100%; padding: 0.8rem; background: #333; border: none; border-radius: 8px; color: white; font-size: 1rem; }
-        .btn-red { background: #E50914; color: white; border: none; padding: 0.8rem; font-size: 1rem; font-weight: bold; border-radius: 8px; width: 100%; cursor: pointer; margin-top: 0.5rem; }
+        .input-group input { width: 100%; padding: 0.8rem; background: #333; border: none; border-radius: 4px; color: white; }
+        .btn-red { background: #E50914; color: white; border: none; padding: 0.8rem; border-radius: 4px; width: 100%; cursor: pointer; margin-top: 0.5rem; font-weight: bold; }
         .switch-btn { background: none; border: none; color: #b3b3b3; margin-top: 1rem; cursor: pointer; width: 100%; }
-        .error-msg { color: #E50914; font-size: 0.75rem; margin-top: 0.5rem; text-align: center; }
-        .login-footer { text-align: center; margin-top: 2rem; font-size: 0.7rem; color: #b3b3b3; font-style: italic; }
+        .error-msg { color: #E50914; font-size: 0.7rem; margin-top: 0.5rem; text-align: center; }
+        .login-footer { text-align: center; margin-top: 2rem; font-size: 0.7rem; color: #666; font-style: italic; }
         .dashboard { display: none; padding: 1rem; }
-        .nav-bar { background: #000; padding: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
-        .nav-logo { font-size: 1.5rem; font-weight: bold; color: #E50914; }
-        .page-nav { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-        .page-btn { background: #333; border: none; color: white; padding: 0.3rem 0.8rem; border-radius: 20px; cursor: pointer; font-size: 0.7rem; }
-        .page-btn.active { background: #E50914; }
-        .user-info { display: flex; align-items: center; gap: 0.5rem; }
-        .avatar { width: 32px; height: 32px; background: black; border: 2px solid #E50914; display: flex; align-items: center; justify-content: center; color: #E50914; font-weight: bold; }
-        .btn-logout { background: #E50914; border: none; color: white; padding: 0.3rem 0.8rem; border-radius: 20px; cursor: pointer; }
-        .save-bar { background: #1f1f1f; padding: 0.8rem; display: flex; justify-content: space-between; flex-wrap: wrap; margin-bottom: 1rem; }
-        .btn-save { background: #E50914; border: none; color: white; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; }
-        .history-select { background: #333; color: white; padding: 0.4rem; border-radius: 20px; border: none; }
-        .page-container { max-width: 1200px; margin: 0 auto; }
-        .section { background: #1f1f1f; border-radius: 12px; padding: 1rem; margin-bottom: 1rem; border-left: 4px solid #E50914; }
-        .section h3 { color: #E50914; margin-bottom: 0.5rem; font-size: 1rem; }
-        .hidden { display: none; }
-        .two-columns { display: grid; grid-template-columns: 1fr; gap: 1rem; }
-        @media (min-width: 768px) { .two-columns { grid-template-columns: 1fr 1fr; } }
-        input, textarea { background: #2a2a2a; border: none; padding: 0.5rem; color: white; border-radius: 8px; width: 100%; margin-bottom: 0.5rem; }
-        .checklist-vertical { display: flex; flex-direction: column; gap: 0.3rem; }
-        .checklist-vertical label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; }
-        .estrela-options { display: flex; gap: 1rem; margin: 0.5rem 0; }
-        .estrela-option { background: #2a2a2a; padding: 0.3rem 1rem; border-radius: 20px; cursor: pointer; font-size: 0.8rem; }
-        .estrela-option.selected { background: #E50914; }
-        .tv-smart { background: #2a2a2a; border-radius: 20px; padding: 1rem; text-align: center; cursor: pointer; border: 1px solid #E50914; }
-        .tv-screen { background: #0a0a0a; border-radius: 10px; padding: 0.8rem; margin-bottom: 0.5rem; }
-        .emo-acordeon { margin-bottom: 0.5rem; }
-        .emo-header { background: #2a2a2a; padding: 0.5rem; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; }
-        .emo-header h4 { color: #E50914; font-size: 0.9rem; }
-        .emo-content { display: none; padding: 0.5rem; background: #252525; border-radius: 8px; margin-top: 0.3rem; }
-        .emo-content.open { display: block; }
-        .text-small { font-size: 0.7rem; color: #aaa; }
-        .blocked-message { text-align: center; padding: 2rem; background: #1f1f1f; border-radius: 16px; color: #E50914; }
-        .info-card { background: #2a2a2a; padding: 0.8rem; border-radius: 12px; margin-bottom: 0.8rem; }
-        .info-card h4 { color: #E50914; margin-bottom: 0.3rem; }
-        .vhs-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
-        .vhs-card { background: linear-gradient(145deg, #1a1a1a, #0f0f0f); border-radius: 12px; padding: 0.8rem; cursor: pointer; border: 1px solid #E50914; text-align: center; }
-        .vhs-date { color: #E50914; font-weight: bold; }
-        .film-strip-icon { text-align: center; cursor: pointer; margin: 0.5rem 0; }
-        .atividade-revelada { background: #2a2a2a; padding: 0.8rem; border-radius: 8px; margin-top: 0.5rem; display: none; text-align: center; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; padding: 1rem; }
-        .modal-content { background: #1f1f1f; border-radius: 16px; width: 100%; max-width: 500px; padding: 1.5rem; border-left: 4px solid #E50914; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; color: #E50914; }
-        .close-modal { cursor: pointer; font-size: 1.5rem; }
-        .progress-bar { width: 100%; height: 4px; background: #333; border-radius: 2px; margin: 1rem 0; }
-        .progress-fill { width: 0%; height: 100%; background: #E50914; }
-        .opcoes { display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem 0; }
-        .opcao { background: #2a2a2a; padding: 0.5rem; border-radius: 8px; cursor: pointer; }
-        .opcao.selected { background: #E50914; }
-        .nav-buttons { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
-        .btn-outline { background: transparent; border: 1px solid #E50914; color: #E50914; padding: 0.4rem 1rem; border-radius: 20px; cursor: pointer; }
-        .resultado-area { background: #2a2a2a; padding: 1rem; border-radius: 12px; margin: 1rem 0; }
-        .camera-box { background: #1f1f1f; border: 3px solid #E50914; border-radius: 16px; padding: 1rem; text-align: center; margin: 1rem 0; }
-        .camera-lens { background: #0a0a0a; width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 0.5rem; display: flex; align-items: center; justify-content: center; border: 2px solid #E50914; }
-        .quarteto-grid { display: grid; grid-template-columns: 1fr; gap: 0.8rem; margin: 1rem 0; }
-        @media (min-width: 768px) { .quarteto-grid { grid-template-columns: repeat(2, 1fr); } }
-        .quarteto-card { background: #2a2a2a; padding: 0.8rem; border-radius: 12px; border-left: 3px solid #E50914; }
-        .circle-btn { width: 30px; height: 30px; border-radius: 50%; background: #2a2a2a; border: 1px solid #E50914; color: #E50914; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; margin: 0.2rem; }
-        .ikigai-buttons { display: flex; gap: 0.5rem; justify-content: center; margin: 0.5rem 0; }
-        .ikigai-circle { background: #1f1f1f; border: 2px solid #E50914; border-radius: 20px; padding: 0.8rem; width: 200px; text-align: center; margin: 0 auto; }
-        .ikigai-circles { display: flex; flex-direction: column; align-items: center; gap: 1rem; margin: 1rem 0; }
-        .ikigai-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; }
+        .nav-bar { background: #000; padding: 1rem; display: flex; justify-content: space-between; flex-wrap: wrap; }
+        .nav-logo { color: #E50914; font-size: 1.5rem; font-weight: bold; }
+        .btn-logout { background: #E50914; border: none; color: white; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; }
+        .welcome { text-align: center; padding: 2rem; background: #1f1f1f; border-radius: 8px; margin-top: 2rem; }
+        .welcome h2 { color: #E50914; margin-bottom: 1rem; }
     </style>
 </head>
 <body>
+
 <div id="loginScreen" class="login-container">
     <div class="netpsi-logo">NETPSI</div>
     <div class="tagline">Seu diário terapêutico pessoal</div>
     <div class="producer">Uma produção de Rute Kautscher</div>
     <div class="login-card">
-        <h2 id="formTitle">Entrar na sua temporada</h2>
+        <h2 id="formTitle" style="color:white; margin-bottom:1rem;">Entrar na sua temporada</h2>
         <div class="input-group"><input type="text" id="loginUser" placeholder="Seu usuário"></div>
         <div class="input-group"><input type="password" id="loginPass" placeholder="Senha"></div>
         <button class="btn-red" id="submitBtn">Entrar</button>
@@ -101,231 +46,60 @@
 <div id="dashboard" class="dashboard">
     <div class="nav-bar">
         <div class="nav-logo">NETPSI</div>
-        <div class="page-nav" id="pageNav"></div>
-        <div class="user-info"><div class="avatar" id="avatarBtn">N</div><span id="currentUserDisplay"></span><button class="btn-logout" id="logoutBtn">Sair</button></div>
+        <button class="btn-logout" id="logoutBtn">Sair</button>
     </div>
-    <div class="save-bar"><button class="btn-save" id="saveEntryBtn">Salvar episódio</button><select id="historySelect" class="history-select"><option value="hoje">Hoje</option></select></div>
-    <div id="page0" class="page-container"></div>
-    <div id="page1" class="page-container hidden"></div>
-    <div id="page2" class="page-container hidden"></div>
-    <div id="page3" class="page-container hidden"></div>
-    <div id="page4" class="page-container hidden"></div>
-    <div id="page5" class="page-container hidden"></div>
-    <div id="page6" class="page-container hidden"></div>
-    <div id="page7" class="page-container hidden"></div>
-    <div id="page8" class="page-container hidden"></div>
-    <div id="page9" class="page-container hidden"></div>
+    <div class="welcome">
+        <h2>Bem-vinda ao NETPSI</h2>
+        <p>Seu diário terapêutico está pronto para uso.</p>
+        <p style="margin-top:1rem; color:#E50914;">As funcionalidades completas estão sendo finalizadas.</p>
+    </div>
 </div>
 
 <script>
     let users = JSON.parse(localStorage.getItem('netpsi_users')) || {};
     let currentUser = null;
-    let currentDate = new Date().toISOString().slice(0,10);
-    let currentPage = 0;
-    const pageNames = ["EPISÓDIO", "CINEMOÇÕES", "PIPOCA", "PIPOQUEIRA", "NEURO FLIX", "COADJUVANTES", "DIAGNOSTIFLIX", "IKIGAI FLIX", "TESTES", "ARQUIVOS"];
-    const pageKeys = ['page0','page1','page2','page3','page4','page5','page6','page7','page8','page9'];
-    
-    const emocoesList = ["Alegria","Tédio","Medo","Raiva","Tristeza","Nojo","Frustração","Apatia","Vergonha","Ressentimento","Inveja","Carência","Esperança","Alívio","Amor","Paixão","Impulso","Orgulho","Solidão","Paciência"];
-    
-    function getEmptyDiary() {
-        let emocoes = {};
-        emocoesList.forEach(e => { emocoes[e] = { intensidade: 0, gatilho: "", pensamentos: "", outra_forma: "", descricao: "" }; });
-        return {
-            estrela: "", estrela_roteiro: "", diario_texto: "", atividade_reflexao: "",
-            checklist_fisica: { banho:false, dentes:false, agua:false, comida:false, sol:false, movimento:false },
-            checklist_autocuidado: { medicamentos:false, terapia:false, amorProprio:false, limites:false, ajuda:false, detox:false, skincare:false, arrumarCama:false, hobby:false },
-            elogios: ["","",""], gratidao: ["","",""], sofa_preguica: "", hd_sigiloso: "", emocoes: emocoes,
-            ikigai_respostas: {}, ikigai_data: null, roda_vida: null, roda_vida_data: null
-        };
-    }
-    
-    function saveAll() { if(currentUser) localStorage.setItem('netpsi_users', JSON.stringify(users)); }
-    
-    function changePage(page) {
-        currentPage = page;
-        for(let i=0;i<pageKeys.length;i++) document.getElementById(pageKeys[i]).classList.add('hidden');
-        document.getElementById(pageKeys[page]).classList.remove('hidden');
-        document.querySelectorAll('.page-btn').forEach((btn,idx)=>{ if(idx==page) btn.classList.add('active'); else btn.classList.remove('active'); });
-        if(page===6) renderRodaVida();
-        if(page===7) renderIkigai();
-        if(page===8) renderTestes();
-        if(page===9) renderArquivos();
-    }
-    
-    function renderPagina0(data) {
-        document.getElementById('page0').innerHTML = `
-            <div class="section"><h3>EXERCÍCIO TERAPÊUTICO</h3><div class="film-strip-icon" id="exercicioBtn" style="font-size:2rem;">🎞️</div><div class="atividade-revelada" id="atividadeRevelada"><div id="atividadeTexto"></div></div><textarea id="reflexaoTexto" rows="3" placeholder="Escreva sua reflexão...">${data.atividade_reflexao||""}</textarea></div>
-            <div class="section"><div class="tv-smart" id="tvSmartBtn"><div class="tv-screen">TV<br>COMO FOI O EPISÓDIO DE HOJE?</div><div class="tv-stand" style="width:50px;height:6px;background:#444;margin:0 auto;"></div></div></div>
-            <div class="section"><h3>Como está sua estrela hoje?</h3><div class="estrela-options"><div class="estrela-option ${data.estrela==='brilhando'?'selected':''}" data-estrela="brilhando">Brilhando</div><div class="estrela-option ${data.estrela==='apagada'?'selected':''}" data-estrela="apagada">Apagada</div></div><textarea id="estrelaRoteiro" placeholder="Descreva o roteiro...">${data.estrela_roteiro}</textarea></div>
-            <div class="two-columns"><div class="section"><h3>Checklist Saúde Física</h3><div class="checklist-vertical"><label><input type="checkbox" id="fis_banho" ${data.checklist_fisica.banho?'checked':''}> Tomei banho</label><label><input type="checkbox" id="fis_dentes" ${data.checklist_fisica.dentes?'checked':''}> Escovei dentes</label><label><input type="checkbox" id="fis_agua" ${data.checklist_fisica.agua?'checked':''}> Bebi água</label><label><input type="checkbox" id="fis_comida" ${data.checklist_fisica.comida?'checked':''}> Comi bem</label><label><input type="checkbox" id="fis_sol" ${data.checklist_fisica.sol?'checked':''}> Tomei sol</label><label><input type="checkbox" id="fis_movimento" ${data.checklist_fisica.movimento?'checked':''}> Me movimentei</label></div></div>
-            <div class="section"><h3>Checklist Autocuidado</h3><div class="checklist-vertical"><label><input type="checkbox" id="auto_med" ${data.checklist_autocuidado.medicamentos?'checked':''}> Tomei medicamentos</label><label><input type="checkbox" id="auto_ter" ${data.checklist_autocuidado.terapia?'checked':''}> Fui à terapia</label><label><input type="checkbox" id="auto_amor" ${data.checklist_autocuidado.amorProprio?'checked':''}> Pratiquei amor-próprio</label><label><input type="checkbox" id="auto_lim" ${data.checklist_autocuidado.limites?'checked':''}> Estabeleci limites</label><label><input type="checkbox" id="auto_aju" ${data.checklist_autocuidado.ajuda?'checked':''}> Pedi ajuda</label><label><input type="checkbox" id="auto_detox" ${data.checklist_autocuidado.detox?'checked':''}> Detox de tela</label><label><input type="checkbox" id="auto_skincare" ${data.checklist_autocuidado.skincare?'checked':''}> Skincare</label><label><input type="checkbox" id="auto_cama" ${data.checklist_autocuidado.arrumarCama?'checked':''}> Arrumar a cama</label><label><input type="checkbox" id="auto_hobby" ${data.checklist_autocuidado.hobby?'checked':''}> Hobby</label></div></div></div>
-            <div class="two-columns"><div class="section"><h3>Elogie-se, você é uma estrela</h3><textarea id="elogio1" placeholder="Elogio 1">${data.elogios[0]}</textarea><textarea id="elogio2" placeholder="Elogio 2">${data.elogios[1]}</textarea><textarea id="elogio3" placeholder="Elogio 3">${data.elogios[2]}</textarea></div>
-            <div class="section"><h3>Gratidão pelo episódio de hoje</h3><textarea id="gratidao1" placeholder="Gratidão 1">${data.gratidao[0]}</textarea><textarea id="gratidao2" placeholder="Gratidão 2">${data.gratidao[1]}</textarea><textarea id="gratidao3" placeholder="Gratidão 3">${data.gratidao[2]}</textarea></div></div>
-            <div class="section"><h3>Sofá da Preguiça</h3><textarea id="sofaPreguica" placeholder="O que procrastinei hoje?">${data.sofa_preguica||""}</textarea></div>
-            <div class="section"><h3>HD Sigiloso</h3><textarea id="hdSigiloso" placeholder="Uma carta para nunca ser enviada">${data.hd_sigiloso||""}</textarea></div>
-        `;
-        document.getElementById('exercicioBtn')?.addEventListener('click',()=>{ const exs=["Escreva sobre um momento que se sentiu orgulhoso","Descreva uma situação de ansiedade","Escreva uma carta de perdão"]; document.getElementById('atividadeTexto').innerText=exs[Math.floor(Math.random()*exs.length)]; document.getElementById('atividadeRevelada').style.display='block'; setTimeout(()=>document.getElementById('atividadeRevelada').style.display='none',4000); });
-        document.getElementById('tvSmartBtn')?.addEventListener('click',()=>openDiarioModal(data));
-        document.querySelectorAll('.estrela-option').forEach(opt=>{ opt.onclick=()=>{ document.querySelectorAll('.estrela-option').forEach(o=>o.classList.remove('selected')); opt.classList.add('selected'); }; });
-    }
-    
-    function openDiarioModal(data){
-        let modal=document.createElement('div'); modal.className='modal';
-        modal.innerHTML=`<div class="modal-content"><div class="modal-header"><h3>Como foi o episódio?</h3><span class="close-modal">&times;</span></div><textarea id="modalDiarioText" rows="5">${data.diario_texto||""}</textarea><button class="btn-red" id="saveModalBtn">Salvar</button></div>`;
-        document.body.appendChild(modal); modal.style.display='flex';
-        modal.querySelector('.close-modal').onclick=()=>modal.remove();
-        document.getElementById('saveModalBtn').onclick=()=>{ if(users[currentUser].diarios[currentDate]) users[currentUser].diarios[currentDate].diario_texto=document.getElementById('modalDiarioText').value; saveAll(); modal.remove(); loadDate(currentDate); };
-    }
-    
-    function renderPagina1(data){
-        let html=`<div class="section"><h3>Catálogo emocional de hoje</h3>`;
-        emocoesList.forEach(emo=>{
-            let e=data.emocoes[emo]||{intensidade:0,gatilho:"",pensamentos:"",outra_forma:"",descricao:""};
-            html+=`<div class="emo-acordeon"><div class="emo-header" data-emo="${emo}"><h4>${emo}</h4><span>+</span></div><div class="emo-content" id="emoContent_${emo}"><div class="emo-question"><label>Intensidade 0-100</label><input type="range" id="emo_int_${emo}" min="0" max="100" value="${e.intensidade}"><span>${e.intensidade}%</span></div><div class="emo-question"><label>Gatilho</label><textarea id="emo_gat_${emo}">${e.gatilho}</textarea></div><div class="emo-question"><label>Pensamentos automáticos</label><textarea id="emo_pens_${emo}">${e.pensamentos}</textarea></div><div class="emo-question"><label>Como posso ver de outra forma?</label><textarea id="emo_outra_${emo}">${e.outra_forma}</textarea></div><div class="emo-question"><label>Descreva o que aconteceu</label><textarea id="emo_desc_${emo}">${e.descricao}</textarea></div></div></div>`;
-        });
-        html+=`</div>`;
-        document.getElementById('page1').innerHTML=html;
-        document.querySelectorAll('.emo-header').forEach(h=>{ h.onclick=()=>{ let c=document.getElementById(`emoContent_${h.dataset.emo}`); let icon=h.querySelector('span'); c.classList.toggle('open'); icon.innerText=c.classList.contains('open')?'-':'+'; }; });
-        emocoesList.forEach(emo=>{ let s=document.getElementById(`emo_int_${emo}`); if(s) s.addEventListener('input',(e)=>{ e.target.nextElementSibling.innerText=e.target.value+'%'; }); });
-    }
-    
-    function renderPagina2(){
-        document.getElementById('page2').innerHTML=`<div class="section"><h3>Razões por trás da desregulação</h3><div class="info-card"><h4>Física</h4><div class="checklist-vertical"><label><input type="checkbox"> Fome</label><label><input type="checkbox"> Sede</label><label><input type="checkbox"> Falta de sono</label><label><input type="checkbox"> Doença</label><label><input type="checkbox"> Falta de atividade física</label></div></div><div class="info-card"><h4>Sensorial</h4><div class="checklist-vertical"><label><input type="checkbox"> Sobrecarga sensorial</label><label><input type="checkbox"> Gatilhos sensoriais</label></div></div><div class="info-card"><h4>Emocional</h4><div class="checklist-vertical"><label><input type="checkbox"> Trauma</label><label><input type="checkbox"> Estresse</label><label><input type="checkbox"> Ansiedade</label><label><input type="checkbox"> Insegurança</label></div></div><p class="text-small">A desregulação não é fraqueza. É uma resposta do sistema nervoso.</p></div>`;
-    }
-    
-    function renderPagina3(data){
-        let q=data.pipoca_quadrantes||{};
-        document.getElementById('page3').innerHTML=`<div class="section"><h3>Quando precisar ligar a pipoqueira</h3><textarea id="pipoca_situacao" placeholder="SITUAÇÃO">${data.pipoca_situacao||""}</textarea><div class="two-columns"><div class="info-card"><h4>ACEITO</h4><textarea id="pipoca_aceito" placeholder="Aceito...">${q.aceito||""}</textarea></div><div class="info-card"><h4>AGRADEÇO</h4><textarea id="pipoca_agradeco" placeholder="Agradeço...">${q.agradeco||""}</textarea></div></div><div class="two-columns"><div class="info-card"><h4>NÃO ME FAZ BEM</h4><textarea id="pipoca_nao">${q.nao_faz_bem||""}</textarea></div><div class="info-card"><h4>FAZ-ME BEM</h4><textarea id="pipoca_faz">${q.faz_bem||""}</textarea></div></div><div class="two-columns"><div class="info-card"><h4>DEIXO IR</h4><textarea id="pipoca_deixo">${q.deixo_ir||""}</textarea></div><div class="info-card"><h4>DESFRUTO</h4><textarea id="pipoca_desfruto">${q.desfruto||""}</textarea></div></div></div>`;
-    }
-    
-    function renderPagina4(){
-        document.getElementById('page4').innerHTML=`<div class="section"><h3>Quarteto da felicidade</h3><div class="info-card"><h4>DOPAMINA</h4><div class="checklist-vertical"><label><input type="checkbox"> Durma 7-9h</label><label><input type="checkbox"> Celebre conquistas</label><label><input type="checkbox"> Exercícios</label></div></div><div class="info-card"><h4>OCITOCINA</h4><div class="checklist-vertical"><label><input type="checkbox"> Medite</label><label><input type="checkbox"> Abrace alguém</label><label><input type="checkbox"> Generosidade</label></div></div><div class="info-card"><h4>ENDORFINA</h4><div class="checklist-vertical"><label><input type="checkbox"> Hobbies</label><label><input type="checkbox"> Ria</label><label><input type="checkbox"> Dance</label></div></div><div class="info-card"><h4>SEROTONINA</h4><div class="checklist-vertical"><label><input type="checkbox"> Agradeça</label><label><input type="checkbox"> Natureza</label><label><input type="checkbox"> Boas memórias</label></div></div></div>`;
-    }
-    
-    function renderPagina5(){
-        document.getElementById('page5').innerHTML=`<div class="section"><h3>Esferas da Amizade</h3><div class="info-card"><h4>ÍNTIMOS</h4><textarea placeholder="Coadjuvante (nomes)"></textarea></div><div class="info-card"><h4>NECESSÁRIOS</h4><textarea placeholder="Coadjuvante (nomes)"></textarea></div><div class="info-card"><h4>ESTRATÉGICOS</h4><textarea placeholder="Coadjuvante (nomes)"></textarea></div><div class="info-card"><h4>INCONTORNÁVEIS</h4><textarea placeholder="Coadjuvante (nomes)"></textarea></div><div class="info-card"><h4>SUPERADOS</h4><textarea placeholder="Coadjuvante (nomes)"></textarea></div></div>`;
-    }
-    
-    function renderRodaVida(){
-        let data=users[currentUser].diarios[currentDate]||getEmptyDiary();
-        let pode=(!data.roda_vida_data||new Date(data.roda_vida_data).getMonth()!==new Date().getMonth());
-        if(!pode){ document.getElementById('page6').innerHTML=`<div class="blocked-message">Você já avaliou este mês.</div>`; return; }
-        document.getElementById('page6').innerHTML=`<div class="section"><h3>Avalie sua vida</h3><div class="info-card"><h4>Vida Profissional</h4><input type="range" min="1" max="10" id="roda_0"><span id="roda_val_0">5/10</span><textarea placeholder="Situação atual"></textarea><textarea placeholder="Como quer estar?"></textarea></div><button class="btn-red" id="salvarRodaBtn">Salvar</button></div>`;
-        document.getElementById('salvarRodaBtn')?.addEventListener('click',()=>{ alert("Roda salva!"); });
-    }
-    
-    function renderIkigai(){
-        let data=users[currentUser].diarios[currentDate]||getEmptyDiary();
-        let pode=(!data.ikigai_data||(new Date()-new Date(data.ikigai_data)>180*24*60*60*1000));
-        if(!pode){ document.getElementById('page7').innerHTML=`<div class="blocked-message">Você já fez seu IKIGAI neste semestre.</div>`; return; }
-        document.getElementById('page7').innerHTML=`<div class="section"><h3>Seu Ikigai (Razão de Ser)</h3><div class="ikigai-circles"><div class="ikigai-row"><div class="ikigai-circle"><h4>Aquilo que você ama</h4><div class="ikigai-buttons"><div class="circle-btn">?</div><div class="circle-btn">R</div></div></div></div><div class="ikigai-row"><div class="ikigai-circle"><h4>Aquilo que você é bom</h4><div class="ikigai-buttons"><div class="circle-btn">?</div><div class="circle-btn">R</div></div></div><div class="ikigai-circle"><h4>O que o mundo precisa</h4><div class="ikigai-buttons"><div class="circle-btn">?</div><div class="circle-btn">R</div></div></div></div><div class="ikigai-row"><div class="ikigai-circle"><h4>Aquilo que é pago para fazer</h4><div class="ikigai-buttons"><div class="circle-btn">?</div><div class="circle-btn">R</div></div></div></div></div><div class="quarteto-grid"><div class="quarteto-card"><h4>PAIXÃO</h4><p>Ama + Faz bem</p><div class="circle-btn" style="margin-top:0.5rem;">R</div></div><div class="quarteto-card"><h4>MISSÃO</h4><p>Ama + Mundo precisa</p><div class="circle-btn">R</div></div><div class="quarteto-card"><h4>PROFISSÃO</h4><p>Faz bem + Pode receber</p><div class="circle-btn">R</div></div><div class="quarteto-card"><h4>VOCAÇÃO</h4><p>Mundo precisa + Pode receber</p><div class="circle-btn">R</div></div></div><div class="camera-box"><div class="camera-lens">🎥</div><h4>Meu IKIGAI</h4><textarea id="ikigai_resposta" rows="3"></textarea></div><button class="btn-red" id="salvarIkigaiBtn">Salvar</button></div>`;
-        document.getElementById('salvarIkigaiBtn')?.addEventListener('click',()=>{ alert("IKIGAI salvo!"); renderIkigai(); });
-    }
-    
-    function renderTestes(){
-        document.getElementById('page8').innerHTML=`<div class="section"><p class="text-small">Testes psicológicos - Se conheça</p><div class="info-card"><h4>AUTOESTIMA</h4><button class="btn-outline" id="testeAuto">Iniciar</button></div></div>`;
-        document.getElementById('testeAuto')?.addEventListener('click',()=>abrirTeste());
-    }
-    
-    function abrirTeste(){
-        alert("Teste de Autoestima: Simule o resultado aqui!");
-    }
-    
-    function renderArquivos(){
-        let diarios=users[currentUser]?.diarios||{};
-        let dates=Object.keys(diarios).sort().reverse();
-        let html=`<div class="vhs-container">`;
-        dates.forEach(d=>{ html+=`<div class="vhs-card" data-data="${d}"><div class="vhs-date">${d}</div></div>`; });
-        html+=`</div>`;
-        document.getElementById('page9').innerHTML=html;
-        document.querySelectorAll('.vhs-card').forEach(c=>{ c.onclick=()=>{ currentDate=c.dataset.data; loadDate(currentDate); changePage(0); }; });
-    }
-    
-    function captureFromDOM(){
-        let data=users[currentUser].diarios[currentDate]||getEmptyDiary();
-        data.atividade_reflexao=document.getElementById('reflexaoTexto')?.value||"";
-        data.estrela_roteiro=document.getElementById('estrelaRoteiro')?.value||"";
-        let sel=document.querySelector('.estrela-option.selected');
-        if(sel) data.estrela=sel.dataset.estrela;
-        data.elogios=[document.getElementById('elogio1')?.value||"",document.getElementById('elogio2')?.value||"",document.getElementById('elogio3')?.value||""];
-        data.gratidao=[document.getElementById('gratidao1')?.value||"",document.getElementById('gratidao2')?.value||"",document.getElementById('gratidao3')?.value||""];
-        data.sofa_preguica=document.getElementById('sofaPreguica')?.value||"";
-        data.hd_sigiloso=document.getElementById('hdSigiloso')?.value||"";
-        data.checklist_fisica={ banho:!!document.getElementById('fis_banho')?.checked, dentes:!!document.getElementById('fis_dentes')?.checked, agua:!!document.getElementById('fis_agua')?.checked, comida:!!document.getElementById('fis_comida')?.checked, sol:!!document.getElementById('fis_sol')?.checked, movimento:!!document.getElementById('fis_movimento')?.checked };
-        emocoesList.forEach(emo=>{ data.emocoes[emo]={ intensidade:parseInt(document.getElementById(`emo_int_${emo}`)?.value)||0, gatilho:document.getElementById(`emo_gat_${emo}`)?.value||"", pensamentos:document.getElementById(`emo_pens_${emo}`)?.value||"", outra_forma:document.getElementById(`emo_outra_${emo}`)?.value||"", descricao:document.getElementById(`emo_desc_${emo}`)?.value||"" }; });
-        data.pipoca_situacao=document.getElementById('pipoca_situacao')?.value||"";
-        data.pipoca_quadrantes={ aceito:document.getElementById('pipoca_aceito')?.value, agradeco:document.getElementById('pipoca_agradeco')?.value, nao_faz_bem:document.getElementById('pipoca_nao')?.value, faz_bem:document.getElementById('pipoca_faz')?.value, deixo_ir:document.getElementById('pipoca_deixo')?.value, desfruto:document.getElementById('pipoca_desfruto')?.value };
-        users[currentUser].diarios[currentDate]=data;
-        saveAll();
-    }
-    
-    function loadDate(date){
-        currentDate=date;
-        if(!users[currentUser].diarios) users[currentUser].diarios={};
-        if(!users[currentUser].diarios[date]) users[currentUser].diarios[date]=getEmptyDiary();
-        let data=users[currentUser].diarios[date];
-        renderPagina0(data);
-        renderPagina1(data);
-        renderPagina2();
-        renderPagina3(data);
-        renderPagina4();
-        renderPagina5();
-        if(currentPage===6) renderRodaVida();
-        if(currentPage===7) renderIkigai();
-        if(currentPage===8) renderTestes();
-        if(currentPage===9) renderArquivos();
-        updateHistorySelect();
-    }
-    
-    function updateHistorySelect(){
-        let select=document.getElementById('historySelect');
-        if(!select) return;
-        let dates=Object.keys(users[currentUser].diarios||{}).sort().reverse();
-        select.innerHTML='<option value="hoje">Hoje</option>';
-        dates.forEach(d=>{ if(d!==new Date().toISOString().slice(0,10)) select.innerHTML+=`<option value="${d}">${d}</option>`; });
-        select.value=currentDate===new Date().toISOString().slice(0,10)?"hoje":currentDate;
-    }
-    
-    function initDashboard(){
-        let today=new Date().toISOString().slice(0,10);
-        if(!users[currentUser].diarios) users[currentUser].diarios={};
-        if(!users[currentUser].diarios[today]) users[currentUser].diarios[today]=getEmptyDiary();
-        currentDate=today;
-        loadDate(currentDate);
-        document.getElementById('currentUserDisplay').innerText=currentUser;
-        document.getElementById('saveEntryBtn').onclick=()=>{ captureFromDOM(); alert("Salvo!"); loadDate(currentDate); };
-        document.getElementById('historySelect').onchange=(e)=>{ let val=e.target.value==="hoje"?new Date().toISOString().slice(0,10):e.target.value; captureFromDOM(); currentDate=val; loadDate(currentDate); };
-        document.getElementById('logoutBtn').onclick=()=>{ currentUser=null; document.getElementById('dashboard').style.display='none'; document.getElementById('loginScreen').style.display='flex'; };
-        let nav=document.getElementById('pageNav');
-        nav.innerHTML=pageNames.map((n,i)=>`<button class="page-btn ${i===0?'active':''}" data-page="${i}">${n}</button>`).join('');
-        document.querySelectorAll('.page-btn').forEach(btn=>{ btn.onclick=()=>{ captureFromDOM(); changePage(parseInt(btn.dataset.page)); }; });
-        changePage(0);
-    }
-    
-    // LOGIN
-    let isLoginMode=true;
-    document.getElementById('submitBtn').onclick=()=>{
-        let user=document.getElementById('loginUser').value.trim();
-        let pass=document.getElementById('loginPass').value.trim();
-        if(!user||!pass){ document.getElementById('loginError').innerText="Preencha usuário e senha."; return; }
-        if(isLoginMode){
-            if(users[user] && users[user].senha===pass){
-                currentUser=user;
-                document.getElementById('loginScreen').style.display='none';
-                document.getElementById('dashboard').style.display='block';
-                initDashboard();
-            } else document.getElementById('loginError').innerText="Usuário ou senha incorretos.";
+    let isLoginMode = true;
+
+    document.getElementById('submitBtn').onclick = () => {
+        let user = document.getElementById('loginUser').value.trim();
+        let pass = document.getElementById('loginPass').value.trim();
+        if(!user || !pass) {
+            document.getElementById('loginError').innerText = "Preencha usuário e senha.";
+            return;
+        }
+        if(isLoginMode) {
+            if(users[user] && users[user].senha === pass) {
+                currentUser = user;
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+            } else {
+                document.getElementById('loginError').innerText = "Usuário ou senha incorretos.";
+            }
         } else {
-            if(users[user]) document.getElementById('loginError').innerText="Usuário já existe.";
-            else { users[user]={ senha:pass, diarios:{} }; localStorage.setItem('netpsi_users',JSON.stringify(users)); currentUser=user; document.getElementById('loginScreen').style.display='none'; document.getElementById('dashboard').style.display='block'; initDashboard(); }
+            if(users[user]) {
+                document.getElementById('loginError').innerText = "Usuário já existe.";
+            } else {
+                users[user] = { senha: pass };
+                localStorage.setItem('netpsi_users', JSON.stringify(users));
+                currentUser = user;
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+            }
         }
     };
-    document.getElementById('switchBtn').onclick=()=>{
-        isLoginMode=!isLoginMode;
-        document.getElementById('formTitle').innerText=isLoginMode?"Entrar na sua temporada":"Criar sua temporada";
-        document.getElementById('submitBtn').innerText=isLoginMode?"Entrar":"Criar conta";
-        document.getElementById('switchBtn').innerText=isLoginMode?"Criar sua temporada":"Já tenho conta";
-        document.getElementById('loginError').innerText="";
+
+    document.getElementById('switchBtn').onclick = () => {
+        isLoginMode = !isLoginMode;
+        document.getElementById('formTitle').innerText = isLoginMode ? "Entrar na sua temporada" : "Criar sua temporada";
+        document.getElementById('submitBtn').innerText = isLoginMode ? "Entrar" : "Criar conta";
+        document.getElementById('switchBtn').innerText = isLoginMode ? "Criar sua temporada" : "Já tenho conta";
+        document.getElementById('loginError').innerText = "";
+    };
+
+    document.getElementById('logoutBtn').onclick = () => {
+        currentUser = null;
+        document.getElementById('dashboard').style.display = 'none';
+        document.getElementById('loginScreen').style.display = 'flex';
     };
 </script>
 </body>
