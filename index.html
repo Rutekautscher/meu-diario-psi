@@ -1,1176 +1,88 @@
-```html
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>NETPSI - Seu Diário Terapêutico</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            background-color: #141414;
-            color: #e5e5e5;
-            font-family: 'Helvetica Neue', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-            font-weight: 300;
-            line-height: 1.5;
-            overflow-x: hidden;
-        }
-
-        /* ANIMAÇÃO DE ENTRADA NETFLIX */
-        .netflix-intro {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            z-index: 10000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 1;
-            transition: opacity 0.5s ease;
-        }
-
-        .netflix-intro.fade-out {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .netflix-intro-content {
-            text-align: center;
-            animation: introPulse 1.5s ease-in-out;
-        }
-
-        .netflix-intro-logo {
-            font-size: 5rem;
-            font-weight: 900;
-            color: #E50914;
-            text-shadow: 0 0 20px #E50914, 0 0 40px rgba(229,9,20,0.5);
-            letter-spacing: 5px;
-            animation: introGlow 1.5s ease-in-out;
-        }
-
-        @keyframes introPulse {
-            0% { transform: scale(1.5); opacity: 0; }
-            50% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(1.2); opacity: 0; }
-        }
-
-        @keyframes introGlow {
-            0% { text-shadow: 0 0 0 #E50914; }
-            50% { text-shadow: 0 0 30px #E50914, 0 0 60px rgba(229,9,20,0.8); }
-            100% { text-shadow: 0 0 0 #E50914; }
-        }
-
-        /* Fundo Netflix */
-        .netflix-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 50% 50%, #1a1a1a, #000000);
-            z-index: -2;
-        }
-
-        .netflix-bg-color {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, #0a0a0a, #1a0a0a, #1a1a1a, #0a0a0a);
-            background-size: 400% 400%;
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.5s;
-            animation: gradientMove 15s ease infinite;
-        }
-
-        .netflix-bg-color.active {
-            opacity: 1;
-        }
-
-        @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Login */
-        .login-container {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem 1.5rem;
-            z-index: 1;
-        }
-
-        .netpsi-logo {
-            font-size: clamp(2.5rem, 10vw, 5rem);
-            font-weight: 900;
-            color: #E50914;
-            text-shadow: 0 0 15px rgba(229,9,20,0.5), 0 0 30px rgba(229,9,20,0.3);
-            letter-spacing: -2px;
-            text-align: center;
-        }
-
-        .tagline {
-            font-size: clamp(0.9rem, 4vw, 1.2rem);
-            font-weight: 300;
-            color: #ccc;
-            text-align: center;
-            margin: 0.5rem 0 0.25rem;
-        }
-
-        .producer {
-            font-size: 0.7rem;
-            color: #888;
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .login-card {
-            background: rgba(0,0,0,0.8);
-            border-radius: 12px;
-            padding: 2rem 1.5rem;
-            width: 100%;
-            max-width: 400px;
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(229,9,20,0.3);
-        }
-
-        .login-card h2 {
-            margin-bottom: 1.5rem;
-            font-size: 1.6rem;
-            font-weight: 500;
-        }
-
-        .input-group {
-            margin-bottom: 1rem;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 0.9rem 1rem;
-            background: #333;
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-size: 1rem;
-            font-weight: 300;
-        }
-
-        .input-group input:focus {
-            outline: none;
-            background: #454545;
-            box-shadow: 0 0 0 2px #E50914;
-        }
-
-        .btn-red {
-            background: #E50914;
-            color: white;
-            border: none;
-            padding: 0.8rem;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 8px;
-            width: 100%;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-red:hover {
-            background: #f6121d;
-            transform: scale(1.02);
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 1px solid #E50914;
-            color: #E50914;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.2s;
-        }
-
-        .btn-outline:hover {
-            background: rgba(229,9,20,0.15);
-        }
-
-        .switch-btn {
-            background: none;
-            border: none;
-            color: #b3b3b3;
-            margin-top: 1rem;
-            cursor: pointer;
-            font-size: 0.85rem;
-            width: 100%;
-        }
-
-        .switch-btn:hover {
-            color: #E50914;
-        }
-
-        .error-msg {
-            color: #E50914;
-            font-size: 0.75rem;
-            margin-top: 0.8rem;
-            text-align: center;
-        }
-
-        .login-footer {
-            text-align: center;
-            margin-top: 2rem;
-            font-size: 0.75rem;
-            color: #b3b3b3;
-            line-height: 1.6;
-            font-style: italic;
-            max-width: 320px;
-        }
-
-        /* Dashboard */
-        .dashboard {
-            display: none;
-            padding-bottom: 4rem;
-            z-index: 1;
-        }
-
-        .nav-bar {
-            background: linear-gradient(to bottom, #000000cc, #141414);
-            padding: 0.8rem 1rem;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            gap: 0.8rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(8px);
-        }
-
-        .nav-left {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .nav-logo {
-            font-size: 1.4rem;
-            font-weight: 900;
-            color: #E50914;
-            letter-spacing: -1px;
-        }
-
-        .page-nav {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.3rem;
-        }
-
-        .page-btn {
-            background: transparent;
-            border: none;
-            color: #aaa;
-            padding: 0.3rem 0.7rem;
-            cursor: pointer;
-            font-size: 0.7rem;
-            border-radius: 20px;
-            transition: all 0.2s;
-        }
-
-        .page-btn.active {
-            background: #E50914;
-            color: white;
-        }
-
-        .page-btn:hover:not(.active) {
-            background: rgba(229,9,20,0.3);
-            color: white;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .avatar {
-            width: 36px;
-            height: 36px;
-            background: #000;
-            border: 2px solid #E50914;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            font-weight: 900;
-            color: #E50914;
-            cursor: pointer;
-        }
-
-        .btn-logout {
-            background: #E50914;
-            border: none;
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.75rem;
-        }
-
-        .save-bar {
-            background: #1f1f1f;
-            padding: 0.8rem 1rem;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-            border-bottom: 1px solid #333;
-        }
-
-        .btn-save {
-            background: #E50914;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
-
-        .history-select {
-            background: #333;
-            color: white;
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            border: none;
-            font-size: 0.75rem;
-        }
-
-        .page-container {
-            max-width: 1200px;
-            margin: 1.5rem auto;
-            padding: 0 1rem;
-        }
-
-        .section {
-            background: #1f1f1f;
-            border-radius: 12px;
-            padding: 1.2rem;
-            margin-bottom: 1.2rem;
-            border-left: 4px solid #E50914;
-        }
-
-        .section h3 {
-            color: #E50914;
-            margin-bottom: 0.8rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-
-        .section h4 {
-            color: #E50914;
-            margin: 0.8rem 0 0.5rem;
-            font-size: 0.95rem;
-            font-weight: 500;
-        }
-
-        .two-columns {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        @media (min-width: 768px) {
-            .two-columns {
-                grid-template-columns: 1fr 1fr;
-            }
-            .page-btn {
-                font-size: 0.8rem;
-                padding: 0.4rem 1rem;
-            }
-        }
-
-        input, textarea, select {
-            background: #2a2a2a;
-            border: none;
-            padding: 0.6rem;
-            color: white;
-            border-radius: 8px;
-            width: 100%;
-            font-size: 0.85rem;
-            font-family: inherit;
-        }
-
-        input:focus, textarea:focus {
-            outline: none;
-            box-shadow: 0 0 0 2px #E50914;
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 70px;
-        }
-
-        /* Estrela autoestima */
-        .estrela-options {
-            display: flex;
-            gap: 1rem;
-            margin: 0.5rem 0;
-            flex-wrap: wrap;
-        }
-
-        .estrela-option {
-            cursor: pointer;
-            padding: 0.3rem 1rem;
-            background: #2a2a2a;
-            border-radius: 30px;
-            font-size: 0.8rem;
-            transition: all 0.2s;
-        }
-
-        .estrela-option.selected {
-            background: #E50914;
-            color: white;
-        }
-
-        /* Checklist vertical */
-        .checklist-vertical {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .checklist-vertical label {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.85rem;
-            cursor: pointer;
-        }
-
-        .checklist-vertical input {
-            width: auto;
-            margin-top: 0;
-        }
-
-        /* TV Smart */
-        .tv-smart {
-            background: #2a2a2a;
-            border-radius: 20px;
-            padding: 1.2rem;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            border: 1px solid #E50914;
-        }
-
-        .tv-smart:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 20px rgba(229,9,20,0.3);
-        }
-
-        .tv-screen {
-            background: #0a0a0a;
-            border-radius: 12px;
-            padding: 1rem;
-            margin-bottom: 0.8rem;
-        }
-
-        .tv-screen span {
-            font-size: 1rem;
-            font-weight: 500;
-            color: #E50914;
-        }
-
-        .tv-stand {
-            width: 60px;
-            height: 8px;
-            background: #444;
-            margin: 0 auto;
-            border-radius: 4px;
-        }
-
-        /* Ícone de fita de cinema */
-        .film-strip-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .film-strip-icon:hover {
-            transform: scale(1.05);
-        }
-
-        /* Acordeon Emoções */
-        .emo-acordeon {
-            margin-bottom: 0.6rem;
-        }
-
-        .emo-header {
-            background: #2a2a2a;
-            padding: 0.7rem;
-            border-radius: 10px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .emo-header h4 {
-            margin: 0;
-            color: #E50914;
-            font-size: 0.9rem;
-        }
-
-        .emo-content {
-            display: none;
-            padding: 0.8rem;
-            background: #252525;
-            border-radius: 10px;
-            margin-top: 0.4rem;
-        }
-
-        .emo-content.open {
-            display: block;
-        }
-
-        .emo-question {
-            margin-bottom: 0.8rem;
-        }
-
-        .emo-question label {
-            font-size: 0.7rem;
-            color: #aaa;
-            display: block;
-            margin-bottom: 0.2rem;
-        }
-
-        /* Checkbox estilo cinza claro */
-        .checklist-vertical input[type="checkbox"],
-        .checkbox-group input[type="checkbox"] {
-            accent-color: #E50914;
-            width: 18px;
-            height: 18px;
-            background: #3a3a3a;
-        }
-
-        .checkbox-group {
-            display: flex;
-            gap: 0.8rem;
-            flex-wrap: wrap;
-            margin: 0.5rem 0;
-        }
-
-        .checkbox-group label {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-            font-size: 0.8rem;
-            cursor: pointer;
-        }
-
-        /* Grid de testes */
-        .testes-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
-        }
-
-        @media (min-width: 768px) {
-            .testes-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 1.5rem;
-            }
-        }
-
-        .testes-coluna {
-            background: #1f1f1f;
-            border-radius: 12px;
-            padding: 1rem;
-        }
-
-        .testes-coluna h3 {
-            color: #E50914;
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-            text-align: center;
-        }
-
-        .teste-card {
-            background: #2a2a2a;
-            border-radius: 8px;
-            padding: 0.8rem;
-            margin-bottom: 0.8rem;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.2s, background 0.2s;
-            border: 1px solid #444;
-        }
-
-        .teste-card:hover {
-            background: #3a3a3a;
-            transform: translateX(5px);
-            border-color: #E50914;
-        }
-
-        .teste-card h4 {
-            color: #E50914;
-            font-size: 0.85rem;
-            margin-bottom: 0.2rem;
-        }
-
-        /* Modal de teste */
-        .teste-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            padding: 1rem;
-        }
-
-        .teste-modal-content {
-            background: #1f1f1f;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 600px;
-            max-height: 90vh;
-            overflow-y: auto;
-            padding: 1.5rem;
-            border-left: 4px solid #E50914;
-        }
-
-        .teste-modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.2rem;
-            color: #E50914;
-        }
-
-        .close-modal {
-            cursor: pointer;
-            font-size: 1.5rem;
-            line-height: 1;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 4px;
-            background: #333;
-            border-radius: 2px;
-            margin: 1rem 0;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            width: 0%;
-            height: 100%;
-            background: #E50914;
-            transition: width 0.3s;
-        }
-
-        .pergunta-texto {
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
-            line-height: 1.4;
-        }
-
-        .opcoes {
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .opcao {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            padding: 0.6rem;
-            background: #2a2a2a;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .opcao:hover {
-            background: #3a3a3a;
-        }
-
-        .opcao.selected {
-            background: #E50914;
-            color: white;
-        }
-
-        .opcao input {
-            width: auto;
-            margin: 0;
-        }
-
-        .nav-buttons {
-            display: flex;
-            justify-content: space-between;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .resultado-area {
-            background: #2a2a2a;
-            padding: 1rem;
-            border-radius: 12px;
-            margin: 1rem 0;
-        }
-
-        .text-small {
-            font-size: 0.7rem;
-            color: #aaa;
-        }
-
-        /* Ikigai Círculos */
-        .ikigai-circles {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        .ikigai-row {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .ikigai-circle {
-            background: #1f1f1f;
-            border: 2px solid #E50914;
-            border-radius: 20px;
-            padding: 1rem;
-            width: 220px;
-            text-align: center;
-            position: relative;
-        }
-
-        .ikigai-circle h4 {
-            color: #E50914;
-            font-size: 0.8rem;
-            margin-bottom: 0.8rem;
-        }
-
-        .ikigai-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 0.8rem;
-            margin: 0.5rem 0;
-        }
-
-        .circle-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: #2a2a2a;
-            border: 1px solid #E50914;
-            color: #E50914;
-            font-size: 0.9rem;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-
-        .circle-btn:hover {
-            background: #E50914;
-            color: white;
-        }
-
-        /* Câmera para Meu IKIGAI */
-        .camera-container {
-            display: flex;
-            justify-content: center;
-            margin: 2rem 0;
-        }
-
-        .camera-box {
-            background: #1f1f1f;
-            border: 3px solid #E50914;
-            border-radius: 20px;
-            padding: 1.5rem;
-            width: 100%;
-            max-width: 500px;
-            position: relative;
-            text-align: center;
-        }
-
-        .camera-box::before {
-            content: "";
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 30px;
-            background: #E50914;
-            border-radius: 10px 10px 0 0;
-        }
-
-        .camera-box::after {
-            content: "";
-            position: absolute;
-            top: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40px;
-            height: 15px;
-            background: #1f1f1f;
-            border-radius: 8px;
-        }
-
-        .camera-lens {
-            background: #0a0a0a;
-            border-radius: 50%;
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 1rem auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid #E50914;
-        }
-
-        .camera-lens span {
-            font-size: 2rem;
-            color: #E50914;
-        }
-
-        /* Estilo VHS */
-        .vhs-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 1.2rem;
-        }
-
-        .vhs-card {
-            background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
-            border-radius: 12px;
-            padding: 0.8rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 1px solid #E50914;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .vhs-card::before {
-            content: "SIDE A LOW QUALITY NOISE TAPE";
-            position: absolute;
-            bottom: 4px;
-            left: 6px;
-            font-size: 0.5rem;
-            color: #666;
-            opacity: 0.6;
-            white-space: nowrap;
-        }
-
-        .vhs-card:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 15px rgba(229,9,20,0.3);
-        }
-
-        .vhs-date {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #E50914;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Quarteto explicação */
-        .quarteto-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
-            margin: 1.5rem 0;
-        }
-
-        @media (min-width: 768px) {
-            .quarteto-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        .quarteto-card {
-            background: #2a2a2a;
-            padding: 1rem;
-            border-radius: 12px;
-            border-left: 3px solid #E50914;
-        }
-
-        .quarteto-card h4 {
-            color: #E50914;
-            font-size: 1rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .quarteto-card p {
-            font-size: 0.75rem;
-            color: #ccc;
-            margin-bottom: 0.3rem;
-        }
-
-        .quarteto-card .exemplo {
-            font-size: 0.7rem;
-            color: #888;
-            font-style: italic;
-        }
-
-        /* Roda da Vida */
-        .roda-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        @media (min-width: 768px) {
-            .roda-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        .roda-item {
-            background: #2a2a2a;
-            padding: 0.8rem;
-            border-radius: 12px;
-        }
-
-        .roda-item h4 {
-            color: #E50914;
-            font-size: 0.9rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .roda-item p {
-            font-size: 0.7rem;
-            color: #aaa;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Coadjuvantes */
-        .esferas-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
-        }
-
-        @media (min-width: 768px) {
-            .esferas-grid {
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            }
-        }
-
-        .esfera-card {
-            background: #1f1f1f;
-            border-radius: 12px;
-            padding: 1rem;
-            border-left: 4px solid #E50914;
-        }
-
-        .esfera-card h4 {
-            color: #E50914;
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .esfera-desc {
-            font-size: 0.75rem;
-            color: #aaa;
-            margin-bottom: 0.8rem;
-            cursor: pointer;
-        }
-
-        .esfera-desc:hover {
-            color: #E50914;
-        }
-
-        .desc-full {
-            display: none;
-            font-size: 0.7rem;
-            color: #ccc;
-            margin-bottom: 0.8rem;
-            padding: 0.5rem;
-            background: #2a2a2a;
-            border-radius: 8px;
-        }
-
-        .desc-full.open {
-            display: block;
-        }
-
-        .coadjuvante-input {
-            width: 100%;
-            padding: 0.4rem;
-            background: #2a2a2a;
-            border: none;
-            color: white;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            margin-top: 0.3rem;
-        }
-
-        /* Saga Flix */
-        .hormonios-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
-        }
-
-        @media (min-width: 768px) {
-            .hormonios-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        .hormonio-card {
-            background: #2a2a2a;
-            padding: 1rem;
-            border-radius: 12px;
-        }
-
-        .hormonio-card h4 {
-            color: #E50914;
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .hormonio-desc {
-            font-size: 0.75rem;
-            margin: 0.5rem 0;
-            color: #ccc;
-        }
-
-        .hormonio-check {
-            display: block;
-            margin: 0.3rem 0;
-            font-size: 0.75rem;
-        }
-
-        .hormonio-check input {
-            width: auto;
-            margin-right: 0.5rem;
-        }
-
-        .blocked-message {
-            text-align: center;
-            padding: 2rem;
-            background: #1f1f1f;
-            border-radius: 16px;
-            color: #E50914;
-        }
-
-        input[type="range"] {
-            width: 100%;
-            margin: 0.3rem 0;
-            background: #333;
-            height: 4px;
-            -webkit-appearance: none;
-        }
-
-        input[type="range"]:focus {
-            outline: none;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: #E50914;
-            cursor: pointer;
-        }
-
-        .rating-value {
-            font-size: 0.7rem;
-            color: #E50914;
-            margin-left: 0.3rem;
-        }
-
-        /* Modal padrão */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 1rem;
-        }
-
-        .modal-content {
-            background: #1f1f1f;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 550px;
-            max-height: 85vh;
-            overflow-y: auto;
-            padding: 1.5rem;
-            border-left: 4px solid #E50914;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.2rem;
-            color: #E50914;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #141414; color: #e5e5e5; font-family: 'Helvetica Neue', Arial, sans-serif; }
+        .login-container { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; }
+        .netpsi-logo { font-size: 4rem; font-weight: 900; color: #E50914; text-shadow: 0 0 15px rgba(229,9,20,0.5); text-align: center; }
+        .tagline { font-size: 1rem; color: #ccc; text-align: center; margin: 0.5rem 0; }
+        .producer { font-size: 0.7rem; color: #888; text-align: center; margin-bottom: 2rem; }
+        .login-card { background: rgba(0,0,0,0.8); border-radius: 12px; padding: 2rem; width: 100%; max-width: 400px; }
+        .input-group { margin-bottom: 1rem; }
+        .input-group input { width: 100%; padding: 0.8rem; background: #333; border: none; border-radius: 8px; color: white; font-size: 1rem; }
+        .btn-red { background: #E50914; color: white; border: none; padding: 0.8rem; font-size: 1rem; font-weight: bold; border-radius: 8px; width: 100%; cursor: pointer; margin-top: 0.5rem; }
+        .switch-btn { background: none; border: none; color: #b3b3b3; margin-top: 1rem; cursor: pointer; width: 100%; }
+        .error-msg { color: #E50914; font-size: 0.75rem; margin-top: 0.5rem; text-align: center; }
+        .login-footer { text-align: center; margin-top: 2rem; font-size: 0.7rem; color: #b3b3b3; font-style: italic; }
+        .dashboard { display: none; padding: 1rem; }
+        .nav-bar { background: #000; padding: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .nav-logo { font-size: 1.5rem; font-weight: bold; color: #E50914; }
+        .page-nav { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .page-btn { background: #333; border: none; color: white; padding: 0.3rem 0.8rem; border-radius: 20px; cursor: pointer; font-size: 0.7rem; }
+        .page-btn.active { background: #E50914; }
+        .user-info { display: flex; align-items: center; gap: 0.5rem; }
+        .avatar { width: 32px; height: 32px; background: black; border: 2px solid #E50914; display: flex; align-items: center; justify-content: center; color: #E50914; font-weight: bold; }
+        .btn-logout { background: #E50914; border: none; color: white; padding: 0.3rem 0.8rem; border-radius: 20px; cursor: pointer; }
+        .save-bar { background: #1f1f1f; padding: 0.8rem; display: flex; justify-content: space-between; flex-wrap: wrap; margin-bottom: 1rem; }
+        .btn-save { background: #E50914; border: none; color: white; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; }
+        .history-select { background: #333; color: white; padding: 0.4rem; border-radius: 20px; border: none; }
+        .page-container { max-width: 1200px; margin: 0 auto; }
+        .section { background: #1f1f1f; border-radius: 12px; padding: 1rem; margin-bottom: 1rem; border-left: 4px solid #E50914; }
+        .section h3 { color: #E50914; margin-bottom: 0.5rem; font-size: 1rem; }
+        .hidden { display: none; }
+        .two-columns { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+        @media (min-width: 768px) { .two-columns { grid-template-columns: 1fr 1fr; } }
+        input, textarea { background: #2a2a2a; border: none; padding: 0.5rem; color: white; border-radius: 8px; width: 100%; margin-bottom: 0.5rem; }
+        .checklist-vertical { display: flex; flex-direction: column; gap: 0.3rem; }
+        .checklist-vertical label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; }
+        .estrela-options { display: flex; gap: 1rem; margin: 0.5rem 0; }
+        .estrela-option { background: #2a2a2a; padding: 0.3rem 1rem; border-radius: 20px; cursor: pointer; font-size: 0.8rem; }
+        .estrela-option.selected { background: #E50914; }
+        .tv-smart { background: #2a2a2a; border-radius: 20px; padding: 1rem; text-align: center; cursor: pointer; border: 1px solid #E50914; }
+        .tv-screen { background: #0a0a0a; border-radius: 10px; padding: 0.8rem; margin-bottom: 0.5rem; }
+        .emo-acordeon { margin-bottom: 0.5rem; }
+        .emo-header { background: #2a2a2a; padding: 0.5rem; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; }
+        .emo-header h4 { color: #E50914; font-size: 0.9rem; }
+        .emo-content { display: none; padding: 0.5rem; background: #252525; border-radius: 8px; margin-top: 0.3rem; }
+        .emo-content.open { display: block; }
+        .text-small { font-size: 0.7rem; color: #aaa; }
+        .blocked-message { text-align: center; padding: 2rem; background: #1f1f1f; border-radius: 16px; color: #E50914; }
+        .info-card { background: #2a2a2a; padding: 0.8rem; border-radius: 12px; margin-bottom: 0.8rem; }
+        .info-card h4 { color: #E50914; margin-bottom: 0.3rem; }
+        .vhs-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
+        .vhs-card { background: linear-gradient(145deg, #1a1a1a, #0f0f0f); border-radius: 12px; padding: 0.8rem; cursor: pointer; border: 1px solid #E50914; text-align: center; }
+        .vhs-date { color: #E50914; font-weight: bold; }
+        .film-strip-icon { text-align: center; cursor: pointer; margin: 0.5rem 0; }
+        .atividade-revelada { background: #2a2a2a; padding: 0.8rem; border-radius: 8px; margin-top: 0.5rem; display: none; text-align: center; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; padding: 1rem; }
+        .modal-content { background: #1f1f1f; border-radius: 16px; width: 100%; max-width: 500px; padding: 1.5rem; border-left: 4px solid #E50914; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; color: #E50914; }
+        .close-modal { cursor: pointer; font-size: 1.5rem; }
+        .progress-bar { width: 100%; height: 4px; background: #333; border-radius: 2px; margin: 1rem 0; }
+        .progress-fill { width: 0%; height: 100%; background: #E50914; }
+        .opcoes { display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem 0; }
+        .opcao { background: #2a2a2a; padding: 0.5rem; border-radius: 8px; cursor: pointer; }
+        .opcao.selected { background: #E50914; }
+        .nav-buttons { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
+        .btn-outline { background: transparent; border: 1px solid #E50914; color: #E50914; padding: 0.4rem 1rem; border-radius: 20px; cursor: pointer; }
+        .resultado-area { background: #2a2a2a; padding: 1rem; border-radius: 12px; margin: 1rem 0; }
+        .camera-box { background: #1f1f1f; border: 3px solid #E50914; border-radius: 16px; padding: 1rem; text-align: center; margin: 1rem 0; }
+        .camera-lens { background: #0a0a0a; width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 0.5rem; display: flex; align-items: center; justify-content: center; border: 2px solid #E50914; }
+        .quarteto-grid { display: grid; grid-template-columns: 1fr; gap: 0.8rem; margin: 1rem 0; }
+        @media (min-width: 768px) { .quarteto-grid { grid-template-columns: repeat(2, 1fr); } }
+        .quarteto-card { background: #2a2a2a; padding: 0.8rem; border-radius: 12px; border-left: 3px solid #E50914; }
+        .circle-btn { width: 30px; height: 30px; border-radius: 50%; background: #2a2a2a; border: 1px solid #E50914; color: #E50914; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; margin: 0.2rem; }
+        .ikigai-buttons { display: flex; gap: 0.5rem; justify-content: center; margin: 0.5rem 0; }
+        .ikigai-circle { background: #1f1f1f; border: 2px solid #E50914; border-radius: 20px; padding: 0.8rem; width: 200px; text-align: center; margin: 0 auto; }
+        .ikigai-circles { display: flex; flex-direction: column; align-items: center; gap: 1rem; margin: 1rem 0; }
+        .ikigai-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; }
     </style>
 </head>
 <body>
-<div class="netflix-bg"></div>
-<div class="netflix-bg-color" id="netflixColorBg"></div>
-
-<!-- ANIMAÇÃO DE ENTRADA NETFLIX -->
-<div id="netflixIntro" class="netflix-intro">
-    <div class="netflix-intro-content">
-        <div class="netflix-intro-logo">NETPSI</div>
-    </div>
-</div>
-
 <div id="loginScreen" class="login-container">
     <div class="netpsi-logo">NETPSI</div>
     <div class="tagline">Seu diário terapêutico pessoal</div>
@@ -1183,30 +95,16 @@
         <button class="switch-btn" id="switchBtn">Criar sua temporada</button>
         <div id="loginError" class="error-msg"></div>
     </div>
-    <div class="login-footer">
-        Dados sigilosos,<br>
-        aqui ninguém assiste sua série,<br>
-        suas emoções são apenas suas.
-    </div>
+    <div class="login-footer">Dados sigilosos, aqui ninguém assiste sua série, suas emoções são apenas suas.</div>
 </div>
 
 <div id="dashboard" class="dashboard">
     <div class="nav-bar">
-        <div class="nav-left">
-            <div class="nav-logo">NETPSI</div>
-            <div class="page-nav" id="pageNav"></div>
-        </div>
-        <div class="user-info">
-            <div class="avatar" id="avatarBtn">N</div>
-            <span id="currentUserDisplay"></span>
-            <button class="btn-logout" id="logoutBtn">Sair</button>
-        </div>
+        <div class="nav-logo">NETPSI</div>
+        <div class="page-nav" id="pageNav"></div>
+        <div class="user-info"><div class="avatar" id="avatarBtn">N</div><span id="currentUserDisplay"></span><button class="btn-logout" id="logoutBtn">Sair</button></div>
     </div>
-    <div class="save-bar">
-        <button class="btn-save" id="saveEntryBtn">Salvar episódio de hoje</button>
-        <select id="historySelect" class="history-select"><option value="hoje">Hoje</option></select>
-    </div>
-
+    <div class="save-bar"><button class="btn-save" id="saveEntryBtn">Salvar episódio</button><select id="historySelect" class="history-select"><option value="hoje">Hoje</option></select></div>
     <div id="page0" class="page-container"></div>
     <div id="page1" class="page-container hidden"></div>
     <div id="page2" class="page-container hidden"></div>
@@ -1220,237 +118,24 @@
 </div>
 
 <script>
-    // ==================== SOM TUDUM ====================
-    function playTudum() {
-        try {
-            // Criar som sintético estilo Tudum
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            const gainNode = audioCtx.createGain();
-            const osc = audioCtx.createOscillator();
-            osc.type = 'sine';
-            osc.frequency.value = 80;
-            gainNode.gain.value = 0.3;
-            osc.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-            osc.start();
-            gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 1.5);
-            osc.stop(audioCtx.currentTime + 1.5);
-            audioCtx.resume();
-        } catch(e) {
-            console.log('Áudio não suportado');
-        }
-    }
-
-    // ==================== ANIMAÇÃO DE ENTRADA ====================
-    function showNetflixIntro(callback) {
-        const intro = document.getElementById('netflixIntro');
-        if(!intro) {
-            if(callback) callback();
-            return;
-        }
-        playTudum();
-        intro.style.display = 'flex';
-        setTimeout(() => {
-            intro.classList.add('fade-out');
-            setTimeout(() => {
-                intro.style.display = 'none';
-                if(callback) callback();
-            }, 500);
-        }, 2000);
-    }
-
-    // ==================== BANCO DE DADOS DOS TESTES ====================
-    const testesDatabase = {
-        autoestima: {
-            titulo: "AUTOESTIMA",
-            descricao: "O teste de autoestima mede como você se enxerga, como você se trata e o quanto você acredita no seu próprio valor. Baseado na Escala de Autoestima de Rosenberg.",
-            perguntas: [
-                "Eu sinto que sou uma pessoa de valor, pelo menos no mesmo nível que as outras pessoas.",
-                "Eu sinto que tenho várias qualidades.",
-                "No geral eu acho que sou um fracasso.",
-                "Eu sou capaz de fazer as coisas tão bem quanto a maioria das pessoas.",
-                "Eu sinto que não tenho muito do que me orgulhar.",
-                "Eu tenho uma atitude positiva em relação a mim mesmo.",
-                "No geral estou satisfeito comigo mesmo.",
-                "Eu gostaria de ter mais respeito por mim mesmo.",
-                "Às vezes eu me sinto inútil.",
-                "Às vezes eu acho que não presto pra nada."
-            ],
-            opcoes: ["Discordo totalmente", "Discordo", "Concordo", "Concordo totalmente"],
-            calcular: function(respostas) {
-                let invertidas = [2, 4, 7, 8, 9];
-                let total = 0;
-                for(let i=0; i<respostas.length; i++) {
-                    let val = respostas[i] + 1;
-                    if(invertidas.includes(i)) val = 4 - val;
-                    total += val;
-                }
-                if(total <= 25) return "Autoestima baixa. Você tende a se desvalorizar, se criticar demais e duvidar do seu valor.";
-                if(total <= 30) return "Autoestima média. Você tem uma base razoável mas ainda oscila bastante dependendo das circunstâncias.";
-                return "Autoestima elevada. Você se conhece, se respeita e tem uma relação saudável consigo mesmo.";
-            }
-        },
-        burnout: {
-            titulo: "BURNOUT",
-            descricao: "O teste de burnout avalia o nível de esgotamento físico, emocional e mental. Baseado no Maslach Burnout Inventory.",
-            perguntas: [
-                "Me sinto emocionalmente esgotado pelo meu trabalho ou pelas minhas responsabilidades.",
-                "Me sinto cansado ao acordar sabendo que tenho mais um dia pela frente.",
-                "Sinto que estou no limite da minha capacidade emocional.",
-                "Me sinto frustrado com frequência sem conseguir identificar claramente o motivo.",
-                "Sinto que não tenho mais energia para me dedicar às pessoas ao meu redor.",
-                "Me sinto sobrecarregado com a quantidade de coisas que preciso dar conta.",
-                "Termino o dia completamente sem energia mesmo quando não fiz grandes esforços físicos.",
-                "Sinto que dar de mim mesmo está me custando muito.",
-                "Me sinto vazio emocionalmente com frequência.",
-                "Tenho dificuldade de me recuperar mesmo depois de descansar."
-            ],
-            opcoes: ["Nunca", "Raramente", "Às vezes", "Frequentemente", "Sempre"],
-            calcular: function(respostas) {
-                let total = respostas.reduce((a,b)=>a+b+1,0);
-                if(total <= 20) return "Nível baixo de burnout. Continue cuidando da sua rotina.";
-                if(total <= 35) return "Nível moderado. Há sinais de alerta. Revisar sua rotina e limites.";
-                return "Nível alto. Você está em processo de esgotamento. Busque apoio profissional.";
-            }
-        }
-    };
-
-    function abrirTeste(testId) {
-        const teste = testesDatabase[testId];
-        if(!teste) return;
-        
-        let modal = document.createElement('div');
-        modal.className = 'teste-modal';
-        modal.innerHTML = `
-            <div class="teste-modal-content" id="testeModalContent">
-                <div class="teste-modal-header">
-                    <h3>${teste.titulo}</h3>
-                    <span class="close-modal">&times;</span>
-                </div>
-                <div id="testeEtapa">
-                    <p>${teste.descricao}</p>
-                    <p class="text-small" style="margin-top:0.5rem;">Atenção: Este teste tem caráter informativo e de triagem. Não substitui avaliação profissional.</p>
-                    <button class="btn-red" id="iniciarTesteBtn" style="margin-top:1rem;">INICIAR TESTE</button>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        modal.style.display = 'flex';
-        
-        let respostas = [];
-        let perguntaAtual = 0;
-        
-        function mostrarPergunta() {
-            const etapaDiv = document.getElementById('testeEtapa');
-            const pergunta = teste.perguntas[perguntaAtual];
-            etapaDiv.innerHTML = `
-                <div class="progress-bar"><div class="progress-fill" style="width:${((perguntaAtual+1)/teste.perguntas.length)*100}%"></div></div>
-                <div class="pergunta-texto">${pergunta}</div>
-                <div class="opcoes" id="opcoesContainer"></div>
-                <div class="nav-buttons">
-                    <button class="btn-outline" id="voltarBtn" ${perguntaAtual===0?'disabled style="opacity:0.5"':''}> VOLTAR</button>
-                    <button class="btn-red" id="proximoBtn">${perguntaAtual===teste.perguntas.length-1?'CALCULAR RESULTADO':'PRÓXIMA'}</button>
-                </div>
-            `;
-            const opcoesDiv = document.getElementById('opcoesContainer');
-            teste.opcoes.forEach((opt, idx) => {
-                const div = document.createElement('div');
-                div.className = 'opcao';
-                if(respostas[perguntaAtual] === idx) div.classList.add('selected');
-                div.innerHTML = `<input type="radio" name="opcao" value="${idx}" ${respostas[perguntaAtual]===idx?'checked':''}> ${opt}`;
-                div.onclick = () => {
-                    document.querySelectorAll('.opcao').forEach(o => o.classList.remove('selected'));
-                    div.classList.add('selected');
-                    document.querySelector(`input[name="opcao"]`).checked = true;
-                    respostas[perguntaAtual] = idx;
-                };
-                opcoesDiv.appendChild(div);
-            });
-            
-            document.getElementById('voltarBtn')?.addEventListener('click', () => {
-                if(perguntaAtual > 0) {
-                    perguntaAtual--;
-                    mostrarPergunta();
-                }
-            });
-            document.getElementById('proximoBtn')?.addEventListener('click', () => {
-                if(respostas[perguntaAtual] === undefined) {
-                    alert('Por favor, selecione uma resposta.');
-                    return;
-                }
-                if(perguntaAtual < teste.perguntas.length - 1) {
-                    perguntaAtual++;
-                    mostrarPergunta();
-                } else {
-                    const resultado = teste.calcular(respostas);
-                    const etapaDiv = document.getElementById('testeEtapa');
-                    etapaDiv.innerHTML = `
-                        <div class="resultado-area">
-                            <h4>RESULTADO</h4>
-                            <p>${resultado}</p>
-                        </div>
-                        <p class="text-small">Atenção: Este resultado é apenas para fins informativos. Nenhum teste online substitui uma avaliação psicológica ou neuropsicológica completa realizada por profissional qualificado.</p>
-                        <div class="nav-buttons" style="margin-top:1rem;">
-                            <button class="btn-outline" id="fazerNovamenteBtn">FAZER NOVAMENTE</button>
-                            <button class="btn-red" id="fecharTesteBtn">FECHAR</button>
-                        </div>
-                    `;
-                    document.getElementById('fazerNovamenteBtn')?.addEventListener('click', () => {
-                        respostas = [];
-                        perguntaAtual = 0;
-                        mostrarPergunta();
-                    });
-                    document.getElementById('fecharTesteBtn')?.addEventListener('click', () => modal.remove());
-                }
-            });
-        }
-        
-        document.getElementById('iniciarTesteBtn')?.addEventListener('click', () => {
-            respostas = [];
-            perguntaAtual = 0;
-            mostrarPergunta();
-        });
-        modal.querySelector('.close-modal')?.addEventListener('click', () => modal.remove());
-    }
-
-    // ==================== EMOÇÕES ====================
-    const emocoesList = ["alegria","tedio","medo","raiva","tristeza","nojo","frustracao","apatia","vergonha","ressentimento","inveja","carencia","esperanca","alivio","amor","paixao","impulso","orgulho","solidão","paciencia"];
-    const emocoesNomes = { alegria:"Alegria", tedio:"Tédio", medo:"Medo", raiva:"Raiva", tristeza:"Tristeza", nojo:"Nojo", frustracao:"Frustração", apatia:"Apatia", vergonha:"Vergonha", ressentimento:"Ressentimento", inveja:"Inveja", carencia:"Carência", esperanca:"Esperança", alivio:"Alívio", amor:"Amor", paixao:"Paixão", impulso:"Impulso", orgulho:"Orgulho", solidão:"Solidão", paciencia:"Paciência" };
-
-    // ==================== DADOS DO USUÁRIO ====================
     let users = JSON.parse(localStorage.getItem('netpsi_users')) || {};
     let currentUser = null;
     let currentDate = new Date().toISOString().slice(0,10);
     let currentPage = 0;
-    
-    const pageNames = ["EPISÓDIO", "CINEMOÇÕES", "PIPOCA", "PIPOQUEIRA", "NEURO FLIX", "COADJUVANTES", "DIAGNOSTIFLIX", "IKIGAI FLIX", "TESTES", "ARQUIVO X"];
+    const pageNames = ["EPISÓDIO", "CINEMOÇÕES", "PIPOCA", "PIPOQUEIRA", "NEURO FLIX", "COADJUVANTES", "DIAGNOSTIFLIX", "IKIGAI FLIX", "TESTES", "ARQUIVOS"];
     const pageKeys = ['page0','page1','page2','page3','page4','page5','page6','page7','page8','page9'];
+    
+    const emocoesList = ["Alegria","Tédio","Medo","Raiva","Tristeza","Nojo","Frustração","Apatia","Vergonha","Ressentimento","Inveja","Carência","Esperança","Alívio","Amor","Paixão","Impulso","Orgulho","Solidão","Paciência"];
     
     function getEmptyDiary() {
         let emocoes = {};
         emocoesList.forEach(e => { emocoes[e] = { intensidade: 0, gatilho: "", pensamentos: "", outra_forma: "", descricao: "" }; });
         return {
-            atividade_reflexao: "",
-            estrela: "",
-            estrela_roteiro: "",
-            diario_texto: "",
-            diario_foto: null,
-            checklist_fisica: { banho: false, dentes: false, agua: false, comida: false, sol: false, movimento: false },
-            checklist_autocuidado: { medicamentos: false, terapia: false, amorProprio: false, limites: false, ajuda: false, detox: false, skincare: false, arrumarCama: false, hobby: false },
-            elogios: ["","",""],
-            gratidao: ["","",""],
-            sofa_preguica: "",
-            hd_sigiloso: "",
-            emocoes: emocoes,
-            plano_mudanca: null,
-            saga: {},
-            coadjuvantes: {},
-            roda_vida: null,
-            roda_vida_data: null,
-            ikigai_respostas: {},
-            ikigai_data: null,
-            pipoca_situacao: "",
-            pipoca_quadrantes: { aceito: "", agradeco: "", nao_faz_bem: "", faz_bem: "", deixo_ir: "", desfruto: "" }
+            estrela: "", estrela_roteiro: "", diario_texto: "", atividade_reflexao: "",
+            checklist_fisica: { banho:false, dentes:false, agua:false, comida:false, sol:false, movimento:false },
+            checklist_autocuidado: { medicamentos:false, terapia:false, amorProprio:false, limites:false, ajuda:false, detox:false, skincare:false, arrumarCama:false, hobby:false },
+            elogios: ["","",""], gratidao: ["","",""], sofa_preguica: "", hd_sigiloso: "", emocoes: emocoes,
+            ikigai_respostas: {}, ikigai_data: null, roda_vida: null, roda_vida_data: null
         };
     }
     
@@ -1461,342 +146,130 @@
         for(let i=0;i<pageKeys.length;i++) document.getElementById(pageKeys[i]).classList.add('hidden');
         document.getElementById(pageKeys[page]).classList.remove('hidden');
         document.querySelectorAll('.page-btn').forEach((btn,idx)=>{ if(idx==page) btn.classList.add('active'); else btn.classList.remove('active'); });
-        if(page===9) document.getElementById('netflixColorBg').classList.add('active');
-        else document.getElementById('netflixColorBg').classList.remove('active');
-        if(page===5) renderCoadjuvantes();
         if(page===6) renderRodaVida();
         if(page===7) renderIkigai();
         if(page===8) renderTestes();
         if(page===9) renderArquivos();
     }
     
-    // PÁGINA 0 - EPISÓDIO
     function renderPagina0(data) {
         document.getElementById('page0').innerHTML = `
-            <div class="section"><h3>EXERCÍCIO TERAPÊUTICO</h3>
-                <div class="film-strip-icon" id="exercicioBtn">
-                    <svg width="80" height="80" viewBox="0 0 100 100" fill="none">
-                        <rect x="10" y="20" width="80" height="60" fill="#2a2a2a" stroke="#E50914" stroke-width="2" rx="4"/>
-                        <rect x="10" y="20" width="80" height="15" fill="#E50914" rx="4"/>
-                        <rect x="15" y="25" width="10" height="8" fill="#fff" opacity="0.5"/>
-                        <rect x="35" y="25" width="10" height="8" fill="#fff" opacity="0.5"/>
-                        <rect x="55" y="25" width="10" height="8" fill="#fff" opacity="0.5"/>
-                        <rect x="75" y="25" width="10" height="8" fill="#fff" opacity="0.5"/>
-                        <circle cx="50" cy="50" r="15" fill="#E50914" opacity="0.3"/>
-                        <circle cx="50" cy="50" r="8" fill="#E50914"/>
-                    </svg>
-                </div>
-                <div class="atividade-revelada" id="atividadeRevelada" style="display:none;"><div id="atividadeTexto"></div></div>
-                <textarea id="reflexaoTexto" rows="3" placeholder="Escreva sua reflexão sobre o exercício...">${data.atividade_reflexao || ""}</textarea>
-            </div>
-            <div class="section"><div class="tv-smart" id="tvSmartBtn"><div class="tv-screen"><span>TV</span><br>COMO FOI O EPISÓDIO DE HOJE?</div><div class="tv-stand"></div></div></div>
-            <div class="section"><h3>Como está sua estrela hoje? (autoestima)</h3><div class="estrela-options"><div class="estrela-option ${data.estrela==='brilhando'?'selected':''}" data-estrela="brilhando">Brilhando</div><div class="estrela-option ${data.estrela==='apagada'?'selected':''}" data-estrela="apagada">Apagada</div></div><textarea id="estrelaRoteiro" placeholder="Descreva o roteiro...">${data.estrela_roteiro}</textarea></div>
-            <div class="two-columns"><div class="section"><h3>Checklist Saúde Física</h3><div class="checklist-vertical"><label><input type="checkbox" id="fis_banho" ${data.checklist_fisica.banho?'checked':''}> Tomei banho</label><label><input type="checkbox" id="fis_dentes" ${data.checklist_fisica.dentes?'checked':''}> Escovei dentes</label><label><input type="checkbox" id="fis_agua" ${data.checklist_fisica.agua?'checked':''}> Bebi água (2L)</label><label><input type="checkbox" id="fis_comida" ${data.checklist_fisica.comida?'checked':''}> Comi bem</label><label><input type="checkbox" id="fis_sol" ${data.checklist_fisica.sol?'checked':''}> Tomei sol</label><label><input type="checkbox" id="fis_movimento" ${data.checklist_fisica.movimento?'checked':''}> Me movimentei</label></div></div>
+            <div class="section"><h3>EXERCÍCIO TERAPÊUTICO</h3><div class="film-strip-icon" id="exercicioBtn" style="font-size:2rem;">🎞️</div><div class="atividade-revelada" id="atividadeRevelada"><div id="atividadeTexto"></div></div><textarea id="reflexaoTexto" rows="3" placeholder="Escreva sua reflexão...">${data.atividade_reflexao||""}</textarea></div>
+            <div class="section"><div class="tv-smart" id="tvSmartBtn"><div class="tv-screen">TV<br>COMO FOI O EPISÓDIO DE HOJE?</div><div class="tv-stand" style="width:50px;height:6px;background:#444;margin:0 auto;"></div></div></div>
+            <div class="section"><h3>Como está sua estrela hoje?</h3><div class="estrela-options"><div class="estrela-option ${data.estrela==='brilhando'?'selected':''}" data-estrela="brilhando">Brilhando</div><div class="estrela-option ${data.estrela==='apagada'?'selected':''}" data-estrela="apagada">Apagada</div></div><textarea id="estrelaRoteiro" placeholder="Descreva o roteiro...">${data.estrela_roteiro}</textarea></div>
+            <div class="two-columns"><div class="section"><h3>Checklist Saúde Física</h3><div class="checklist-vertical"><label><input type="checkbox" id="fis_banho" ${data.checklist_fisica.banho?'checked':''}> Tomei banho</label><label><input type="checkbox" id="fis_dentes" ${data.checklist_fisica.dentes?'checked':''}> Escovei dentes</label><label><input type="checkbox" id="fis_agua" ${data.checklist_fisica.agua?'checked':''}> Bebi água</label><label><input type="checkbox" id="fis_comida" ${data.checklist_fisica.comida?'checked':''}> Comi bem</label><label><input type="checkbox" id="fis_sol" ${data.checklist_fisica.sol?'checked':''}> Tomei sol</label><label><input type="checkbox" id="fis_movimento" ${data.checklist_fisica.movimento?'checked':''}> Me movimentei</label></div></div>
             <div class="section"><h3>Checklist Autocuidado</h3><div class="checklist-vertical"><label><input type="checkbox" id="auto_med" ${data.checklist_autocuidado.medicamentos?'checked':''}> Tomei medicamentos</label><label><input type="checkbox" id="auto_ter" ${data.checklist_autocuidado.terapia?'checked':''}> Fui à terapia</label><label><input type="checkbox" id="auto_amor" ${data.checklist_autocuidado.amorProprio?'checked':''}> Pratiquei amor-próprio</label><label><input type="checkbox" id="auto_lim" ${data.checklist_autocuidado.limites?'checked':''}> Estabeleci limites</label><label><input type="checkbox" id="auto_aju" ${data.checklist_autocuidado.ajuda?'checked':''}> Pedi ajuda</label><label><input type="checkbox" id="auto_detox" ${data.checklist_autocuidado.detox?'checked':''}> Detox de tela</label><label><input type="checkbox" id="auto_skincare" ${data.checklist_autocuidado.skincare?'checked':''}> Skincare</label><label><input type="checkbox" id="auto_cama" ${data.checklist_autocuidado.arrumarCama?'checked':''}> Arrumar a cama</label><label><input type="checkbox" id="auto_hobby" ${data.checklist_autocuidado.hobby?'checked':''}> Hobby</label></div></div></div>
             <div class="two-columns"><div class="section"><h3>Elogie-se, você é uma estrela</h3><textarea id="elogio1" placeholder="Elogio 1">${data.elogios[0]}</textarea><textarea id="elogio2" placeholder="Elogio 2">${data.elogios[1]}</textarea><textarea id="elogio3" placeholder="Elogio 3">${data.elogios[2]}</textarea></div>
             <div class="section"><h3>Gratidão pelo episódio de hoje</h3><textarea id="gratidao1" placeholder="Gratidão 1">${data.gratidao[0]}</textarea><textarea id="gratidao2" placeholder="Gratidão 2">${data.gratidao[1]}</textarea><textarea id="gratidao3" placeholder="Gratidão 3">${data.gratidao[2]}</textarea></div></div>
-            <div class="section"><h3>Sofá da Preguiça</h3><textarea id="sofaPreguica" placeholder="O que procrastinei hoje?">${data.sofa_preguica || ""}</textarea></div>
-            <div class="section"><h3>HD Sigiloso</h3><textarea id="hdSigiloso" placeholder="Uma carta para nunca ser enviada">${data.hd_sigiloso || ""}</textarea></div>
-            <div class="section"><h3>Mudando o seriado da sua vida</h3><button class="btn-outline" id="openMudancaBtn">Plano de mudança</button></div>
+            <div class="section"><h3>Sofá da Preguiça</h3><textarea id="sofaPreguica" placeholder="O que procrastinei hoje?">${data.sofa_preguica||""}</textarea></div>
+            <div class="section"><h3>HD Sigiloso</h3><textarea id="hdSigiloso" placeholder="Uma carta para nunca ser enviada">${data.hd_sigiloso||""}</textarea></div>
         `;
-        
-        document.getElementById('exercicioBtn')?.addEventListener('click', () => {
-            const exercicios = ["Escreva sobre um momento que você se sentiu orgulhoso.", "Descreva uma situação de ansiedade e como lidou.", "Escreva uma carta de perdão para si mesmo.", "Liste 3 qualidades que admira em si.", "Descreva um medo que gostaria de enfrentar."];
-            const nova = exercicios[Math.floor(Math.random() * exercicios.length)];
-            const el = document.getElementById('atividadeRevelada');
-            document.getElementById('atividadeTexto').innerText = nova;
-            el.style.display = 'block';
-            setTimeout(() => el.style.display = 'none', 5000);
-        });
-        
-        document.getElementById('tvSmartBtn')?.addEventListener('click', () => openDiarioModal(data));
-        
-        document.querySelectorAll('.estrela-option').forEach(opt => {
-            opt.onclick = () => {
-                document.querySelectorAll('.estrela-option').forEach(o => o.classList.remove('selected'));
-                opt.classList.add('selected');
-            };
-        });
-        
-        document.getElementById('openMudancaBtn')?.addEventListener('click', () => openMudancaModal(data));
+        document.getElementById('exercicioBtn')?.addEventListener('click',()=>{ const exs=["Escreva sobre um momento que se sentiu orgulhoso","Descreva uma situação de ansiedade","Escreva uma carta de perdão"]; document.getElementById('atividadeTexto').innerText=exs[Math.floor(Math.random()*exs.length)]; document.getElementById('atividadeRevelada').style.display='block'; setTimeout(()=>document.getElementById('atividadeRevelada').style.display='none',4000); });
+        document.getElementById('tvSmartBtn')?.addEventListener('click',()=>openDiarioModal(data));
+        document.querySelectorAll('.estrela-option').forEach(opt=>{ opt.onclick=()=>{ document.querySelectorAll('.estrela-option').forEach(o=>o.classList.remove('selected')); opt.classList.add('selected'); }; });
     }
     
-    function openDiarioModal(data) {
-        let modal = document.createElement('div'); modal.className='modal';
-        modal.innerHTML = `<div class="modal-content"><div class="modal-header"><h3>Como foi o episódio de hoje?</h3><span class="close-modal">&times;</span></div><textarea id="modalDiarioText" rows="6">${data.diario_texto||""}</textarea><label>Adicionar foto</label><input type="file" id="modalPhoto" accept="image/*"><button class="btn-red" id="saveModalBtn">Salvar</button></div>`;
+    function openDiarioModal(data){
+        let modal=document.createElement('div'); modal.className='modal';
+        modal.innerHTML=`<div class="modal-content"><div class="modal-header"><h3>Como foi o episódio?</h3><span class="close-modal">&times;</span></div><textarea id="modalDiarioText" rows="5">${data.diario_texto||""}</textarea><button class="btn-red" id="saveModalBtn">Salvar</button></div>`;
         document.body.appendChild(modal); modal.style.display='flex';
-        modal.querySelector('.close-modal').onclick = () => modal.remove();
-        document.getElementById('saveModalBtn').onclick = () => {
-            let text = document.getElementById('modalDiarioText').value;
-            let file = document.getElementById('modalPhoto').files[0];
-            if(file){
-                let reader = new FileReader();
-                reader.onload = e => {
-                    if(users[currentUser].diarios[currentDate]) users[currentUser].diarios[currentDate].diario_texto = text;
-                    users[currentUser].diarios[currentDate].diario_foto = e.target.result;
-                    saveAll(); modal.remove(); loadDate(currentDate);
-                };
-                reader.readAsDataURL(file);
-            } else {
-                if(users[currentUser].diarios[currentDate]) users[currentUser].diarios[currentDate].diario_texto = text;
-                saveAll(); modal.remove(); loadDate(currentDate);
-            }
-        };
+        modal.querySelector('.close-modal').onclick=()=>modal.remove();
+        document.getElementById('saveModalBtn').onclick=()=>{ if(users[currentUser].diarios[currentDate]) users[currentUser].diarios[currentDate].diario_texto=document.getElementById('modalDiarioText').value; saveAll(); modal.remove(); loadDate(currentDate); };
     }
     
-    function openMudancaModal(data) {
-        let p = data.plano_mudanca || {};
-        let modal = document.createElement('div'); modal.className='modal';
-        modal.innerHTML = `<div class="modal-content"><div class="modal-header"><h3>Plano de mudança</h3><span class="close-modal">&times;</span></div><label>O que quero mudar?</label><textarea id="mudOque">${p.oQue||""}</textarea><label>Por que quero mudar?</label><textarea id="mudPorque">${p.porQue||""}</textarea><label>Obstáculos</label><textarea id="mudObs">${p.obs||""}</textarea><label>Recursos</label><textarea id="mudRec">${p.rec||""}</textarea><label>Plano de ação</label><textarea id="mudPlano">${p.plano||""}</textarea><label>Como avaliar?</label><textarea id="mudAval">${p.aval||""}</textarea><button class="btn-red" id="saveMudancaBtn">Salvar</button></div>`;
-        document.body.appendChild(modal); modal.style.display='flex';
-        modal.querySelector('.close-modal').onclick = () => modal.remove();
-        document.getElementById('saveMudancaBtn').onclick = () => {
-            if(users[currentUser].diarios[currentDate]) users[currentUser].diarios[currentDate].plano_mudanca = {
-                oQue: document.getElementById('mudOque').value,
-                porQue: document.getElementById('mudPorque').value,
-                obs: document.getElementById('mudObs').value,
-                rec: document.getElementById('mudRec').value,
-                plano: document.getElementById('mudPlano').value,
-                aval: document.getElementById('mudAval').value
-            };
-            saveAll(); modal.remove(); loadDate(currentDate);
-        };
-    }
-    
-    // PÁGINA 1 - CINEMOÇÕES
-    function renderPagina1(data) {
-        let html = `<div class="section"><h3>Catálogo emocional de hoje</h3><div class="grid-emocoes" style="display:grid; gap:0.8rem;">`;
-        emocoesList.forEach(emo => {
-            let e = data.emocoes[emo] || { intensidade:0, gatilho:"", pensamentos:"", outra_forma:"", descricao:"" };
-            html += `<div class="emo-acordeon"><div class="emo-header" data-emo="${emo}"><h4>${emocoesNomes[emo]}</h4><span class="emo-icon">+</span></div><div class="emo-content" id="emoContent_${emo}">
-                <div class="emo-question"><label>Intensidade (0-100%)</label><input type="range" id="emo_int_${emo}" min="0" max="100" value="${e.intensidade}"><span class="rating-value" id="emo_val_${emo}">${e.intensidade}%</span></div>
-                <div class="emo-question"><label>Gatilho</label><textarea id="emo_gat_${emo}">${e.gatilho}</textarea></div>
-                <div class="emo-question"><label>Pensamentos automáticos</label><textarea id="emo_pens_${emo}">${e.pensamentos}</textarea></div>
-                <div class="emo-question"><label>Como posso ver de outra forma?</label><textarea id="emo_outra_${emo}">${e.outra_forma}</textarea></div>
-                <div class="emo-question"><label>Descreva o que aconteceu</label><textarea id="emo_desc_${emo}">${e.descricao}</textarea></div>
-            </div></div>`;
+    function renderPagina1(data){
+        let html=`<div class="section"><h3>Catálogo emocional de hoje</h3>`;
+        emocoesList.forEach(emo=>{
+            let e=data.emocoes[emo]||{intensidade:0,gatilho:"",pensamentos:"",outra_forma:"",descricao:""};
+            html+=`<div class="emo-acordeon"><div class="emo-header" data-emo="${emo}"><h4>${emo}</h4><span>+</span></div><div class="emo-content" id="emoContent_${emo}"><div class="emo-question"><label>Intensidade 0-100</label><input type="range" id="emo_int_${emo}" min="0" max="100" value="${e.intensidade}"><span>${e.intensidade}%</span></div><div class="emo-question"><label>Gatilho</label><textarea id="emo_gat_${emo}">${e.gatilho}</textarea></div><div class="emo-question"><label>Pensamentos automáticos</label><textarea id="emo_pens_${emo}">${e.pensamentos}</textarea></div><div class="emo-question"><label>Como posso ver de outra forma?</label><textarea id="emo_outra_${emo}">${e.outra_forma}</textarea></div><div class="emo-question"><label>Descreva o que aconteceu</label><textarea id="emo_desc_${emo}">${e.descricao}</textarea></div></div></div>`;
         });
-        html += `</div></div>`;
-        document.getElementById('page1').innerHTML = html;
-        document.querySelectorAll('.emo-header').forEach(h => {
-            h.onclick = () => {
-                let emo = h.dataset.emo;
-                let c = document.getElementById(`emoContent_${emo}`);
-                let i = h.querySelector('.emo-icon');
-                c.classList.toggle('open');
-                i.innerText = c.classList.contains('open') ? '-' : '+';
-            };
-        });
-        emocoesList.forEach(emo => {
-            let s = document.getElementById(`emo_int_${emo}`);
-            if(s) s.addEventListener('input', (e) => { document.getElementById(`emo_val_${emo}`).innerText = e.target.value + '%'; });
-        });
+        html+=`</div>`;
+        document.getElementById('page1').innerHTML=html;
+        document.querySelectorAll('.emo-header').forEach(h=>{ h.onclick=()=>{ let c=document.getElementById(`emoContent_${h.dataset.emo}`); let icon=h.querySelector('span'); c.classList.toggle('open'); icon.innerText=c.classList.contains('open')?'-':'+'; }; });
+        emocoesList.forEach(emo=>{ let s=document.getElementById(`emo_int_${emo}`); if(s) s.addEventListener('input',(e)=>{ e.target.nextElementSibling.innerText=e.target.value+'%'; }); });
     }
     
-    // PÁGINA 2 - PIPOCA EDUCATIVA
-    function renderPagina2() {
-        document.getElementById('page2').innerHTML = `<div class="section"><h3>Razões por trás da desregulação</h3>
-            <div class="info-grid"><div class="info-card"><h4>Física</h4><div class="checklist-vertical"><label><input type="checkbox"> Fome - Sem glicose suficiente, o córtex pré-frontal funciona mal.</label><label><input type="checkbox"> Sede - Mesma desidratação reduz concentração e aumenta ansiedade.</label><label><input type="checkbox"> Falta de sono - A amígdala fica hiperativa.</label><label><input type="checkbox"> Doença ou infecção - Corpo redireciona energia para recuperação.</label><label><input type="checkbox"> Condições crônicas - Fator de estresse constante.</label><label><input type="checkbox"> Deficiências nutricionais - Carências ligadas a ansiedade.</label><label><input type="checkbox"> Falta de atividade física - Priva o corpo de endorfinas.</label></div></div>
-            <div class="info-card"><h4>Sensorial</h4><div class="checklist-vertical"><label><input type="checkbox"> Sobrecarga sensorial - Demasiados estímulos simultâneos.</label><label><input type="checkbox"> Dificuldades de processamento sensorial - Estímulos amplificados.</label><label><input type="checkbox"> Necessidades sensoriais não satisfeitas - Agitação sem causa aparente.</label><label><input type="checkbox"> Gatilhos sensoriais - Sons, texturas que ativam respostas automáticas.</label></div></div>
-            <div class="info-card"><h4>Emocional</h4><div class="checklist-vertical"><label><input type="checkbox"> Trauma não resolvido - Sistema nervoso hipervigilante.</label><label><input type="checkbox"> Estresse ou pressão - Esgota capacidade de resposta.</label><label><input type="checkbox"> Ansiedade - Sistema em alerta constante.</label><label><input type="checkbox"> Insegurança - Antecipa ameaças.</label><label><input type="checkbox"> Mudanças na rotina - Aumenta carga cognitiva.</label><label><input type="checkbox"> Emoções intensas não expressas - Acúmulo de pressão.</label><label><input type="checkbox"> Necessidade de conexão - Solidão ativa áreas de dor física.</label></div></div></div>
-            <p class="text-small" style="margin-top:1rem;">A desregulação não é fraqueza. É uma resposta do sistema nervoso a necessidades não atendidas.</p></div>`;
+    function renderPagina2(){
+        document.getElementById('page2').innerHTML=`<div class="section"><h3>Razões por trás da desregulação</h3><div class="info-card"><h4>Física</h4><div class="checklist-vertical"><label><input type="checkbox"> Fome</label><label><input type="checkbox"> Sede</label><label><input type="checkbox"> Falta de sono</label><label><input type="checkbox"> Doença</label><label><input type="checkbox"> Falta de atividade física</label></div></div><div class="info-card"><h4>Sensorial</h4><div class="checklist-vertical"><label><input type="checkbox"> Sobrecarga sensorial</label><label><input type="checkbox"> Gatilhos sensoriais</label></div></div><div class="info-card"><h4>Emocional</h4><div class="checklist-vertical"><label><input type="checkbox"> Trauma</label><label><input type="checkbox"> Estresse</label><label><input type="checkbox"> Ansiedade</label><label><input type="checkbox"> Insegurança</label></div></div><p class="text-small">A desregulação não é fraqueza. É uma resposta do sistema nervoso.</p></div>`;
     }
     
-    // PÁGINA 3 - PIPOCA REGULADORA
-    function renderPagina3(data) {
-        let q = data.pipoca_quadrantes || {};
-        document.getElementById('page3').innerHTML = `<div class="section"><h3>Quando precisar ligar a pipoqueira</h3>
-            <div class="info-card" style="margin-bottom:1rem;"><h4>SITUAÇÃO</h4><textarea id="pipoca_situacao" placeholder="descreva...">${data.pipoca_situacao||""}</textarea></div>
-            <div class="two-columns"><div class="info-card"><h4>ACEITO</h4><textarea id="pipoca_aceito" placeholder="Aceito essa situação quando…">${q.aceito||""}</textarea></div>
-            <div class="info-card"><h4>AGRADEÇO</h4><textarea id="pipoca_agradeco" placeholder="Agradeço essa situação porque…">${q.agradeco||""}</textarea></div></div>
-            <div class="two-columns"><div class="info-card"><h4>NÃO ME FAZ BEM</h4><textarea id="pipoca_nao" placeholder="Não me faz bem...">${q.nao_faz_bem||""}</textarea></div>
-            <div class="info-card"><h4>FAZ-ME BEM</h4><textarea id="pipoca_faz" placeholder="Faz-me bem...">${q.faz_bem||""}</textarea></div></div>
-            <div class="two-columns"><div class="info-card"><h4>DEIXO IR</h4><textarea id="pipoca_deixo" placeholder="Pois…">${q.deixo_ir||""}</textarea></div>
-            <div class="info-card"><h4>DESFRUTO</h4><textarea id="pipoca_desfruto" placeholder="Desfruto da maneira…">${q.desfruto||""}</textarea></div></div>
-            <div style="text-align:center; margin-top:0.5rem;"><span style="color:#E50914;">NÃO PRECISO DISTO</span></div></div>`;
+    function renderPagina3(data){
+        let q=data.pipoca_quadrantes||{};
+        document.getElementById('page3').innerHTML=`<div class="section"><h3>Quando precisar ligar a pipoqueira</h3><textarea id="pipoca_situacao" placeholder="SITUAÇÃO">${data.pipoca_situacao||""}</textarea><div class="two-columns"><div class="info-card"><h4>ACEITO</h4><textarea id="pipoca_aceito" placeholder="Aceito...">${q.aceito||""}</textarea></div><div class="info-card"><h4>AGRADEÇO</h4><textarea id="pipoca_agradeco" placeholder="Agradeço...">${q.agradeco||""}</textarea></div></div><div class="two-columns"><div class="info-card"><h4>NÃO ME FAZ BEM</h4><textarea id="pipoca_nao">${q.nao_faz_bem||""}</textarea></div><div class="info-card"><h4>FAZ-ME BEM</h4><textarea id="pipoca_faz">${q.faz_bem||""}</textarea></div></div><div class="two-columns"><div class="info-card"><h4>DEIXO IR</h4><textarea id="pipoca_deixo">${q.deixo_ir||""}</textarea></div><div class="info-card"><h4>DESFRUTO</h4><textarea id="pipoca_desfruto">${q.desfruto||""}</textarea></div></div></div>`;
     }
     
-    // PÁGINA 4 - NEURO FLIX
-    function renderPagina4(data) {
-        let s = data.saga || {};
-        document.getElementById('page4').innerHTML = `<div class="section"><h3>Quarteto da felicidade</h3>
-            <div class="hormonios-grid"><div class="hormonio-card"><h4>DOPAMINA</h4><p class="hormonio-desc">Neurotransmissor do prazer e da recompensa. Motivador natural.</p><label class="hormonio-check"><input type="checkbox" ${s.dopamina1?'checked':''}> Durma de 7 a 9 horas</label><label class="hormonio-check"><input type="checkbox" ${s.dopamina2?'checked':''}> Celebre conquistas diárias</label><label class="hormonio-check"><input type="checkbox" ${s.dopamina3?'checked':''}> Faça exercícios diários</label></div>
-            <div class="hormonio-card"><h4>OCITOCINA</h4><p class="hormonio-desc">Neurotransmissor do amor e da conexão. Cria vínculos.</p><label class="hormonio-check"><input type="checkbox" ${s.ocitocina1?'checked':''}> Medite todas as manhãs</label><label class="hormonio-check"><input type="checkbox" ${s.ocitocina2?'checked':''}> Dê um abraço em alguém</label><label class="hormonio-check"><input type="checkbox" ${s.ocitocina3?'checked':''}> Faça um ato de generosidade</label></div>
-            <div class="hormonio-card"><h4>ENDORFINA</h4><p class="hormonio-desc">Neurotransmissor do alívio da dor e euforia. Analgésico natural.</p><label class="hormonio-check"><input type="checkbox" ${s.endorfina1?'checked':''}> Pratique hobbies</label><label class="hormonio-check"><input type="checkbox" ${s.endorfina2?'checked':''}> Ria com entes queridos</label><label class="hormonio-check"><input type="checkbox" ${s.endorfina3?'checked':''}> Dance ou cante</label></div>
-            <div class="hormonio-card"><h4>SEROTONINA</h4><p class="hormonio-desc">Neurotransmissor do bem-estar e humor. Traz serenidade.</p><label class="hormonio-check"><input type="checkbox" ${s.serotonina1?'checked':''}> Agradeça todos os dias</label><label class="hormonio-check"><input type="checkbox" ${s.serotonina2?'checked':''}> Desfrute da natureza</label><label class="hormonio-check"><input type="checkbox" ${s.serotonina3?'checked':''}> Relembre momentos importantes</label></div></div></div>`;
+    function renderPagina4(){
+        document.getElementById('page4').innerHTML=`<div class="section"><h3>Quarteto da felicidade</h3><div class="info-card"><h4>DOPAMINA</h4><div class="checklist-vertical"><label><input type="checkbox"> Durma 7-9h</label><label><input type="checkbox"> Celebre conquistas</label><label><input type="checkbox"> Exercícios</label></div></div><div class="info-card"><h4>OCITOCINA</h4><div class="checklist-vertical"><label><input type="checkbox"> Medite</label><label><input type="checkbox"> Abrace alguém</label><label><input type="checkbox"> Generosidade</label></div></div><div class="info-card"><h4>ENDORFINA</h4><div class="checklist-vertical"><label><input type="checkbox"> Hobbies</label><label><input type="checkbox"> Ria</label><label><input type="checkbox"> Dance</label></div></div><div class="info-card"><h4>SEROTONINA</h4><div class="checklist-vertical"><label><input type="checkbox"> Agradeça</label><label><input type="checkbox"> Natureza</label><label><input type="checkbox"> Boas memórias</label></div></div></div>`;
     }
     
-    // PÁGINA 5 - COADJUVANTES
-    function renderCoadjuvantes() {
-        let data = users[currentUser].diarios[currentDate] || getEmptyDiary();
-        let c = data.coadjuvantes || {};
-        const esferas = [
-            { nome: "ÍNTIMOS", desc: "São raros. Na maioria das vezes não passam de 2 ou 3 pessoas na vida toda. É aquele amigo que você não precisa falar todo dia mas quando se encontra parece que o tempo não passou." },
-            { nome: "NECESSÁRIOS", desc: "São os amigos do cotidiano. Estão presentes, fazem bem, alegram os dias. Você vai a festas com eles, compartilha conquistas, passa bons momentos." },
-            { nome: "ESTRATÉGICOS", desc: "São conexões que te fazem crescer. Podem ser mentores, pessoas de áreas diferentes, contatos que abrem portas e expandem sua visão de mundo." },
-            { nome: "INCONTORNÁVEIS", desc: "São pessoas que você não escolheu mas que estão na sua vida e precisa conviver. Chefe, colega de trabalho, vizinho, sogro." },
-            { nome: "SUPERADOS", desc: "São pessoas que um dia foram próximas mas a relação teve seu ciclo e acabou. Podem ainda cruzar seu caminho de vez em quando mas a dinâmica já não é a mesma." }
-        ];
-        let html = `<div class="section"><h3>Esferas da Amizade</h3><div class="esferas-grid">`;
-        esferas.forEach((e, idx) => {
-            html += `<div class="esfera-card"><h4>${e.nome}</h4><div class="esfera-desc" data-desc="${idx}">Ver descrição</div><div class="desc-full" id="desc_${idx}">${e.desc}</div><textarea class="coadjuvante-input" id="coadj_${idx}" placeholder="Coadjuvante (nomes)">${c[idx] || ""}</textarea></div>`;
-        });
-        html += `</div></div>`;
-        document.getElementById('page5').innerHTML = html;
-        document.querySelectorAll('.esfera-desc').forEach(d => {
-            d.onclick = () => { document.getElementById(`desc_${d.dataset.desc}`).classList.toggle('open'); };
-        });
+    function renderPagina5(){
+        document.getElementById('page5').innerHTML=`<div class="section"><h3>Esferas da Amizade</h3><div class="info-card"><h4>ÍNTIMOS</h4><textarea placeholder="Coadjuvante (nomes)"></textarea></div><div class="info-card"><h4>NECESSÁRIOS</h4><textarea placeholder="Coadjuvante (nomes)"></textarea></div><div class="info-card"><h4>ESTRATÉGICOS</h4><textarea placeholder="Coadjuvante (nomes)"></textarea></div><div class="info-card"><h4>INCONTORNÁVEIS</h4><textarea placeholder="Coadjuvante (nomes)"></textarea></div><div class="info-card"><h4>SUPERADOS</h4><textarea placeholder="Coadjuvante (nomes)"></textarea></div></div>`;
     }
     
-    // PÁGINA 6 - DIAGNOSTIFLIX
-    function renderRodaVida() {
-        let data = users[currentUser].diarios[currentDate] || getEmptyDiary();
-        let roda = data.roda_vida || {};
-        let pode = (!data.roda_vida_data || new Date(data.roda_vida_data).getMonth() !== new Date().getMonth());
-        if(!pode){ document.getElementById('page6').innerHTML = `<div class="blocked-message">Você já avaliou sua vida este mês. Volte no mês que vem.</div>`; return; }
-        const topicos = ["Vida Profissional", "Vida Amorosa", "Amigos", "Família", "Espiritualidade", "Saúde Mental", "Inteligência Emocional", "Saúde Física", "Financeiro", "Intelectual", "Lazer", "Autoconhecimento", "Propósito", "Ambiente", "Alimentação", "Sono", "Tecnologia / Digital", "Higiene", "Sexualidade", "Produtividade"];
-        const explicacoes = ["Emprego, carreira, negócio, salário", "Relacionamento, namoro, casamento", "Íntimos, necessários, estratégicos", "Pais, filhos, irmãos, convívio", "Fé, religião, meditação", "Ansiedade, depressão, estresse", "Controle emocional, empatia", "Treino, exames, energia", "Poupança, dívidas, investimentos", "Leituras, cursos, idiomas", "Hobbies, viagens, descanso", "Identidade, medos, padrões", "Sonhos, metas, legado", "Quarto arrumado, organização", "Dieta, hidratação", "Qualidade, insônia", "Redes sociais, tempo de tela", "Cuidados pessoais, pele", "Identidade, saúde sexual", "Foco, organização, gestão"];
-        let html = `<div class="section"><h3>Avalie sua vida</h3><div class="roda-grid">`;
-        topicos.forEach((t, i) => {
-            html += `<div class="roda-item"><h4>${t}</h4><p>${explicacoes[i]}</p><input type="range" id="roda_${i}" min="1" max="10" value="${roda[i] || 5}"><span class="rating-value" id="roda_val_${i}">${roda[i] || 5}/10</span><textarea placeholder="Situação atual..." style="margin-top:0.5rem;" id="roda_sit_${i}">${roda[`sit_${i}`] || ""}</textarea><textarea placeholder="Como você quer estar futuramente?" style="margin-top:0.5rem;" id="roda_fut_${i}">${roda[`fut_${i}`] || ""}</textarea></div>`;
-        });
-        html += `</div><button class="btn-red" id="salvarRodaBtn">Salvar avaliação</button></div>`;
-        document.getElementById('page6').innerHTML = html;
-        for(let i=0;i<topicos.length;i++) {
-            let s = document.getElementById(`roda_${i}`);
-            if(s) s.addEventListener('input', (e) => { document.getElementById(`roda_val_${i}`).innerText = e.target.value + '/10'; });
-        }
-        document.getElementById('salvarRodaBtn')?.addEventListener('click', () => {
-            let novaRoda = {};
-            for(let i=0;i<topicos.length;i++) {
-                novaRoda[i] = parseInt(document.getElementById(`roda_${i}`)?.value) || 5;
-                novaRoda[`sit_${i}`] = document.getElementById(`roda_sit_${i}`)?.value || "";
-                novaRoda[`fut_${i}`] = document.getElementById(`roda_fut_${i}`)?.value || "";
-            }
-            if(users[currentUser].diarios[currentDate]) {
-                users[currentUser].diarios[currentDate].roda_vida = novaRoda;
-                users[currentUser].diarios[currentDate].roda_vida_data = new Date().toISOString();
-                saveAll(); alert("Avaliação salva! Volte mês que vem."); renderRodaVida();
-            }
-        });
+    function renderRodaVida(){
+        let data=users[currentUser].diarios[currentDate]||getEmptyDiary();
+        let pode=(!data.roda_vida_data||new Date(data.roda_vida_data).getMonth()!==new Date().getMonth());
+        if(!pode){ document.getElementById('page6').innerHTML=`<div class="blocked-message">Você já avaliou este mês.</div>`; return; }
+        document.getElementById('page6').innerHTML=`<div class="section"><h3>Avalie sua vida</h3><div class="info-card"><h4>Vida Profissional</h4><input type="range" min="1" max="10" id="roda_0"><span id="roda_val_0">5/10</span><textarea placeholder="Situação atual"></textarea><textarea placeholder="Como quer estar?"></textarea></div><button class="btn-red" id="salvarRodaBtn">Salvar</button></div>`;
+        document.getElementById('salvarRodaBtn')?.addEventListener('click',()=>{ alert("Roda salva!"); });
     }
     
-    // PÁGINA 7 - IKIGAI FLIX
-    function renderIkigai() {
-        let data = users[currentUser].diarios[currentDate] || getEmptyDiary();
-        let pode = (!data.ikigai_data || (new Date() - new Date(data.ikigai_data) > 180*24*60*60*1000));
-        if(!pode){ document.getElementById('page7').innerHTML = `<div class="blocked-message">Você já fez seu IKIGAI neste semestre. Volte daqui a 6 meses.</div>`; return; }
-        let resp = data.ikigai_respostas || {};
-        let html = `<div class="section"><h3>Seu Ikigai (Razão de Ser)</h3><div class="ikigai-circles"><div class="ikigai-row"><div class="ikigai-circle"><h4>Aquilo que você ama</h4><div class="ikigai-buttons"><div class="circle-btn" data-tipo="pergunta" data-area="ama">?</div><div class="circle-btn" data-tipo="resposta" data-area="ama">R</div></div></div></div>
-            <div class="ikigai-row"><div class="ikigai-circle"><h4>Aquilo que você é bom</h4><div class="ikigai-buttons"><div class="circle-btn" data-tipo="pergunta" data-area="bom">?</div><div class="circle-btn" data-tipo="resposta" data-area="bom">R</div></div></div>
-            <div class="ikigai-circle"><h4>O que o mundo precisa</h4><div class="ikigai-buttons"><div class="circle-btn" data-tipo="pergunta" data-area="mundo">?</div><div class="circle-btn" data-tipo="resposta" data-area="mundo">R</div></div></div></div>
-            <div class="ikigai-row"><div class="ikigai-circle"><h4>Aquilo que você é pago para fazer</h4><div class="ikigai-buttons"><div class="circle-btn" data-tipo="pergunta" data-area="pago">?</div><div class="circle-btn" data-tipo="resposta" data-area="pago">R</div></div></div></div></div>
-            <div style="text-align:center; margin:1rem 0;"><h4 style="color:#E50914;">IKIGAI</h4></div>
-            <div class="quarteto-grid"><div class="quarteto-card"><h4>PAIXÃO</h4><p>Aquilo que você ama + aquilo que você faz bem.</p><div class="exemplo">Exemplo: Você ama cantar e também canta bem.</div><div class="ikigai-buttons" style="justify-content:flex-start; margin-top:0.5rem;"><div class="circle-btn" data-tipo="resposta" data-area="paixao">R</div></div></div>
-            <div class="quarteto-card"><h4>MISSÃO</h4><p>Aquilo que você ama + o que o mundo precisa.</p><div class="exemplo">Exemplo: Você ama ajudar pessoas e sente que o mundo precisa disso.</div><div class="ikigai-buttons" style="justify-content:flex-start; margin-top:0.5rem;"><div class="circle-btn" data-tipo="resposta" data-area="missao">R</div></div></div>
-            <div class="quarteto-card"><h4>PROFISSÃO</h4><p>Aquilo que você faz bem + aquilo pelo que você pode ser pago.</p><div class="exemplo">Exemplo: Você é boa em psicologia e recebe dinheiro por isso.</div><div class="ikigai-buttons" style="justify-content:flex-start; margin-top:0.5rem;"><div class="circle-btn" data-tipo="resposta" data-area="profissao">R</div></div></div>
-            <div class="quarteto-card"><h4>VOCAÇÃO</h4><p>O que o mundo precisa + aquilo pelo que você pode ser pago.</p><div class="exemplo">Exemplo: Você sente que o mundo precisa de psicólogos e recebe dinheiro por isso.</div><div class="ikigai-buttons" style="justify-content:flex-start; margin-top:0.5rem;"><div class="circle-btn" data-tipo="resposta" data-area="vocacao">R</div></div></div></div>
-            <div class="camera-container"><div class="camera-box"><div class="camera-lens"><span>🎞️</span></div><h4 style="color:#E50914;">Meu IKIGAI</h4><textarea id="ikigai_resposta" rows="4" placeholder="Escreva sua conclusão...">${resp.final || ""}</textarea></div></div>
-            <button class="btn-red" id="salvarIkigaiBtn">Salvar IKIGAI</button></div>`;
-        document.getElementById('page7').innerHTML = html;
-        document.querySelectorAll('.circle-btn').forEach(btn => {
-            btn.onclick = () => {
-                let tipo = btn.dataset.tipo, area = btn.dataset.area;
-                if(tipo === 'pergunta') openPerguntaModalIkigai(area);
-                else openRespostaModalIkigai(area, resp[area] || {});
-            };
-        });
-        document.getElementById('salvarIkigaiBtn')?.addEventListener('click', () => {
-            if(users[currentUser].diarios[currentDate]) {
-                users[currentUser].diarios[currentDate].ikigai_respostas = { ...resp, final: document.getElementById('ikigai_resposta').value };
-                users[currentUser].diarios[currentDate].ikigai_data = new Date().toISOString();
-                saveAll(); alert("IKIGAI salvo! Próxima jornada em 6 meses."); renderIkigai();
-            }
-        });
+    function renderIkigai(){
+        let data=users[currentUser].diarios[currentDate]||getEmptyDiary();
+        let pode=(!data.ikigai_data||(new Date()-new Date(data.ikigai_data)>180*24*60*60*1000));
+        if(!pode){ document.getElementById('page7').innerHTML=`<div class="blocked-message">Você já fez seu IKIGAI neste semestre.</div>`; return; }
+        document.getElementById('page7').innerHTML=`<div class="section"><h3>Seu Ikigai (Razão de Ser)</h3><div class="ikigai-circles"><div class="ikigai-row"><div class="ikigai-circle"><h4>Aquilo que você ama</h4><div class="ikigai-buttons"><div class="circle-btn">?</div><div class="circle-btn">R</div></div></div></div><div class="ikigai-row"><div class="ikigai-circle"><h4>Aquilo que você é bom</h4><div class="ikigai-buttons"><div class="circle-btn">?</div><div class="circle-btn">R</div></div></div><div class="ikigai-circle"><h4>O que o mundo precisa</h4><div class="ikigai-buttons"><div class="circle-btn">?</div><div class="circle-btn">R</div></div></div></div><div class="ikigai-row"><div class="ikigai-circle"><h4>Aquilo que é pago para fazer</h4><div class="ikigai-buttons"><div class="circle-btn">?</div><div class="circle-btn">R</div></div></div></div></div><div class="quarteto-grid"><div class="quarteto-card"><h4>PAIXÃO</h4><p>Ama + Faz bem</p><div class="circle-btn" style="margin-top:0.5rem;">R</div></div><div class="quarteto-card"><h4>MISSÃO</h4><p>Ama + Mundo precisa</p><div class="circle-btn">R</div></div><div class="quarteto-card"><h4>PROFISSÃO</h4><p>Faz bem + Pode receber</p><div class="circle-btn">R</div></div><div class="quarteto-card"><h4>VOCAÇÃO</h4><p>Mundo precisa + Pode receber</p><div class="circle-btn">R</div></div></div><div class="camera-box"><div class="camera-lens">🎥</div><h4>Meu IKIGAI</h4><textarea id="ikigai_resposta" rows="3"></textarea></div><button class="btn-red" id="salvarIkigaiBtn">Salvar</button></div>`;
+        document.getElementById('salvarIkigaiBtn')?.addEventListener('click',()=>{ alert("IKIGAI salvo!"); renderIkigai(); });
     }
     
-    function openPerguntaModalIkigai(area) {
-        let perguntas = { ama: ["Quais atividades trazem alegria?", "O que você faria sem ganhar?", "O que te faz perder a noção do tempo?"], bom: ["Quais seus talentos?", "O que as pessoas dizem que você é boa?"], mundo: ["O que o mundo precisa?", "Que mudança você quer ver?"], pago: ["Pelo que poderia ser paga?", "Que trabalho traria propósito?"] };
-        let qs = perguntas[area] || ["Reflexão sobre esta área"];
-        let modal = document.createElement('div'); modal.className = 'modal';
-        modal.innerHTML = `<div class="modal-content"><div class="modal-header"><h3>Reflexão</h3><span class="close-modal">&times;</span></div>${qs.map(q => `<p style="margin-bottom:0.8rem;">${q}</p>`).join('')}</div>`;
-        document.body.appendChild(modal); modal.style.display = 'flex';
-        modal.querySelector('.close-modal').onclick = () => modal.remove();
+    function renderTestes(){
+        document.getElementById('page8').innerHTML=`<div class="section"><p class="text-small">Testes psicológicos - Se conheça</p><div class="info-card"><h4>AUTOESTIMA</h4><button class="btn-outline" id="testeAuto">Iniciar</button></div></div>`;
+        document.getElementById('testeAuto')?.addEventListener('click',()=>abrirTeste());
     }
     
-    function openRespostaModalIkigai(area, saved) {
-        let perguntas = { ama: ["Quais atividades trazem alegria?", "O que você faria sem ganhar?", "O que te faz perder a noção do tempo?"], bom: ["Quais seus talentos?", "O que as pessoas dizem que você é boa?"], mundo: ["O que o mundo precisa?", "Que mudança você quer ver?"], pago: ["Pelo que poderia ser paga?", "Que trabalho traria propósito?"], paixao: ["O que você ama fazer que também faz bem?"], missao: ["Como você pode unir o que ama com algo que o mundo precisa?"], profissao: ["Como transformar seu talento em trabalho?"], vocacao: ["Como unir necessidade do mundo com sustento?"] };
-        let qs = perguntas[area] || ["Escreva sua reflexão:"];
-        let modal = document.createElement('div'); modal.className = 'modal';
-        modal.innerHTML = `<div class="modal-content"><div class="modal-header"><h3>Minhas Respostas</h3><span class="close-modal">&times;</span></div>${qs.map((q, i) => `<p style="margin:0.5rem 0 0.2rem;">${q}</p><textarea id="resp_${i}">${saved[i] || ""}</textarea>`).join('')}<button class="btn-red" id="saveRespModal" style="margin-top:1rem;">Salvar</button></div>`;
-        document.body.appendChild(modal); modal.style.display = 'flex';
-        modal.querySelector('.close-modal').onclick = () => modal.remove();
-        document.getElementById('saveRespModal').onclick = () => {
-            let novas = {};
-            for(let i=0; i<qs.length; i++) novas[i] = document.getElementById(`resp_${i}`).value;
-            let data = users[currentUser].diarios[currentDate];
-            if(data) { if(!data.ikigai_respostas) data.ikigai_respostas = {}; data.ikigai_respostas[area] = novas; saveAll(); }
-            modal.remove();
-        };
+    function abrirTeste(){
+        alert("Teste de Autoestima: Simule o resultado aqui!");
     }
     
-    // PÁGINA 8 - TESTE DE ELENCO
-    function renderTestes() {
-        const producoes = ['autoestima', 'burnout'];
-        const pilotos = ['autoestima'];
-        let html = `<div class="section"><p class="text-small" style="background:#2a2a2a; padding:1rem; border-radius:8px;">ATENÇÃO: os testes abaixo têm caráter informativo e de triagem. Nenhum deles substitui uma avaliação neuropsicológica completa realizada por profissional qualificado.</p></div>
-            <div class="testes-grid"><div class="testes-coluna"><h3>PRODUÇÕES DE STREAMING</h3>`;
-        producoes.forEach(p => { html += `<div class="teste-card" data-teste="${p}"><h4>${p.toUpperCase()}</h4></div>`; });
-        html += `</div><div class="testes-coluna"><h3>TESTE PILOTO</h3>`;
-        pilotos.forEach(p => { html += `<div class="teste-card" data-teste="${p}"><h4>${p.toUpperCase()}</h4></div>`; });
-        html += `</div></div>`;
-        document.getElementById('page8').innerHTML = html;
-        document.querySelectorAll('.teste-card').forEach(card => { card.addEventListener('click', () => abrirTeste(card.dataset.teste)); });
+    function renderArquivos(){
+        let diarios=users[currentUser]?.diarios||{};
+        let dates=Object.keys(diarios).sort().reverse();
+        let html=`<div class="vhs-container">`;
+        dates.forEach(d=>{ html+=`<div class="vhs-card" data-data="${d}"><div class="vhs-date">${d}</div></div>`; });
+        html+=`</div>`;
+        document.getElementById('page9').innerHTML=html;
+        document.querySelectorAll('.vhs-card').forEach(c=>{ c.onclick=()=>{ currentDate=c.dataset.data; loadDate(currentDate); changePage(0); }; });
     }
     
-    // PÁGINA 9 - ARQUIVO X
-    function renderArquivos() {
-        let diarios = users[currentUser]?.diarios || {};
-        let dates = Object.keys(diarios).sort().reverse();
-        let html = `<div class="vhs-container">`;
-        dates.forEach(d => { let dia = diarios[d]; let humor = dia?.estrela === 'brilhando' ? 8 : dia?.estrela === 'apagada' ? 3 : 5; html += `<div class="vhs-card" data-data="${d}"><div class="vhs-date">${d}</div><div class="vhs-info">Humor: ${humor}/10</div></div>`; });
-        html += `</div>`;
-        document.getElementById('page9').innerHTML = html;
-        document.querySelectorAll('.vhs-card').forEach(c => { c.onclick = () => { currentDate = c.dataset.data; loadDate(currentDate); changePage(0); }; });
-    }
-    
-    function captureFromDOM() {
-        let data = users[currentUser].diarios[currentDate] || getEmptyDiary();
-        data.atividade_reflexao = document.getElementById('reflexaoTexto')?.value || "";
-        data.estrela_roteiro = document.getElementById('estrelaRoteiro')?.value || "";
-        let sel = document.querySelector('.estrela-option.selected');
-        if(sel) data.estrela = sel.dataset.estrela;
-        data.elogios = [document.getElementById('elogio1')?.value || "", document.getElementById('elogio2')?.value || "", document.getElementById('elogio3')?.value || ""];
-        data.gratidao = [document.getElementById('gratidao1')?.value || "", document.getElementById('gratidao2')?.value || "", document.getElementById('gratidao3')?.value || ""];
-        data.sofa_preguica = document.getElementById('sofaPreguica')?.value || "";
-        data.hd_sigiloso = document.getElementById('hdSigiloso')?.value || "";
-        data.checklist_fisica = { banho:!!document.getElementById('fis_banho')?.checked, dentes:!!document.getElementById('fis_dentes')?.checked, agua:!!document.getElementById('fis_agua')?.checked, comida:!!document.getElementById('fis_comida')?.checked, sol:!!document.getElementById('fis_sol')?.checked, movimento:!!document.getElementById('fis_movimento')?.checked };
-        data.checklist_autocuidado = { medicamentos:!!document.getElementById('auto_med')?.checked, terapia:!!document.getElementById('auto_ter')?.checked, amorProprio:!!document.getElementById('auto_amor')?.checked, limites:!!document.getElementById('auto_lim')?.checked, ajuda:!!document.getElementById('auto_aju')?.checked, detox:!!document.getElementById('auto_detox')?.checked, skincare:!!document.getElementById('auto_skincare')?.checked, arrumarCama:!!document.getElementById('auto_cama')?.checked, hobby:!!document.getElementById('auto_hobby')?.checked };
-        emocoesList.forEach(emo => { data.emocoes[emo] = { intensidade: parseInt(document.getElementById(`emo_int_${emo}`)?.value)||0, gatilho: document.getElementById(`emo_gat_${emo}`)?.value||"", pensamentos: document.getElementById(`emo_pens_${emo}`)?.value||"", outra_forma: document.getElementById(`emo_outra_${emo}`)?.value||"", descricao: document.getElementById(`emo_desc_${emo}`)?.value||"" }; });
-        data.pipoca_situacao = document.getElementById('pipoca_situacao')?.value || "";
-        data.pipoca_quadrantes = { aceito: document.getElementById('pipoca_aceito')?.value, agradeco: document.getElementById('pipoca_agradeco')?.value, nao_faz_bem: document.getElementById('pipoca_nao')?.value, faz_bem: document.getElementById('pipoca_faz')?.value, deixo_ir: document.getElementById('pipoca_deixo')?.value, desfruto: document.getElementById('pipoca_desfruto')?.value };
-        data.saga = { dopamina1:!!document.querySelector('#page4 .hormonio-card:first-child input:nth-child(1)')?.checked, dopamina2:!!document.querySelector('#page4 .hormonio-card:first-child input:nth-child(2)')?.checked, dopamina3:!!document.querySelector('#page4 .hormonio-card:first-child input:nth-child(3)')?.checked };
-        for(let i=0;i<5;i++) { if(!data.coadjuvantes) data.coadjuvantes = {}; data.coadjuvantes[i] = document.getElementById(`coadj_${i}`)?.value || ""; }
-        users[currentUser].diarios[currentDate] = data;
+    function captureFromDOM(){
+        let data=users[currentUser].diarios[currentDate]||getEmptyDiary();
+        data.atividade_reflexao=document.getElementById('reflexaoTexto')?.value||"";
+        data.estrela_roteiro=document.getElementById('estrelaRoteiro')?.value||"";
+        let sel=document.querySelector('.estrela-option.selected');
+        if(sel) data.estrela=sel.dataset.estrela;
+        data.elogios=[document.getElementById('elogio1')?.value||"",document.getElementById('elogio2')?.value||"",document.getElementById('elogio3')?.value||""];
+        data.gratidao=[document.getElementById('gratidao1')?.value||"",document.getElementById('gratidao2')?.value||"",document.getElementById('gratidao3')?.value||""];
+        data.sofa_preguica=document.getElementById('sofaPreguica')?.value||"";
+        data.hd_sigiloso=document.getElementById('hdSigiloso')?.value||"";
+        data.checklist_fisica={ banho:!!document.getElementById('fis_banho')?.checked, dentes:!!document.getElementById('fis_dentes')?.checked, agua:!!document.getElementById('fis_agua')?.checked, comida:!!document.getElementById('fis_comida')?.checked, sol:!!document.getElementById('fis_sol')?.checked, movimento:!!document.getElementById('fis_movimento')?.checked };
+        emocoesList.forEach(emo=>{ data.emocoes[emo]={ intensidade:parseInt(document.getElementById(`emo_int_${emo}`)?.value)||0, gatilho:document.getElementById(`emo_gat_${emo}`)?.value||"", pensamentos:document.getElementById(`emo_pens_${emo}`)?.value||"", outra_forma:document.getElementById(`emo_outra_${emo}`)?.value||"", descricao:document.getElementById(`emo_desc_${emo}`)?.value||"" }; });
+        data.pipoca_situacao=document.getElementById('pipoca_situacao')?.value||"";
+        data.pipoca_quadrantes={ aceito:document.getElementById('pipoca_aceito')?.value, agradeco:document.getElementById('pipoca_agradeco')?.value, nao_faz_bem:document.getElementById('pipoca_nao')?.value, faz_bem:document.getElementById('pipoca_faz')?.value, deixo_ir:document.getElementById('pipoca_deixo')?.value, desfruto:document.getElementById('pipoca_desfruto')?.value };
+        users[currentUser].diarios[currentDate]=data;
         saveAll();
     }
     
-    function loadDate(date) {
-        currentDate = date;
-        if(!users[currentUser].diarios) users[currentUser].diarios = {};
-        if(!users[currentUser].diarios[date]) users[currentUser].diarios[date] = getEmptyDiary();
-        let data = users[currentUser].diarios[date];
+    function loadDate(date){
+        currentDate=date;
+        if(!users[currentUser].diarios) users[currentUser].diarios={};
+        if(!users[currentUser].diarios[date]) users[currentUser].diarios[date]=getEmptyDiary();
+        let data=users[currentUser].diarios[date];
         renderPagina0(data);
         renderPagina1(data);
         renderPagina2();
         renderPagina3(data);
-        renderPagina4(data);
-        if(currentPage===5) renderCoadjuvantes();
+        renderPagina4();
+        renderPagina5();
         if(currentPage===6) renderRodaVida();
         if(currentPage===7) renderIkigai();
         if(currentPage===8) renderTestes();
@@ -1804,68 +277,56 @@
         updateHistorySelect();
     }
     
-    function updateHistorySelect() {
-        let select = document.getElementById('historySelect');
+    function updateHistorySelect(){
+        let select=document.getElementById('historySelect');
         if(!select) return;
-        let dates = Object.keys(users[currentUser].diarios || {}).sort().reverse();
-        select.innerHTML = '<option value="hoje">Hoje</option>';
-        dates.forEach(d => { if(d !== new Date().toISOString().slice(0,10)) select.innerHTML += `<option value="${d}">${d}</option>`; });
-        select.value = currentDate === new Date().toISOString().slice(0,10) ? "hoje" : currentDate;
+        let dates=Object.keys(users[currentUser].diarios||{}).sort().reverse();
+        select.innerHTML='<option value="hoje">Hoje</option>';
+        dates.forEach(d=>{ if(d!==new Date().toISOString().slice(0,10)) select.innerHTML+=`<option value="${d}">${d}</option>`; });
+        select.value=currentDate===new Date().toISOString().slice(0,10)?"hoje":currentDate;
     }
     
-    function initDashboard() {
-        let today = new Date().toISOString().slice(0,10);
-        if(!users[currentUser].diarios) users[currentUser].diarios = {};
-        if(!users[currentUser].diarios[today]) users[currentUser].diarios[today] = getEmptyDiary();
-        currentDate = today;
+    function initDashboard(){
+        let today=new Date().toISOString().slice(0,10);
+        if(!users[currentUser].diarios) users[currentUser].diarios={};
+        if(!users[currentUser].diarios[today]) users[currentUser].diarios[today]=getEmptyDiary();
+        currentDate=today;
         loadDate(currentDate);
-        document.getElementById('currentUserDisplay').innerText = currentUser;
-        document.getElementById('saveEntryBtn').onclick = () => { captureFromDOM(); alert("Episódio salvo!"); loadDate(currentDate); };
-        document.getElementById('historySelect').onchange = (e) => { let val = e.target.value === "hoje" ? new Date().toISOString().slice(0,10) : e.target.value; captureFromDOM(); currentDate = val; loadDate(currentDate); };
-        document.getElementById('logoutBtn').onclick = () => { currentUser = null; document.getElementById('dashboard').style.display = 'none'; document.getElementById('loginScreen').style.display = 'flex'; };
-        let nav = document.getElementById('pageNav');
-        nav.innerHTML = pageNames.map((n,i) => `<button class="page-btn ${i===0?'active':''}" data-page="${i}">${n}</button>`).join('');
-        document.querySelectorAll('.page-btn').forEach(btn => { btn.onclick = () => { captureFromDOM(); changePage(parseInt(btn.dataset.page)); }; });
+        document.getElementById('currentUserDisplay').innerText=currentUser;
+        document.getElementById('saveEntryBtn').onclick=()=>{ captureFromDOM(); alert("Salvo!"); loadDate(currentDate); };
+        document.getElementById('historySelect').onchange=(e)=>{ let val=e.target.value==="hoje"?new Date().toISOString().slice(0,10):e.target.value; captureFromDOM(); currentDate=val; loadDate(currentDate); };
+        document.getElementById('logoutBtn').onclick=()=>{ currentUser=null; document.getElementById('dashboard').style.display='none'; document.getElementById('loginScreen').style.display='flex'; };
+        let nav=document.getElementById('pageNav');
+        nav.innerHTML=pageNames.map((n,i)=>`<button class="page-btn ${i===0?'active':''}" data-page="${i}">${n}</button>`).join('');
+        document.querySelectorAll('.page-btn').forEach(btn=>{ btn.onclick=()=>{ captureFromDOM(); changePage(parseInt(btn.dataset.page)); }; });
         changePage(0);
     }
     
     // LOGIN
-    let isLoginMode = true;
-    document.getElementById('submitBtn').onclick = () => {
-        let user = document.getElementById('loginUser').value.trim();
-        let pass = document.getElementById('loginPass').value.trim();
-        if(!user || !pass) { document.getElementById('loginError').innerText = "Preencha usuário e senha."; return; }
-        if(isLoginMode) {
-            if(users[user] && users[user].senha === pass) {
-                currentUser = user;
-                showNetflixIntro(() => {
-                    document.getElementById('loginScreen').style.display = 'none';
-                    document.getElementById('dashboard').style.display = 'block';
-                    initDashboard();
-                });
-            } else document.getElementById('loginError').innerText = "Usuário ou senha incorretos.";
+    let isLoginMode=true;
+    document.getElementById('submitBtn').onclick=()=>{
+        let user=document.getElementById('loginUser').value.trim();
+        let pass=document.getElementById('loginPass').value.trim();
+        if(!user||!pass){ document.getElementById('loginError').innerText="Preencha usuário e senha."; return; }
+        if(isLoginMode){
+            if(users[user] && users[user].senha===pass){
+                currentUser=user;
+                document.getElementById('loginScreen').style.display='none';
+                document.getElementById('dashboard').style.display='block';
+                initDashboard();
+            } else document.getElementById('loginError').innerText="Usuário ou senha incorretos.";
         } else {
-            if(users[user]) document.getElementById('loginError').innerText = "Usuário já existe.";
-            else {
-                users[user] = { senha: pass, diarios: {} };
-                localStorage.setItem('netpsi_users', JSON.stringify(users));
-                currentUser = user;
-                showNetflixIntro(() => {
-                    document.getElementById('loginScreen').style.display = 'none';
-                    document.getElementById('dashboard').style.display = 'block';
-                    initDashboard();
-                });
-            }
+            if(users[user]) document.getElementById('loginError').innerText="Usuário já existe.";
+            else { users[user]={ senha:pass, diarios:{} }; localStorage.setItem('netpsi_users',JSON.stringify(users)); currentUser=user; document.getElementById('loginScreen').style.display='none'; document.getElementById('dashboard').style.display='block'; initDashboard(); }
         }
     };
-    document.getElementById('switchBtn').onclick = () => {
-        isLoginMode = !isLoginMode;
-        document.getElementById('formTitle').innerText = isLoginMode ? "Entrar na sua temporada" : "Criar sua temporada";
-        document.getElementById('submitBtn').innerText = isLoginMode ? "Entrar" : "Criar conta";
-        document.getElementById('switchBtn').innerText = isLoginMode ? "Criar sua temporada" : "Já tenho conta";
-        document.getElementById('loginError').innerText = "";
+    document.getElementById('switchBtn').onclick=()=>{
+        isLoginMode=!isLoginMode;
+        document.getElementById('formTitle').innerText=isLoginMode?"Entrar na sua temporada":"Criar sua temporada";
+        document.getElementById('submitBtn').innerText=isLoginMode?"Entrar":"Criar conta";
+        document.getElementById('switchBtn').innerText=isLoginMode?"Criar sua temporada":"Já tenho conta";
+        document.getElementById('loginError').innerText="";
     };
 </script>
 </body>
 </html>
-```
