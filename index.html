@@ -3,34 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>NETPSI - Login</title>
+    <title>NETPSI - Seu Diário Terapêutico</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #141414; font-family: Arial, sans-serif; }
-        .login-container { min-height: 100vh; display: flex; justify-content: center; align-items: center; flex-direction: column; }
-        .netpsi-logo { font-size: 4rem; font-weight: bold; color: #E50914; text-align: center; margin-bottom: 1rem; }
-        .tagline { color: #ccc; text-align: center; margin-bottom: 0.5rem; }
-        .producer { color: #888; font-size: 0.7rem; text-align: center; margin-bottom: 2rem; }
-        .login-card { background: rgba(0,0,0,0.8); padding: 2rem; border-radius: 8px; width: 90%; max-width: 350px; }
-        .login-card h2 { color: white; margin-bottom: 1rem; }
+        body { background: #141414; color: #e5e5e5; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 18px; line-height: 1.5; }
+        
+        .login-container { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1.5rem; }
+        .netpsi-logo { font-size: 3.5rem; font-weight: 900; color: #E50914; text-shadow: 0 0 15px rgba(229,9,20,0.5); text-align: center; }
+        .tagline { font-size: 1.1rem; color: #ccc; text-align: center; margin: 0.5rem 0; }
+        .producer { font-size: 0.8rem; color: #888; text-align: center; margin-bottom: 2rem; }
+        .login-card { background: rgba(0,0,0,0.8); border-radius: 16px; padding: 1.8rem; width: 100%; max-width: 420px; backdrop-filter: blur(10px); }
+        .login-card h2 { margin-bottom: 1rem; font-size: 1.6rem; color: white; }
         .input-group { margin-bottom: 1rem; }
-        .input-group input { width: 100%; padding: 0.8rem; background: #333; border: none; border-radius: 4px; color: white; font-size: 1rem; }
-        .btn-red { background: #E50914; color: white; border: none; padding: 0.8rem; border-radius: 4px; width: 100%; cursor: pointer; margin-top: 0.5rem; font-weight: bold; }
-        .switch-btn { background: none; border: none; color: #b3b3b3; margin-top: 1rem; cursor: pointer; width: 100%; }
-        .error-msg { color: #E50914; font-size: 0.7rem; margin-top: 0.5rem; text-align: center; }
-        .login-footer { text-align: center; margin-top: 2rem; font-size: 0.7rem; color: #666; font-style: italic; }
-        .dashboard { display: none; padding: 1rem; }
-        .nav-bar { background: #000; padding: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
-        .nav-logo { color: #E50914; font-size: 1.5rem; font-weight: bold; }
-        .user-info { display: flex; align-items: center; gap: 0.5rem; }
-        .avatar { width: 36px; height: 36px; background: black; border: 2px solid #E50914; display: flex; align-items: center; justify-content: center; color: #E50914; font-weight: bold; border-radius: 4px; cursor: pointer; }
-        .btn-logout { background: #E50914; color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 20px; cursor: pointer; }
-        .save-bar { background: #1f1f1f; padding: 0.8rem; display: flex; justify-content: space-between; flex-wrap: wrap; margin-bottom: 1rem; }
-        .btn-save { background: #E50914; color: white; border: none; padding: 0.4rem 1rem; border-radius: 20px; cursor: pointer; }
-        .history-select { background: #333; color: white; padding: 0.3rem; border-radius: 20px; border: none; }
-        .welcome { text-align: center; padding: 2rem; background: #1f1f1f; border-radius: 8px; margin-top: 2rem; }
-        .welcome h2 { color: #E50914; margin-bottom: 1rem; }
-        .avatar-menu { display: none; position: absolute; background: #1f1f1f; padding: 0.5rem; border-radius: 8px; flex-direction: column; gap: 0.3rem; }
+        .input-group input { width: 100%; padding: 1rem; background: #333; border: none; border-radius: 10px; color: white; font-size: 1rem; }
+        .btn-red { background: #E50914; color: white; border: none; padding: 0.9rem; font-size: 1.1rem; font-weight: bold; border-radius: 10px; width: 100%; cursor: pointer; margin-top: 0.8rem; transition: all 0.2s; }
+        .btn-red:hover { background: #f6121d; transform: scale(1.02); }
+        .btn-outline { background: transparent; border: 1px solid #E50914; color: #E50914; padding: 0.5rem 1rem; border-radius: 30px; cursor: pointer; font-size: 0.9rem; }
+        .switch-btn { background: none; border: none; color: #b3b3b3; margin-top: 1rem; cursor: pointer; width: 100%; font-size: 0.9rem; }
+        .login-footer { text-align: center; margin-top: 2rem; font-size: 0.8rem; color: #b3b3b3; font-style: italic; }
+        
+        .dashboard { display: none; padding-bottom: 2rem; }
+        .nav-bar { background: linear-gradient(to bottom, #000000cc, #141414); padding: 0.8rem 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; position: sticky; top: 0; z-index: 100; }
+        .nav-logo { font-size: 1.8rem; font-weight: bold; color: #E50914; letter-spacing: -1px; }
+        .page-nav { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+        .page-btn { background: transparent; border: none; color: #aaa; padding: 0.4rem 0.7rem; cursor: pointer; font-size: 0.8rem; border-radius: 30px; transition: all 0.2s; }
+        .page-btn.active { background: #E50914; color: white; }
+        .user-info { display: flex; align-items: center; gap: 0.8rem; position: relative; }
+        .avatar { width: 48px; height: 48px; background: #000; border: 2px solid #E50914; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; color: #E50914; border-radius: 8px; cursor: pointer; object-fit: cover; overflow: hidden; }
+        .avatar-img { width: 100%; height: 100%; object-fit: cover; }
+        .avatar-menu { display: none; position: absolute; top: 55px; right: 0; background: #1f1f1f; border-radius: 12px; padding: 0.5rem; z-index: 200; flex-direction: column; gap: 0.5rem; border: 1px solid #E50914; }
+        .avatar-menu button { background: #333; border: none; color: white; padding: 0.3rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+        .btn-logout { background: #E50914; color: white; border: none; padding: 0.4rem 1rem; border-radius: 30px; cursor: pointer; font-size: 0.9rem; }
+        .save-bar { background: #1f1f1f; padding: 0.8rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; border-bottom: 1px solid #333; }
+        .btn-save { background: #E50914; color: white; border: none; padding: 0.5rem 1rem; border-radius: 30px; cursor: pointer; font-size: 0.9rem; }
+        .history-select { background: #333; color: white; padding: 0.4rem 0.8rem; border-radius: 30px; border: none; font-size: 0.9rem; }
+        .page-container { max-width: 1200px; margin: 1rem auto; padding: 0 1rem; }
+        .section { background: #1f1f1f; border-radius: 16px; padding: 1.2rem; margin-bottom: 1.2rem; border-left: 6px solid #E50914; }
+        .section h3 { color: #E50914; margin-bottom: 0.8rem; font-size: 1.4rem; font-weight: 600; }
+        .section h4 { color: #E50914; margin-bottom: 0.5rem; font-size: 1.2rem; }
+        .hidden { display: none; }
+        .two-columns { display: grid; grid-template-columns: 1fr; gap: 1.2rem; margin-bottom: 1rem; }
+        @media (min-width: 768px) { .two-columns { grid-template-columns: 1fr 1fr; } }
+        
+        input, textarea { background: #2a2a2a; border: none; padding: 0.7rem; color: white; border-radius: 12px; width: 100%; font-size: 1rem; font-family: inherit; margin-bottom: 0.8rem; }
+        textarea { resize: vertical; min-height: 80px; border: 1px solid #E50914; }
+        
+        .checklist-vertical { display: flex; flex-direction: column; gap: 0.5rem; }
+        .checklist-vertical label { display: flex; align-items: center; gap: 0.8rem; font-size: 1rem; cursor: pointer; }
+        .checklist-vertical input { width: 22px; height: 22px; margin-bottom: 0; accent-color: #E50914; }
+        
+        .estrela-options { display: flex; gap: 1rem; margin: 0.8rem 0; flex-wrap: wrap; }
+        .estrela-option { background: #2a2a2a; padding: 0.5rem 1.2rem; border-radius: 40px; cursor: pointer; font-size: 1rem; }
+        .estrela-option.selected { background: #E50914; color: white; }
+        
+        .tv-smart { background: #2a2a2a; border-radius: 24px; padding: 1rem; text-align: center; cursor: pointer; border: 2px solid #E50914; margin-bottom: 0.8rem; }
+        .tv-screen { background: #0a0a0a; border-radius: 16px; padding: 1rem; margin-bottom: 0.5rem; font-size: 1.2rem; font-weight: bold; }
+        
+        /* Oscar dourado */
+        .streak-card { background: #2a2a2a; border-radius: 20px; padding: 0.8rem; text-align: center; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap; border: 2px solid #FFD700; box-shadow: 0 0 15px rgba(255,215,0,0.5); }
+        .oscar-icon { font-size: 2rem; filter: drop-shadow(0 0 5px #FFD700); color: #FFD700; text-shadow: 0 0 10px #FFD700; }
+        .streak-number { font-size: 2rem; font-weight: bold; color: #E50914; }
+        
+        .info-card { background: #2a2a2a; padding: 1rem; border-radius: 16px; margin-bottom: 1rem; }
+        .sugestoes-chips { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 0.8rem 0; }
+        .chip { background: #3a3a3a; padding: 0.4rem 1rem; border-radius: 40px; font-size: 0.9rem; cursor: pointer; transition: 0.2s; }
+        .chip:hover { background: #E50914; color: white; }
+        
+        .modal-full { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0a0a0a; z-index: 1000; justify-content: center; align-items: center; flex-direction: column; padding: 2rem; }
+        .modal-full .modal-content { width: 95%; max-width: 700px; background: #1f1f1f; border-radius: 24px; padding: 1.5rem; border-left: 6px solid #E50914; }
+        .close-modal { cursor: pointer; font-size: 2rem; float: right; color: #E50914; }
+        
+        /* NeuroFlix */
+        .hormonios-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1rem; }
+        @media (max-width: 900px) { .hormonios-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 500px) { .hormonios-grid { grid-template-columns: 1fr; } }
+        .hormonio-card { background: #2a2a2a; padding: 1rem; border-radius: 16px; height: 100%; display: flex; flex-direction: column; }
+        .hormonio-card h4 { font-size: 1.2rem; margin-bottom: 0.3rem; }
+        .hormonio-card p { font-size: 0.8rem; color: #ccc; margin-bottom: 0.8rem; }
+        .check-group-vertical { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.5rem; }
+        .check-group-vertical label { display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; cursor: pointer; }
+        .check-group-vertical input { width: 18px; height: 18px; margin: 0; }
+        
+        .card-dopamina { border-left: 6px solid #FFD700; }
+        .card-ocitocina { border-left: 6px solid #FF69B4; }
+        .card-endorfina { border-left: 6px solid #00CED1; }
+        .card-serotonina { border-left: 6px solid #32CD32; }
+        
+        /* Diagnostflix - cores individuais */
+        .roda-single { background: #2a2a2a; padding: 1rem; border-radius: 16px; margin-bottom: 1rem; }
+        .roda-single textarea { border: 1px solid; }
+        .roda-single .nota-botao { background: #333; border: 1px solid; color: #E50914; padding: 0.3rem 0.8rem; border-radius: 20px; cursor: pointer; font-size: 0.8rem; display: inline-block; margin-bottom: 0.5rem; }
+        .grafico-evolucao { background: #1f1f1f; border-radius: 16px; padding: 1rem; margin-top: 1rem; }
+        .grafico-barra-container { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.3rem; }
+        .grafico-barra { height: 20px; background: #E50914; border-radius: 10px; transition: width 0.3s; }
+        
+        /* Cores das áreas Diagnostflix */
+        .roda-area-0 { border-left: 6px solid #FF6B6B; } .roda-area-0 textarea { border-color: #FF6B6B; } .roda-area-0 .nota-botao { border-color: #FF6B6B; }
+        .roda-area-1 { border-left: 6px solid #4ECDC4; } .roda-area-1 textarea { border-color: #4ECDC4; } .roda-area-1 .nota-botao { border-color: #4ECDC4; }
+        .roda-area-2 { border-left: 6px solid #45B7D1; } .roda-area-2 textarea { border-color: #45B7D1; } .roda-area-2 .nota-botao { border-color: #45B7D1; }
+        .roda-area-3 { border-left: 6px solid #96CEB4; } .roda-area-3 textarea { border-color: #96CEB4; } .roda-area-3 .nota-botao { border-color: #96CEB4; }
+        .roda-area-4 { border-left: 6px solid #FFEAA7; } .roda-area-4 textarea { border-color: #FFEAA7; } .roda-area-4 .nota-botao { border-color: #FFEAA7; }
+        .roda-area-5 { border-left: 6px solid #DDA0DD; } .roda-area-5 textarea { border-color: #DDA0DD; } .roda-area-5 .nota-botao { border-color: #DDA0DD; }
+        .roda-area-6 { border-left: 6px solid #87CEEB; } .roda-area-6 textarea { border-color: #87CEEB; } .roda-area-6 .nota-botao { border-color: #87CEEB; }
+        .roda-area-7 { border-left: 6px solid #98FB98; } .roda-area-7 textarea { border-color: #98FB98; } .roda-area-7 .nota-botao { border-color: #98FB98; }
+        .roda-area-8 { border-left: 6px solid #FFB347; } .roda-area-8 textarea { border-color: #FFB347; } .roda-area-8 .nota-botao { border-color: #FFB347; }
+        .roda-area-9 { border-left: 6px solid #B0C4DE; } .roda-area-9 textarea { border-color: #B0C4DE; } .roda-area-9 .nota-botao { border-color: #B0C4DE; }
+        .roda-area-10 { border-left: 6px solid #F0E68C; } .roda-area-10 textarea { border-color: #F0E68C; } .roda-area-10 .nota-botao { border-color: #F0E68C; }
+        .roda-area-11 { border-left: 6px solid #E6E6FA; } .roda-area-11 textarea { border-color: #E6E6FA; } .roda-area-11 .nota-botao { border-color: #E6E6FA; }
+        .roda-area-12 { border-left: 6px solid #FFDAB9; } .roda-area-12 textarea { border-color: #FFDAB9; } .roda-area-12 .nota-botao { border-color: #FFDAB9; }
+        .roda-area-13 { border-left: 6px solid #CD853F; } .roda-area-13 textarea { border-color: #CD853F; } .roda-area-13 .nota-botao { border-color: #CD853F; }
+        .roda-area-14 { border-left: 6px solid #7B68EE; } .roda-area-14 textarea { border-color: #7B68EE; } .roda-area-14 .nota-botao { border-color: #7B68EE; }
+        .roda-area-15 { border-left: 6px solid #20B2AA; } .roda-area-15 textarea { border-color: #20B2AA; } .roda-area-15 .nota-botao { border-color: #20B2AA; }
+        .roda-area-16 { border-left: 6px solid #FF69B4; } .roda-area-16 textarea { border-color: #FF69B4; } .roda-area-16 .nota-botao { border-color: #FF69B4; }
+        .roda-area-17 { border-left: 6px solid #F4A460; } .roda-area-17 textarea { border-color: #F4A460; } .roda-area-17 .nota-botao { border-color: #F4A460; }
+        .roda-area-18 { border-left: 6px solid #9370DB; } .roda-area-18 textarea { border-color: #9370DB; } .roda-area-18 .nota-botao { border-color: #9370DB; }
+        .roda-area-19 { border-left: 6px solid #3CB371; } .roda-area-19 textarea { border-color: #3CB371; } .roda-area-19 .nota-botao { border-color: #3CB371; }
+        
+        /* Esferas da Amizade com cores diferentes */
+        .esfera-card-0 { border-left: 6px solid #FF6B6B; }
+        .esfera-card-1 { border-left: 6px solid #4ECDC4; }
+        .esfera-card-2 { border-left: 6px solid #45B7D1; }
+        .esfera-card-3 { border-left: 6px solid #96CEB4; }
+        .esfera-card-4 { border-left: 6px solid #FFEAA7; }
+        
+        /* Ikigai */
+        .ikigai-central { text-align: center; margin: 1rem 0; }
+        .ikigai-symbol { display: inline-block; background: #E50914; border-radius: 50%; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; margin: 0 auto; box-shadow: 0 0 20px rgba(229,9,20,0.5); }
+        .ikigai-symbol span { color: white; font-size: 1.5rem; font-weight: bold; letter-spacing: 2px; }
+        .ikigai-desc { background: #2a2a2a; padding: 1rem; border-radius: 16px; margin: 1rem 0; font-size: 0.9rem; line-height: 1.5; }
+        .ikigai-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1.5rem 0; }
+        @media (max-width: 600px) { .ikigai-grid { grid-template-columns: 1fr; } }
+        .ikigai-card { background: #1f1f1f; border: 2px solid #E50914; border-radius: 20px; padding: 1rem; }
+        .ikigai-card h4 { color: #E50914; font-size: 1rem; margin-bottom: 0.5rem; }
+        .ikigai-card textarea { background: #2a2a2a; border: 1px solid #E50914; width: 100%; }
+        
+        .intersecao-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1.5rem 0; }
+        @media (max-width: 600px) { .intersecao-grid { grid-template-columns: 1fr; } }
+        .intersecao-card { background: #2a2a2a; padding: 1rem; border-radius: 16px; }
+        .intersecao-card .resposta-gerada { font-size: 0.8rem; color: #ccc; margin-top: 0.5rem; padding: 0.5rem; background: #1f1f1f; border-radius: 8px; }
+        
+        /* Arquivo X */
+        .vhs-container { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+        @media (min-width: 500px) { .vhs-container { grid-template-columns: 1fr 1fr; } }
+        .vhs-card { background: linear-gradient(145deg, #1a1a1a, #0f0f0f); border-radius: 16px; padding: 1rem; border: 1px solid #E50914; }
+        .vhs-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+        .vhs-date { font-size: 0.9rem; font-weight: bold; color: #E50914; cursor: pointer; }
+        .vhs-actions { display: flex; gap: 0.5rem; }
+        .edit-vhs, .delete-vhs { background: #E50914; color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 20px; cursor: pointer; font-size: 0.7rem; }
+        .vhs-content { display: none; margin-top: 0.5rem; }
+        .vhs-content.open { display: block; }
+        .vhs-content textarea { width: 100%; background: #1a1a1a; border: 1px solid #E50914; color: white; padding: 0.5rem; border-radius: 8px; font-size: 0.8rem; margin-bottom: 0.5rem; }
+        .save-vhs { background: #E50914; color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 20px; cursor: pointer; font-size: 0.7rem; }
+        
+        .text-small { font-size: 0.85rem; color: #aaa; }
+        
+        .emo-acordeon { margin-bottom: 0.5rem; }
+        .emo-header { background: #2a2a2a; padding: 0.7rem; border-radius: 10px; cursor: pointer; display: flex; justify-content: space-between; }
+        .emo-header h4 { color: #4CAF50; font-size: 1rem; }
+        .emo-content { display: none; padding: 0.8rem; background: #252525; border-radius: 10px; margin-top: 0.3rem; }
+        .emo-content.open { display: block; }
+        .emo-question { margin-bottom: 0.8rem; }
+        .emo-question label { font-size: 0.85rem; color: #aaa; display: block; margin-bottom: 0.2rem; }
+        input[type="range"] { width: 100%; margin: 0.5rem 0; }
+        
+        .blocked-message { text-align: center; padding: 2rem; background: #1f1f1f; border-radius: 16px; color: #E50914; }
+        
+        /* Checkboxes circulares */
+        .checkbox-circle { appearance: none; width: 20px; height: 20px; border-radius: 50%; border: 2px solid #E50914; outline: none; margin-right: 0.5rem; cursor: pointer; background: transparent; }
+        .checkbox-circle:checked { background: #E50914; }
+        
+        .acoes-group { margin-bottom: 1rem; }
+        .acoes-group h4 { font-size: 1rem; margin-bottom: 0.5rem; }
     </style>
 </head>
 <body>
@@ -53,61 +196,290 @@
 <div id="dashboard" class="dashboard">
     <div class="nav-bar">
         <div class="nav-logo">NETPSI</div>
+        <div class="page-nav" id="pageNav"></div>
         <div class="user-info">
             <div class="avatar" id="avatarBtn">N</div>
-            <div id="avatarMenu" class="avatar-menu"><button id="uploadAvatarBtn">Trocar Foto</button><button id="removeAvatarBtn">Remover</button></div>
+            <div id="avatarMenu" class="avatar-menu">
+                <input type="file" id="avatarUpload" accept="image/*" style="display:none;">
+                <button id="uploadAvatarBtn">Trocar Foto</button>
+                <button id="removeAvatarBtn">Remover Foto</button>
+            </div>
             <span id="currentUserDisplay"></span>
             <button class="btn-logout" id="logoutBtn">Sair</button>
         </div>
     </div>
     <div class="save-bar">
-        <button class="btn-save" id="saveEntryBtn">Salvar</button>
+        <button class="btn-save" id="saveEntryBtn">Salvar episódio de hoje</button>
         <select id="historySelect" class="history-select"><option value="hoje">Hoje</option></select>
     </div>
-    <div class="welcome" id="welcomeMsg">
-        <h2>Bem-vinda ao NETPSI</h2>
-        <p>Seu diário terapêutico está pronto.</p>
-        <p>As funcionalidades completas serão carregadas em breve.</p>
-    </div>
+    <div id="page0" class="page-container"></div>
+    <div id="page1" class="page-container hidden"></div>
+    <div id="page2" class="page-container hidden"></div>
+    <div id="page3" class="page-container hidden"></div>
+    <div id="page4" class="page-container hidden"></div>
+    <div id="page5" class="page-container hidden"></div>
+    <div id="page6" class="page-container hidden"></div>
+    <div id="page7" class="page-container hidden"></div>
+    <div id="page8" class="page-container hidden"></div>
+    <div id="page9" class="page-container hidden"></div>
 </div>
 
 <script>
     let users = JSON.parse(localStorage.getItem('netpsi_users')) || {};
     let currentUser = null;
+    let currentDate = new Date().toISOString().slice(0,10);
+    let currentPage = 0;
+    
+    const pageNames = ["EPISÓDIO", "CINEMOÇÕES", "AÇÃO", "CRISEPLAY", "REPLAY", "NEUROFLIX", "COADJUVANTES", "DIAGNOSTFLIX", "IKIGAI", "ARQUIVO X"];
+    const pageKeys = ['page0','page1','page2','page3','page4','page5','page6','page7','page8','page9'];
+    
+    const emocoesList = ["Alegria","Tédio","Medo","Raiva","Tristeza","Nojo","Frustração","Apatia","Vergonha","Ressentimento","Inveja","Carência","Esperança","Alívio","Amor","Paixão","Impulso","Orgulho","Solidão","Paciência"];
+    
+    function calcularStreak() {
+        if(!currentUser || !users[currentUser].diarios) return 0;
+        let dates = Object.keys(users[currentUser].diarios).sort();
+        let streak = 0;
+        for(let i=dates.length-1; i>=0; i--) {
+            let diff = (new Date() - new Date(dates[i])) / (1000*60*60*24);
+            if(diff <= 1 && users[currentUser].diarios[dates[i]].salvo) streak++;
+            else break;
+        }
+        return streak;
+    }
+    
+    function getEmptyDiary() {
+        let emocoes = {};
+        emocoesList.forEach(e => { emocoes[e] = { intensidade: 0, gatilho: "", pensamentos: "", outra_forma: "", descricao: "" }; });
+        return {
+            salvo: false, estrela: "", estrela_roteiro: "", diario_texto: "", reflexao: "",
+            checklist_fisica: { banho:false, dentes:false, agua:false, comida:false, sol:false, movimento:false, alongamento:false, respiracao:false, tempoPausa:false, refeicaoLenta:false },
+            checklist_autocuidado: { medicamentos:false, terapia:false, amorProprio:false, limites:false, ajuda:false, detox:false, skincare:false, arrumarCama:false, hobby:false, atividadeBem:false },
+            replay: { situacao: "", aceito: "", agradeco: "", nao_faz_bem: "", faz_bem: "", deixo_ir: "", desfruto: "", nao_preciso: "" },
+            criseplay: { fisica: {}, sensorial: {}, emocional: {} },
+            plano_acao: { comportamento: "", antecedentes: [], consequencias: "", alternativo: "", plano: "", reforco: "", acompanhamento: "" },
+            ikigai: { respostas: { ama: "", boa: "", mundo: "", paga: "", paixao: "", missao: "", vocacao: "", profissao: "" }, gerado: false },
+            ikigai_data: null,
+            roda_vida: {}, coadjuvantes: {}, 
+            saga: { dop1:false,dop2:false,dop3:false,dop4:false,dop5:false,dop6:false, oci1:false,oci2:false,oci3:false,oci4:false,oci5:false,oci6:false, end1:false,end2:false,end3:false,end4:false,end5:false,end6:false, ser1:false,ser2:false,ser3:false,ser4:false,ser5:false,ser6:false }
+        };
+    }
+    
+    function saveAll() { if(currentUser) localStorage.setItem('netpsi_users', JSON.stringify(users)); }
+    
+    function changePage(page) {
+        currentPage = page;
+        for(let i=0;i<pageKeys.length;i++) document.getElementById(pageKeys[i]).classList.add('hidden');
+        document.getElementById(pageKeys[page]).classList.remove('hidden');
+        let btns = document.querySelectorAll('.page-btn');
+        for(let i=0;i<btns.length;i++) { if(i==page) btns[i].classList.add('active'); else btns[i].classList.remove('active'); }
+        if(page===0) renderPagina0();
+        if(page===1) renderPagina1();
+        if(page===2) renderPagina2();
+        if(page===3) renderPagina3();
+        if(page===4) renderPagina4();
+        if(page===5) renderPagina5();
+        if(page===6) renderPagina6();
+        if(page===7) renderPagina7();
+        if(page===8) renderIkigai();
+        if(page===9) renderArquivos();
+    }
+    
+    function openFullDiarioModal() {
+        let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
+        let modal = document.createElement('div'); modal.className='modal-full';
+        modal.innerHTML = `<div class="modal-content"><div><span class="close-modal">&times;</span><h3>Como foi o episódio de hoje?</h3></div><textarea id="modalDiarioText" rows="8" placeholder="Escreva como foi seu dia...">${data.diario_texto||""}</textarea><label>Adicionar foto</label><input type="file" id="modalPhoto" accept="image/*"><button class="btn-red" id="saveModalBtn">Salvar</button></div>`;
+        document.body.appendChild(modal); modal.style.display='flex';
+        modal.querySelector('.close-modal').onclick = () => modal.remove();
+        document.getElementById('saveModalBtn').onclick = () => {
+            let texto = document.getElementById('modalDiarioText').value;
+            let file = document.getElementById('modalPhoto').files[0];
+            if(file) {
+                let reader = new FileReader();
+                reader.onload = e => {
+                    if(users[currentUser].diarios[currentDate]) users[currentUser].diarios[currentDate].diario_texto = texto;
+                    users[currentUser].diarios[currentDate].diario_foto = e.target.result;
+                    saveAll(); modal.remove();
+                };
+                reader.readAsDataURL(file);
+            } else {
+                if(users[currentUser].diarios[currentDate]) users[currentUser].diarios[currentDate].diario_texto = texto;
+                saveAll(); modal.remove();
+            }
+        };
+    }
+    
+    // PÁGINA 0 - EPISÓDIO
+    function renderPagina0() {
+        let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
+        let streak = calcularStreak();
+        document.getElementById('page0').innerHTML = `
+            <div class="streak-card"><div class="oscar-icon">🏆</div><div class="streak-number">${streak}</div><div>Oscar da Constância</div></div>
+            <div class="section"><h3>EXERCÍCIO TERAPÊUTICO</h3><div class="tv-smart" id="exercicioBtn"><div class="tv-screen">CLIQUE AQUI<br>PARA SEU EXERCÍCIO DO DIA</div></div><textarea id="reflexaoTexto" rows="3" placeholder="Escreva sua reflexão...">${data.reflexao||""}</textarea></div>
+            <div class="section"><div class="tv-smart" id="tvSmartBtn"><div class="tv-screen">COMO FOI O EPISÓDIO DE HOJE?</div></div></div>
+            <div class="section"><h3>Como está sua estrela hoje?</h3><div class="estrela-options"><div class="estrela-option ${data.estrela==='brilhando'?'selected':''}" data-estrela="brilhando">Brilhando</div><div class="estrela-option ${data.estrela==='apagada'?'selected':''}" data-estrela="apagada">Apagada</div></div><textarea id="estrelaRoteiro" placeholder="Descreva o roteiro...">${data.estrela_roteiro}</textarea></div>
+            <div class="two-columns"><div class="section"><h3>Checklist Saúde Física</h3><div class="checklist-vertical"><label><input type="checkbox" id="fis_banho" ${data.checklist_fisica.banho?'checked':''}> Tomei banho</label><label><input type="checkbox" id="fis_dentes" ${data.checklist_fisica.dentes?'checked':''}> Escovei dentes</label><label><input type="checkbox" id="fis_agua" ${data.checklist_fisica.agua?'checked':''}> Bebi água</label><label><input type="checkbox" id="fis_comida" ${data.checklist_fisica.comida?'checked':''}> Comi bem</label><label><input type="checkbox" id="fis_sol" ${data.checklist_fisica.sol?'checked':''}> Tomei sol</label><label><input type="checkbox" id="fis_movimento" ${data.checklist_fisica.movimento?'checked':''}> Me movimentei</label><label><input type="checkbox" id="fis_alongamento" ${data.checklist_fisica.alongamento?'checked':''}> Alonguei o corpo</label><label><input type="checkbox" id="fis_respiracao" ${data.checklist_fisica.respiracao?'checked':''}> Respirei fundo</label><label><input type="checkbox" id="fis_tempoPausa" ${data.checklist_fisica.tempoPausa?'checked':''}> Tirei um tempo para mim</label><label><input type="checkbox" id="fis_refeicaoLenta" ${data.checklist_fisica.refeicaoLenta?'checked':''}> Fiz refeição sem pressa</label></div></div>
+            <div class="section"><h3>Checklist Autocuidado</h3><div class="checklist-vertical"><label><input type="checkbox" id="auto_med" ${data.checklist_autocuidado.medicamentos?'checked':''}> Tomei medicamentos</label><label><input type="checkbox" id="auto_ter" ${data.checklist_autocuidado.terapia?'checked':''}> Fui à terapia</label><label><input type="checkbox" id="auto_amor" ${data.checklist_autocuidado.amorProprio?'checked':''}> Pratiquei amor-próprio</label><label><input type="checkbox" id="auto_lim" ${data.checklist_autocuidado.limites?'checked':''}> Estabeleci limites</label><label><input type="checkbox" id="auto_aju" ${data.checklist_autocuidado.ajuda?'checked':''}> Pedi ajuda</label><label><input type="checkbox" id="auto_detox" ${data.checklist_autocuidado.detox?'checked':''}> Detox de tela</label><label><input type="checkbox" id="auto_skincare" ${data.checklist_autocuidado.skincare?'checked':''}> Skincare</label><label><input type="checkbox" id="auto_cama" ${data.checklist_autocuidado.arrumarCama?'checked':''}> Arrumar a cama</label><label><input type="checkbox" id="auto_hobby" ${data.checklist_autocuidado.hobby?'checked':''}> Hobby</label><label><input type="checkbox" id="auto_atividadeBem" ${data.checklist_autocuidado.atividadeBem?'checked':''}> Fiz atividade que me faz bem</label></div></div></div>
+            <div class="two-columns"><div class="section"><h3>Elogie-se, você é uma estrela</h3><textarea id="elogio1" placeholder="Elogio 1">${data.elogios?.[0]||""}</textarea><textarea id="elogio2" placeholder="Elogio 2">${data.elogios?.[1]||""}</textarea><textarea id="elogio3" placeholder="Elogio 3">${data.elogios?.[2]||""}</textarea></div>
+            <div class="section"><h3>Gratidão pelo episódio de hoje</h3><textarea id="gratidao1" placeholder="Gratidão 1">${data.gratidao?.[0]||""}</textarea><textarea id="gratidao2" placeholder="Gratidão 2">${data.gratidao?.[1]||""}</textarea><textarea id="gratidao3" placeholder="Gratidão 3">${data.gratidao?.[2]||""}</textarea></div></div>
+            <div class="section"><h3>Sofá da Preguiça</h3><textarea id="sofaPreguica" placeholder="O que procrastinei hoje?">${data.sofa_preguica||""}</textarea></div>
+            <div class="section"><h3>HD Sigiloso</h3><textarea id="hdSigiloso" placeholder="Uma carta para nunca ser enviada">${data.hd_sigiloso||""}</textarea></div>
+        `;
+        document.getElementById('exercicioBtn')?.addEventListener('click', () => {
+            const exerciciosTCC = [
+                "Identifique um pensamento automático negativo que você teve hoje e questione sua validade.",
+                "Liste 3 evidências que contradizem uma crença negativa sobre si mesmo.",
+                "Pratique a técnica 5-4-3-2-1 de grounding: 5 coisas que você vê, 4 que toca, 3 que ouve, 2 que cheira, 1 que saboreia.",
+                "Escreva uma resposta compassiva para um pensamento autocrítico que você teve.",
+                "Registre um momento do seu dia e quais emoções você sentiu (com intensidade 0-100%).",
+                "Descreva uma situação que te deixou ansioso e como você poderia reinterpretá-la."
+            ];
+            alert(exerciciosTCC[Math.floor(Math.random() * exerciciosTCC.length)]);
+        });
+        document.getElementById('tvSmartBtn')?.addEventListener('click', () => openFullDiarioModal());
+        document.querySelectorAll('.estrela-option').forEach(opt => {
+            opt.onclick = () => { document.querySelectorAll('.estrela-option').forEach(o=>o.classList.remove('selected')); opt.classList.add('selected'); };
+        });
+        function capturePage0() {
+            if(!users[currentUser]?.diarios?.[currentDate]) return;
+            let d = users[currentUser].diarios[currentDate];
+            d.reflexao = document.getElementById('reflexaoTexto')?.value || "";
+            d.estrela_roteiro = document.getElementById('estrelaRoteiro')?.value || "";
+            let sel = document.querySelector('.estrela-option.selected');
+            if(sel) d.estrela = sel.dataset.estrela;
+            d.elogios = [document.getElementById('elogio1')?.value||"", document.getElementById('elogio2')?.value||"", document.getElementById('elogio3')?.value||""];
+            d.gratidao = [document.getElementById('gratidao1')?.value||"", document.getElementById('gratidao2')?.value||"", document.getElementById('gratidao3')?.value||""];
+            d.sofa_preguica = document.getElementById('sofaPreguica')?.value || "";
+            d.hd_sigiloso = document.getElementById('hdSigiloso')?.value || "";
+            d.checklist_fisica = { banho:!!document.getElementById('fis_banho')?.checked, dentes:!!document.getElementById('fis_dentes')?.checked, agua:!!document.getElementById('fis_agua')?.checked, comida:!!document.getElementById('fis_comida')?.checked, sol:!!document.getElementById('fis_sol')?.checked, movimento:!!document.getElementById('fis_movimento')?.checked, alongamento:!!document.getElementById('fis_alongamento')?.checked, respiracao:!!document.getElementById('fis_respiracao')?.checked, tempoPausa:!!document.getElementById('fis_tempoPausa')?.checked, refeicaoLenta:!!document.getElementById('fis_refeicaoLenta')?.checked };
+            d.checklist_autocuidado = { medicamentos:!!document.getElementById('auto_med')?.checked, terapia:!!document.getElementById('auto_ter')?.checked, amorProprio:!!document.getElementById('auto_amor')?.checked, limites:!!document.getElementById('auto_lim')?.checked, ajuda:!!document.getElementById('auto_aju')?.checked, detox:!!document.getElementById('auto_detox')?.checked, skincare:!!document.getElementById('auto_skincare')?.checked, arrumarCama:!!document.getElementById('auto_cama')?.checked, hobby:!!document.getElementById('auto_hobby')?.checked, atividadeBem:!!document.getElementById('auto_atividadeBem')?.checked };
+            saveAll();
+        }
+        document.querySelectorAll('#page0 input, #page0 textarea').forEach(el => {
+            if(el.id && (el.tagName === 'TEXTAREA' || (el.tagName === 'INPUT' && el.type !== 'checkbox'))) el.addEventListener('input', capturePage0);
+            else if(el.id && el.tagName === 'INPUT' && el.type === 'checkbox') el.addEventListener('change', capturePage0);
+        });
+    }
+    
+    // PÁGINA 8 - IKIGAI (simplificada e funcional)
+    function renderIkigai() {
+        let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
+        let ikigai = data.ikigai || { respostas: { ama: "", boa: "", mundo: "", paga: "" }, gerado: false };
+        document.getElementById('page8').innerHTML = `
+            <div class="section"><h3>Ikigai - Razão de ser</h3>
+            <div class="ikigai-central"><div class="ikigai-symbol"><span>IKIGAI</span></div></div>
+            <div class="ikigai-desc">
+                <p>Ikigai é um conceito japonês que significa "razão de ser". Ele representa o ponto de equilíbrio entre o que você ama, no que você é bom, o que o mundo precisa e pelo que pode ser pago.</p>
+            </div>
+            <div class="ikigai-grid">
+                <div class="ikigai-card"><h4>Aquilo que você ama</h4><textarea id="ikigai_ama" rows="2" placeholder="O que te faz sentir viva?">${ikigai.respostas.ama}</textarea></div>
+                <div class="ikigai-card"><h4>Aquilo que você é bom</h4><textarea id="ikigai_boa" rows="2" placeholder="Quais seus talentos?">${ikigai.respostas.boa}</textarea></div>
+                <div class="ikigai-card"><h4>Aquilo que o mundo precisa</h4><textarea id="ikigai_mundo" rows="2" placeholder="Como quer ajudar o mundo?">${ikigai.respostas.mundo}</textarea></div>
+                <div class="ikigai-card"><h4>Aquilo pelo que pode ser pago</h4><textarea id="ikigai_paga" rows="2" placeholder="O que pode virar profissão?">${ikigai.respostas.paga}</textarea></div>
+            </div>
+            <button class="btn-red" id="gerarIkigaiBtn">DESCUBRA SEU IKIGAI</button>
+            <div id="resultadoIkigai" class="info-card" style="margin-top:1rem;">
+                <h4>Resultado:</h4>
+                <p>${ikigai.gerado ? "Seu IKIGAI está sendo processado. Preencha os campos acima e clique em 'Descubra seu Ikigai'." : "Preencha os 4 campos e clique no botão para descobrir seu propósito."}</p>
+            </div>
+            <button class="btn-outline" id="salvarIkigaiBtn" style="margin-top:1rem;">Salvar IKIGAI</button>`;
+        
+        document.getElementById('gerarIkigaiBtn')?.addEventListener('click', () => {
+            let ama = document.getElementById('ikigai_ama').value;
+            let boa = document.getElementById('ikigai_boa').value;
+            let mundo = document.getElementById('ikigai_mundo').value;
+            let paga = document.getElementById('ikigai_paga').value;
+            let resultado = `Seu IKIGAI: ${ama.substring(0,50)} + ${boa.substring(0,50)} + ${mundo.substring(0,50)} + ${paga.substring(0,50)}. Continue aprofundando seu propósito.`;
+            document.getElementById('resultadoIkigai').innerHTML = `<h4>Resultado:</h4><p>${resultado}</p>`;
+            if(users[currentUser].diarios[currentDate]) {
+                if(!users[currentUser].diarios[currentDate].ikigai) users[currentUser].diarios[currentDate].ikigai = { respostas: {}, gerado: false };
+                users[currentUser].diarios[currentDate].ikigai.respostas = { ama, boa, mundo, paga };
+                users[currentUser].diarios[currentDate].ikigai.gerado = true;
+                saveAll();
+            }
+        });
+        document.getElementById('salvarIkigaiBtn')?.addEventListener('click', () => {
+            if(users[currentUser].diarios[currentDate]) {
+                users[currentUser].diarios[currentDate].ikigai_data = new Date().toISOString();
+                saveAll();
+                alert("IKIGAI salvo! Próxima jornada em 2 meses.");
+            }
+        });
+    }
+    
+    // Funções vazias para as outras páginas (para não quebrar)
+    function renderPagina1() { document.getElementById('page1').innerHTML = `<div class="section"><h3>CineMoções</h3><p>Em desenvolvimento</p></div>`; }
+    function renderPagina2() { document.getElementById('page2').innerHTML = `<div class="section"><h3>Ação</h3><p>Em desenvolvimento</p></div>`; }
+    function renderPagina3() { document.getElementById('page3').innerHTML = `<div class="section"><h3>Criseplay</h3><p>Em desenvolvimento</p></div>`; }
+    function renderPagina4() { document.getElementById('page4').innerHTML = `<div class="section"><h3>Replay</h3><p>Em desenvolvimento</p></div>`; }
+    function renderPagina5() { document.getElementById('page5').innerHTML = `<div class="section"><h3>NeuroFlix</h3><p>Em desenvolvimento</p></div>`; }
+    function renderPagina6() { document.getElementById('page6').innerHTML = `<div class="section"><h3>Coadjuvantes</h3><p>Em desenvolvimento</p></div>`; }
+    function renderPagina7() { document.getElementById('page7').innerHTML = `<div class="section"><h3>DiagnostFlix</h3><p>Em desenvolvimento</p></div>`; }
+    function renderArquivos() { document.getElementById('page9').innerHTML = `<div class="section"><h3>Arquivo X</h3><p>Em desenvolvimento</p></div>`; }
+    
+    function loadAll() {
+        if(!users[currentUser].diarios[currentDate]) users[currentUser].diarios[currentDate] = getEmptyDiary();
+        let select = document.getElementById('historySelect');
+        if(select) {
+            let dates = Object.keys(users[currentUser].diarios).sort().reverse();
+            select.innerHTML = '<option value="hoje">Hoje</option>';
+            dates.forEach(d => { if(d !== new Date().toISOString().slice(0,10)) select.innerHTML += `<option value="${d}">${d}</option>`; });
+            select.value = currentDate === new Date().toISOString().slice(0,10) ? "hoje" : currentDate;
+        }
+    }
+    
+    function initDashboard() {
+        let today = new Date().toISOString().slice(0,10);
+        if(!users[currentUser].diarios) users[currentUser].diarios = {};
+        if(!users[currentUser].diarios[today]) users[currentUser].diarios[today] = getEmptyDiary();
+        currentDate = today;
+        loadAll();
+        document.getElementById('currentUserDisplay').innerText = currentUser;
+        let avatar = document.getElementById('avatarBtn');
+        if(users[currentUser].fotoPerfil) avatar.innerHTML = `<img src="${users[currentUser].fotoPerfil}" class="avatar-img">`;
+        else avatar.innerText = currentUser.charAt(0).toUpperCase();
+        document.getElementById('saveEntryBtn').onclick = () => { if(users[currentUser].diarios[currentDate]) users[currentUser].diarios[currentDate].salvo = true; saveAll(); alert("Episódio salvo!"); renderPagina0(); };
+        document.getElementById('historySelect').onchange = (e) => { let val = e.target.value === "hoje" ? new Date().toISOString().slice(0,10) : e.target.value; currentDate = val; loadAll(); };
+        document.getElementById('logoutBtn').onclick = () => { currentUser = null; document.getElementById('dashboard').style.display = 'none'; document.getElementById('loginScreen').style.display = 'flex'; };
+        let nav = document.getElementById('pageNav');
+        nav.innerHTML = pageNames.map((n,i) => `<button class="page-btn" data-page="${i}">${n}</button>`).join('');
+        document.querySelectorAll('.page-btn').forEach(btn => { btn.onclick = () => changePage(parseInt(btn.dataset.page)); });
+        let avatarBtn = document.getElementById('avatarBtn');
+        let menu = document.getElementById('avatarMenu');
+        avatarBtn.onclick = (e) => { e.stopPropagation(); menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex'; };
+        document.addEventListener('click', () => menu.style.display = 'none');
+        document.getElementById('uploadAvatarBtn').onclick = () => document.getElementById('avatarUpload').click();
+        document.getElementById('avatarUpload').onchange = (e) => { let file = e.target.files[0]; if(file) { let reader = new FileReader(); reader.onload = ev => { users[currentUser].fotoPerfil = ev.target.result; saveAll(); avatar.innerHTML = `<img src="${ev.target.result}" class="avatar-img">`; }; reader.readAsDataURL(file); } };
+        document.getElementById('removeAvatarBtn').onclick = () => { delete users[currentUser].fotoPerfil; saveAll(); avatar.innerText = currentUser.charAt(0).toUpperCase(); };
+        changePage(0);
+    }
+    
     let isLoginMode = true;
-
-    document.getElementById('submitBtn').onclick = () => {
+    function handleLogin() {
         let user = document.getElementById('loginUser').value.trim();
         let pass = document.getElementById('loginPass').value.trim();
-        if(!user || !pass) {
-            document.getElementById('loginError').innerText = "Preencha usuário e senha.";
-            return;
-        }
+        if(!user || !pass) { document.getElementById('loginError').innerText = "Preencha usuário e senha."; return; }
         if(isLoginMode) {
             if(users[user] && users[user].senha === pass) {
                 currentUser = user;
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
-                document.getElementById('currentUserDisplay').innerText = user;
-                document.getElementById('avatarBtn').innerText = user.charAt(0).toUpperCase();
-            } else {
-                document.getElementById('loginError').innerText = "Usuário ou senha incorretos.";
-            }
+                initDashboard();
+            } else { document.getElementById('loginError').innerText = "Usuário ou senha incorretos."; }
         } else {
-            if(users[user]) {
-                document.getElementById('loginError').innerText = "Usuário já existe.";
-            } else {
-                users[user] = { senha: pass };
+            if(users[user]) { document.getElementById('loginError').innerText = "Usuário já existe."; }
+            else {
+                users[user] = { senha: pass, diarios: {} };
                 localStorage.setItem('netpsi_users', JSON.stringify(users));
                 currentUser = user;
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
-                document.getElementById('currentUserDisplay').innerText = user;
-                document.getElementById('avatarBtn').innerText = user.charAt(0).toUpperCase();
+                initDashboard();
             }
         }
-    };
-
+    }
+    document.getElementById('submitBtn').onclick = handleLogin;
+    document.getElementById('loginPass').addEventListener('keypress', (e) => { if(e.key === 'Enter') handleLogin(); });
+    document.getElementById('loginUser').addEventListener('keypress', (e) => { if(e.key === 'Enter') handleLogin(); });
     document.getElementById('switchBtn').onclick = () => {
         isLoginMode = !isLoginMode;
         document.getElementById('formTitle').innerText = isLoginMode ? "Entrar na sua temporada" : "Criar sua temporada";
@@ -115,22 +487,6 @@
         document.getElementById('switchBtn').innerText = isLoginMode ? "Criar sua temporada" : "Já tenho conta";
         document.getElementById('loginError').innerText = "";
     };
-
-    document.getElementById('logoutBtn').onclick = () => {
-        currentUser = null;
-        document.getElementById('dashboard').style.display = 'none';
-        document.getElementById('loginScreen').style.display = 'flex';
-    };
-
-    document.getElementById('saveEntryBtn').onclick = () => { alert("Episódio salvo!"); };
-    
-    // Avatar menu
-    let avatarBtn = document.getElementById('avatarBtn');
-    let menu = document.getElementById('avatarMenu');
-    avatarBtn.onclick = (e) => { e.stopPropagation(); menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex'; };
-    document.addEventListener('click', () => menu.style.display = 'none');
-    document.getElementById('uploadAvatarBtn').onclick = () => alert("Função de foto em breve");
-    document.getElementById('removeAvatarBtn').onclick = () => alert("Função de remover foto em breve");
 </script>
 </body>
 </html>
