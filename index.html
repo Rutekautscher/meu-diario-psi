@@ -37,7 +37,7 @@
         .save-bar { background: #1f1f1f; padding: 0.8rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; border-bottom: 1px solid #333; }
         .btn-save { background: #E50914; color: white; border: none; padding: 0.5rem 1rem; border-radius: 30px; cursor: pointer; font-size: 0.9rem; }
         .history-select { background: #333; color: white; padding: 0.4rem 0.8rem; border-radius: 30px; border: none; font-size: 0.9rem; }
-        .page-container { max-width: 1000px; margin: 1rem auto; padding: 0 1rem; }
+        .page-container { max-width: 1200px; margin: 1rem auto; padding: 0 1rem; }
         .section { background: #1f1f1f; border-radius: 16px; padding: 1.2rem; margin-bottom: 1.2rem; border-left: 6px solid #E50914; }
         .section h3 { color: #E50914; margin-bottom: 0.8rem; font-size: 1.4rem; font-weight: 600; }
         .section h4 { color: #E50914; margin-bottom: 0.5rem; font-size: 1.2rem; }
@@ -71,39 +71,21 @@
         .modal-full .modal-content { width: 95%; max-width: 700px; background: #1f1f1f; border-radius: 24px; padding: 1.5rem; border-left: 6px solid #E50914; }
         .close-modal { cursor: pointer; font-size: 2rem; float: right; color: #E50914; }
         
-        /* Ikigai */
-        .ikigai-central { text-align: center; margin: 1rem 0; }
-        .ikigai-symbol { display: inline-block; background: #E50914; border-radius: 50%; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; margin: 0 auto; box-shadow: 0 0 20px rgba(229,9,20,0.5); }
-        .ikigai-symbol span { color: white; font-size: 1.5rem; font-weight: bold; letter-spacing: 2px; }
-        .ikigai-circles { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; margin: 2rem 0; }
-        .ikigai-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 1.5rem; }
-        .ikigai-card { background: #1f1f1f; border: 2px solid #E50914; border-radius: 24px; padding: 1rem; width: 220px; text-align: center; }
-        .ikigai-card h4 { color: #E50914; font-size: 1rem; margin-bottom: 0.5rem; }
-        .intersecao-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 2rem; background: #1f1f1f; border-radius: 20px; padding: 1rem; }
-        @media (min-width: 768px) { .intersecao-grid { grid-template-columns: repeat(2, 1fr); } }
-        .intersecao-card { background: #2a2a2a; padding: 1rem; border-radius: 16px; border-left: 4px solid #E50914; }
-        .intersecao-card h4 { color: #E50914; font-size: 1rem; margin-bottom: 0.3rem; }
-        
-        /* NeuroFlix - formato vertical */
-        .hormonio-vertical { background: #2a2a2a; padding: 1rem; border-radius: 16px; margin-bottom: 1rem; }
-        .hormonio-vertical h4 { font-size: 1.2rem; margin-bottom: 0.3rem; }
-        .hormonio-vertical p { font-size: 0.85rem; color: #ccc; margin-bottom: 0.8rem; }
-        .check-group-vertical { display: flex; flex-direction: column; gap: 0.4rem; }
-        .check-group-vertical label { display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; cursor: pointer; }
+        /* NeuroFlix - 4 hormônios lado a lado */
+        .hormonios-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1rem; }
+        @media (max-width: 900px) { .hormonios-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 500px) { .hormonios-grid { grid-template-columns: 1fr; } }
+        .hormonio-card { background: #2a2a2a; padding: 1rem; border-radius: 16px; height: 100%; display: flex; flex-direction: column; }
+        .hormonio-card h4 { font-size: 1.2rem; margin-bottom: 0.3rem; }
+        .hormonio-card p { font-size: 0.8rem; color: #ccc; margin-bottom: 0.8rem; }
+        .check-group-vertical { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.5rem; }
+        .check-group-vertical label { display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; cursor: pointer; }
+        .check-group-vertical input { width: 18px; height: 18px; margin: 0; }
         
         .card-dopamina { border-left: 6px solid #FFD700; }
         .card-ocitocina { border-left: 6px solid #FF69B4; }
         .card-endorfina { border-left: 6px solid #00CED1; }
         .card-serotonina { border-left: 6px solid #32CD32; }
-        
-        /* Esferas da Amizade */
-        .esferas-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
-        @media (min-width: 768px) { .esferas-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); } }
-        .esfera-card { background: #1f1f1f; border-radius: 16px; padding: 1rem; border-left: 6px solid #E50914; }
-        .esfera-card h4 { color: #E50914; font-size: 1.1rem; margin-bottom: 0.5rem; }
-        .esfera-desc { font-size: 0.8rem; color: #aaa; margin-bottom: 0.8rem; cursor: pointer; }
-        .desc-full { display: none; font-size: 0.75rem; color: #ccc; margin-bottom: 0.8rem; padding: 0.5rem; background: #2a2a2a; border-radius: 8px; }
-        .desc-full.open { display: block; }
         
         /* DiagnostiFlix - linha única */
         .roda-single { background: #2a2a2a; padding: 1rem; border-radius: 16px; margin-bottom: 1rem; }
@@ -115,11 +97,40 @@
         .progress-fill.regular { background: #FFD700; }
         .progress-fill.bom { background: #228B22; }
         
+        /* Ikigai */
+        .ikigai-central { text-align: center; margin: 1rem 0; }
+        .ikigai-symbol { display: inline-block; background: #E50914; border-radius: 50%; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; margin: 0 auto; box-shadow: 0 0 20px rgba(229,9,20,0.5); }
+        .ikigai-symbol span { color: white; font-size: 1.5rem; font-weight: bold; letter-spacing: 2px; }
+        .ikigai-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1.5rem 0; }
+        @media (max-width: 600px) { .ikigai-grid { grid-template-columns: 1fr; } }
+        .ikigai-card { background: #1f1f1f; border: 2px solid #E50914; border-radius: 20px; padding: 1rem; text-align: center; }
+        .ikigai-card h4 { color: #E50914; font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .intersecao-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1.5rem 0; }
+        @media (max-width: 600px) { .intersecao-grid { grid-template-columns: 1fr; } }
+        .intersecao-card { background: #2a2a2a; padding: 1rem; border-radius: 16px; border-left: 4px solid #E50914; }
+        .intersecao-card h4 { color: #E50914; font-size: 1rem; margin-bottom: 0.3rem; }
+        
+        /* Esferas da Amizade */
+        .esferas-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+        @media (min-width: 768px) { .esferas-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); } }
+        .esfera-card { background: #1f1f1f; border-radius: 16px; padding: 1rem; border-left: 6px solid #E50914; }
+        .esfera-card h4 { color: #E50914; font-size: 1.1rem; margin-bottom: 0.5rem; }
+        .esfera-desc { font-size: 0.8rem; color: #aaa; margin-bottom: 0.8rem; cursor: pointer; }
+        .desc-full { display: none; font-size: 0.75rem; color: #ccc; margin-bottom: 0.8rem; padding: 0.5rem; background: #2a2a2a; border-radius: 8px; }
+        .desc-full.open { display: block; }
+        
+        /* Arquivo X - editável */
         .vhs-container { display: grid; grid-template-columns: 1fr; gap: 1rem; }
         @media (min-width: 500px) { .vhs-container { grid-template-columns: 1fr 1fr; } }
-        .vhs-card { background: linear-gradient(145deg, #1a1a1a, #0f0f0f); border-radius: 16px; padding: 1rem; border: 1px solid #E50914; display: flex; justify-content: space-between; align-items: center; }
-        .vhs-date { font-size: 1rem; font-weight: bold; color: #E50914; }
-        .delete-vhs { background: #E50914; color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 30px; cursor: pointer; font-size: 0.8rem; }
+        .vhs-card { background: linear-gradient(145deg, #1a1a1a, #0f0f0f); border-radius: 16px; padding: 1rem; border: 1px solid #E50914; }
+        .vhs-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+        .vhs-date { font-size: 0.9rem; font-weight: bold; color: #E50914; cursor: pointer; }
+        .vhs-actions { display: flex; gap: 0.5rem; }
+        .edit-vhs, .delete-vhs { background: #E50914; color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 20px; cursor: pointer; font-size: 0.7rem; }
+        .vhs-content { display: none; margin-top: 0.5rem; }
+        .vhs-content.open { display: block; }
+        .vhs-content textarea { width: 100%; background: #1a1a1a; border: 1px solid #E50914; color: white; padding: 0.5rem; border-radius: 8px; font-size: 0.8rem; margin-bottom: 0.5rem; }
+        .save-vhs { background: #E50914; color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 20px; cursor: pointer; font-size: 0.7rem; }
         
         .text-small { font-size: 0.85rem; color: #aaa; }
         
@@ -332,7 +343,7 @@
         });
     }
     
-    // PÁGINA 2 - AÇÃO (Plano de Mudança de Comportamento)
+    // PÁGINA 2 - AÇÃO
     function renderPagina2() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
         let p = data.plano_acao || {};
@@ -395,7 +406,7 @@
         document.getElementById('salvarPlanoBtn')?.addEventListener('click', () => { capturePlano(); alert("Plano de ação salvo!"); });
     }
     
-    // CRISEPLAY - com mais checkboxes
+    // CRISEPLAY
     function renderPagina3() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
         let c = data.criseplay || { fisica: {}, sensorial: {}, emocional: {} };
@@ -469,44 +480,46 @@
         document.querySelectorAll('.chip').forEach(chip => { chip.onclick = () => { let ta = document.getElementById(chip.dataset.target); if(ta) ta.value = chip.innerText; }; });
     }
     
-    // NEUROFLIX - formato vertical
+    // NEUROFLIX - 4 hormônios lado a lado
     function renderPagina5() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
         let s = data.saga || {};
         document.getElementById('page5').innerHTML = `
             <div class="section"><h3>Quarteto da felicidade</h3>
-            <div class="hormonio-vertical card-dopamina"><h4>DOPAMINA</h4><p>Neurotransmissor do prazer e da recompensa. Liberada quando alcançamos objetivos.</p><div class="check-group-vertical">
-                <label><input type="checkbox" id="dop1" ${s.dop1?'checked':''}> Durma 7-9 horas</label>
-                <label><input type="checkbox" id="dop2" ${s.dop2?'checked':''}> Celebre conquistas</label>
-                <label><input type="checkbox" id="dop3" ${s.dop3?'checked':''}> Faça exercícios</label>
-                <label><input type="checkbox" id="dop4" ${s.dop4?'checked':''}> Estabeleça metas</label>
-                <label><input type="checkbox" id="dop5" ${s.dop5?'checked':''}> Ouça música</label>
-                <label><input type="checkbox" id="dop6" ${s.dop6?'checked':''}> Faça algo que gosta</label>
-            </div></div>
-            <div class="hormonio-vertical card-ocitocina"><h4>OCITOCINA</h4><p>Neurotransmissor do amor e da conexão. Liberada com afeto e confiança.</p><div class="check-group-vertical">
-                <label><input type="checkbox" id="oci1" ${s.oci1?'checked':''}> Medite</label>
-                <label><input type="checkbox" id="oci2" ${s.oci2?'checked':''}> Abrace alguém</label>
-                <label><input type="checkbox" id="oci3" ${s.oci3?'checked':''}> Seja generoso</label>
-                <label><input type="checkbox" id="oci4" ${s.oci4?'checked':''}> Passe tempo com animais</label>
-                <label><input type="checkbox" id="oci5" ${s.oci5?'checked':''}> Conversas profundas</label>
-                <label><input type="checkbox" id="oci6" ${s.oci6?'checked':''}> Pratique gratidão</label>
-            </div></div>
-            <div class="hormonio-vertical card-endorfina"><h4>ENDORFINA</h4><p>Neurotransmissor do alívio da dor e euforia. Liberada com riso e movimento.</p><div class="check-group-vertical">
-                <label><input type="checkbox" id="end1" ${s.end1?'checked':''}> Hobbies</label>
-                <label><input type="checkbox" id="end2" ${s.end2?'checked':''}> Ria</label>
-                <label><input type="checkbox" id="end3" ${s.end3?'checked':''}> Dance</label>
-                <label><input type="checkbox" id="end4" ${s.end4?'checked':''}> Exercícios aeróbicos</label>
-                <label><input type="checkbox" id="end5" ${s.end5?'checked':''}> Coma chocolate amargo</label>
-                <label><input type="checkbox" id="end6" ${s.end6?'checked':''}> Banho quente</label>
-            </div></div>
-            <div class="hormonio-vertical card-serotonina"><h4>SEROTONINA</h4><p>Neurotransmissor do bem-estar e humor. Liberada com gratidão e natureza.</p><div class="check-group-vertical">
-                <label><input type="checkbox" id="ser1" ${s.ser1?'checked':''}> Agradeça</label>
-                <label><input type="checkbox" id="ser2" ${s.ser2?'checked':''}> Desfrute da natureza</label>
-                <label><input type="checkbox" id="ser3" ${s.ser3?'checked':''}> Boas memórias</label>
-                <label><input type="checkbox" id="ser4" ${s.ser4?'checked':''}> Sol da manhã</label>
-                <label><input type="checkbox" id="ser5" ${s.ser5?'checked':''}> Meditação</label>
-                <label><input type="checkbox" id="ser6" ${s.ser6?'checked':''}> Alimentos ricos</label>
-            </div></div></div>`;
+            <div class="hormonios-grid">
+                <div class="hormonio-card card-dopamina"><h4>DOPAMINA</h4><p>Neurotransmissor do prazer e da recompensa. Liberada quando alcançamos objetivos.</p><div class="check-group-vertical">
+                    <label><input type="checkbox" id="dop1" ${s.dop1?'checked':''}> Dormir de 7 a 9 horas</label>
+                    <label><input type="checkbox" id="dop2" ${s.dop2?'checked':''}> Celebrar conquistas</label>
+                    <label><input type="checkbox" id="dop3" ${s.dop3?'checked':''}> Fazer exercício físico</label>
+                    <label><input type="checkbox" id="dop4" ${s.dop4?'checked':''}> Estabelecer metas</label>
+                    <label><input type="checkbox" id="dop5" ${s.dop5?'checked':''}> Fazer algo que gosta</label>
+                    <label><input type="checkbox" id="dop6" ${s.dop6?'checked':''}> Ouvir música</label>
+                </div></div>
+                <div class="hormonio-card card-ocitocina"><h4>OCITOCINA</h4><p>Neurotransmissor do amor e da conexão. Liberada com afeto e confiança.</p><div class="check-group-vertical">
+                    <label><input type="checkbox" id="oci1" ${s.oci1?'checked':''}> Meditar</label>
+                    <label><input type="checkbox" id="oci2" ${s.oci2?'checked':''}> Abraçar alguém</label>
+                    <label><input type="checkbox" id="oci3" ${s.oci3?'checked':''}> Ser generoso</label>
+                    <label><input type="checkbox" id="oci4" ${s.oci4?'checked':''}> Passar tempo com animais</label>
+                    <label><input type="checkbox" id="oci5" ${s.oci5?'checked':''}> Conversas profundas</label>
+                    <label><input type="checkbox" id="oci6" ${s.oci6?'checked':''}> Praticar gratidão</label>
+                </div></div>
+                <div class="hormonio-card card-endorfina"><h4>ENDORFINA</h4><p>Neurotransmissor do alívio da dor e euforia. Liberada com riso e movimento.</p><div class="check-group-vertical">
+                    <label><input type="checkbox" id="end1" ${s.end1?'checked':''}> Praticar hobbies</label>
+                    <label><input type="checkbox" id="end2" ${s.end2?'checked':''}> Rir</label>
+                    <label><input type="checkbox" id="end3" ${s.end3?'checked':''}> Dançar</label>
+                    <label><input type="checkbox" id="end4" ${s.end4?'checked':''}> Exercícios aeróbicos</label>
+                    <label><input type="checkbox" id="end5" ${s.end5?'checked':''}> Comer chocolate amargo</label>
+                    <label><input type="checkbox" id="end6" ${s.end6?'checked':''}> Banho quente</label>
+                </div></div>
+                <div class="hormonio-card card-serotonina"><h4>SEROTONINA</h4><p>Neurotransmissor do bem-estar e humor. Liberada com gratidão e natureza.</p><div class="check-group-vertical">
+                    <label><input type="checkbox" id="ser1" ${s.ser1?'checked':''}> Agradecer</label>
+                    <label><input type="checkbox" id="ser2" ${s.ser2?'checked':''}> Desfrutar da natureza</label>
+                    <label><input type="checkbox" id="ser3" ${s.ser3?'checked':''}> Relembrar boas memórias</label>
+                    <label><input type="checkbox" id="ser4" ${s.ser4?'checked':''}> Tomar sol pela manhã</label>
+                    <label><input type="checkbox" id="ser5" ${s.ser5?'checked':''}> Meditar</label>
+                    <label><input type="checkbox" id="ser6" ${s.ser6?'checked':''}> Alimentos ricos</label>
+                </div></div>
+            </div></div>`;
         for(let i=1;i<=6;i++) { 
             ['dop','oci','end','ser'].forEach(prefix => { let el = document.getElementById(`${prefix}${i}`); if(el) el.addEventListener('change', () => { let d=users[currentUser].diarios[currentDate]; if(d) { if(!d.saga) d.saga={}; d.saga[`${prefix}${i}`]=el.checked; saveAll(); } }); });
         }
@@ -537,7 +550,7 @@
         }
     }
     
-    // DIAGNOSTIFLIX - linha única (sem duplicação)
+    // DIAGNOSTIFLIX - linha única, sem duplicação
     const areasDiagnosti = [
         "Vida Profissional", "Vida Amorosa", "Amigos", "Família", "Espiritualidade", "Saúde Mental", "Inteligência Emocional",
         "Saúde Física", "Financeiro", "Intelectual", "Lazer", "Autoconhecimento", "Propósito", "Ambiente", "Alimentação",
@@ -556,7 +569,6 @@
                 <div><span>Nota: <span id="nota_val_${i}">${nota}</span>/10</span></div>
                 <div class="progress-bar-bg"><div class="progress-fill ${corClass}" id="progress_${i}" style="width:${nota*10}%"></div></div>
                 <input type="range" id="roda_${i}" min="0" max="10" value="${nota}">
-                <div id="perguntas_container_${i}" style="margin-top:0.5rem;"></div>
             </div>`;
         }
         html += `<button class="btn-red" id="salvarRodaBtn">Salvar avaliação</button></div>`;
@@ -564,18 +576,11 @@
         for(let i=0;i<areasDiagnosti.length;i++) {
             let slider = document.getElementById(`roda_${i}`);
             if(slider) slider.addEventListener('input', (e) => { let val=parseInt(e.target.value); document.getElementById(`nota_val_${i}`).innerText = val; let classe=val<=3?'critico':val<=5?'atencao':val<=7?'regular':'bom'; let prog=document.getElementById(`progress_${i}`); if(prog){ prog.style.width=(val*10)+'%'; prog.className='progress-fill '+classe; } });
-            let container = document.getElementById(`perguntas_container_${i}`);
-            if(container) container.innerHTML = `<div class="pergunta-card"><div class="pergunta-header" data-pergunta="${i}"><h4>Cena desbloqueada: Como você avalia esta área?</h4><span>+</span></div><div class="pergunta-content" id="pergunta_content_${i}"><textarea id="resp_${i}" placeholder="Escreva sua reflexão...">${roda[`resp_${i}`]||""}</textarea><div class="sugestoes-chips"><div class="chip" data-target="resp_${i}">Precisa melhorar</div><div class="chip" data-target="resp_${i}">Estou satisfeita</div><div class="chip" data-target="resp_${i}">Quero mudar</div></div></div></div>`;
-            let header = document.querySelector(`.pergunta-header[data-pergunta="${i}"]`);
-            if(header) header.onclick = () => { let c=document.getElementById(`pergunta_content_${i}`); c.classList.toggle('open'); let icon=header.querySelector('span'); icon.innerText=c.classList.contains('open')?'-':'+'; };
-            let textarea = document.getElementById(`resp_${i}`);
-            if(textarea) textarea.addEventListener('input', () => { let d=users[currentUser].diarios[currentDate]; if(d && d.roda_vida) d.roda_vida[`resp_${i}`]=textarea.value; saveAll(); });
-            document.querySelectorAll(`.chip[data-target="resp_${i}"]`).forEach(chip => { chip.onclick = () => { let ta=document.getElementById(chip.dataset.target); if(ta) ta.value = chip.innerText; }; });
         }
-        document.getElementById('salvarRodaBtn')?.addEventListener('click', () => { let novaRoda={}; for(let i=0;i<areasDiagnosti.length;i++) { novaRoda[i]=parseInt(document.getElementById(`roda_${i}`)?.value)||5; novaRoda[`resp_${i}`]=document.getElementById(`resp_${i}`)?.value||""; } if(users[currentUser].diarios[currentDate]) { users[currentUser].diarios[currentDate].roda_vida=novaRoda; users[currentUser].diarios[currentDate].roda_vida_data=new Date().toISOString(); saveAll(); alert("Avaliação salva! Volte mês que vem."); renderPagina7(); } });
+        document.getElementById('salvarRodaBtn')?.addEventListener('click', () => { let novaRoda={}; for(let i=0;i<areasDiagnosti.length;i++) { novaRoda[i]=parseInt(document.getElementById(`roda_${i}`)?.value)||5; } if(users[currentUser].diarios[currentDate]) { users[currentUser].diarios[currentDate].roda_vida=novaRoda; users[currentUser].diarios[currentDate].roda_vida_data=new Date().toISOString(); saveAll(); alert("Avaliação salva! Volte mês que vem."); renderPagina7(); } });
     }
     
-    // IKIGAI - com símbolo central limpo e 4 blocos padronizados
+    // IKIGAI - com linguagem padronizada e sem "Meu Ikigai final"
     function renderIkigai() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
         let pode = (!data.ikigai_data || (new Date() - new Date(data.ikigai_data) > 60*24*60*60*1000));
@@ -585,37 +590,92 @@
             <div class="section"><h3>Seu Ikigai (Razão de Ser)</h3>
             <div class="ikigai-central"><div class="ikigai-symbol"><span>IKIGAI</span></div></div>
             <p class="text-small" style="text-align:center; margin:1rem 0;">O IKIGAI é um método japonês que ajuda você a encontrar seu propósito.</p>
-            <div class="ikigai-circles"><div class="ikigai-row"><div class="ikigai-card"><h4>Aquilo que você ama</h4><textarea id="ikigai_ama" rows="2" placeholder="O que te faz sentir viva?">${resp.ama||""}</textarea><div class="sugestoes-chips"><div class="chip" data-target="ikigai_ama">Psicologia</div><div class="chip" data-target="ikigai_ama">Ajudar pessoas</div><div class="chip" data-target="ikigai_ama">Escrever</div></div></div>
-            <div class="ikigai-card"><h4>No que você é boa</h4><textarea id="ikigai_boa" rows="2" placeholder="Quais seus talentos?">${resp.boa||""}</textarea><div class="sugestoes-chips"><div class="chip" data-target="ikigai_boa">Escutar</div><div class="chip" data-target="ikigai_boa">Cuidar</div><div class="chip" data-target="ikigai_boa">Comunicar</div></div></div></div>
-            <div class="ikigai-row"><div class="ikigai-card"><h4>O que o mundo precisa</h4><textarea id="ikigai_mundo" rows="2" placeholder="Como quer ajudar o mundo?">${resp.mundo||""}</textarea><div class="sugestoes-chips"><div class="chip" data-target="ikigai_mundo">Saúde mental</div><div class="chip" data-target="ikigai_mundo">Educação</div></div></div>
-            <div class="ikigai-card"><h4>Pelo que pode ser paga</h4><textarea id="ikigai_paga" rows="2" placeholder="O que pode virar profissão?">${resp.paga||""}</textarea><div class="sugestoes-chips"><div class="chip" data-target="ikigai_paga">Atendimento</div><div class="chip" data-target="ikigai_paga">Conteúdo</div></div></div></div></div>
+            <div class="ikigai-grid">
+                <div class="ikigai-card"><h4>Aquilo que você ama</h4><textarea id="ikigai_ama" rows="2" placeholder="O que te faz sentir viva?">${resp.ama||""}</textarea><div class="sugestoes-chips"><div class="chip" data-target="ikigai_ama">Psicologia</div><div class="chip" data-target="ikigai_ama">Ajudar pessoas</div><div class="chip" data-target="ikigai_ama">Escrever</div></div></div>
+                <div class="ikigai-card"><h4>Aquilo que você é bom</h4><textarea id="ikigai_boa" rows="2" placeholder="Quais seus talentos?">${resp.boa||""}</textarea><div class="sugestoes-chips"><div class="chip" data-target="ikigai_boa">Escutar</div><div class="chip" data-target="ikigai_boa">Cuidar</div><div class="chip" data-target="ikigai_boa">Comunicar</div></div></div>
+                <div class="ikigai-card"><h4>Aquilo que o mundo precisa</h4><textarea id="ikigai_mundo" rows="2" placeholder="Como quer ajudar o mundo?">${resp.mundo||""}</textarea><div class="sugestoes-chips"><div class="chip" data-target="ikigai_mundo">Saúde mental</div><div class="chip" data-target="ikigai_mundo">Educação</div></div></div>
+                <div class="ikigai-card"><h4>Aquilo pelo que pode ser pago</h4><textarea id="ikigai_paga" rows="2" placeholder="O que pode virar profissão?">${resp.paga||""}</textarea><div class="sugestoes-chips"><div class="chip" data-target="ikigai_paga">Atendimento</div><div class="chip" data-target="ikigai_paga">Conteúdo</div></div></div>
+            </div>
             <div class="intersecao-grid">
-                <div class="intersecao-card"><h4>PAIXÃO</h4><p class="text-small">Aquilo que você ama + No que você é boa</p><textarea id="ikigai_paixao" rows="2" placeholder="Seu ponto de paixão...">${resp.paixao||""}</textarea></div>
-                <div class="intersecao-card"><h4>VOCAÇÃO</h4><p class="text-small">No que você é boa + Pelo que pode ser paga</p><textarea id="ikigai_vocacao" rows="2" placeholder="Sua vocação...">${resp.vocacao||""}</textarea></div>
-                <div class="intersecao-card"><h4>MISSÃO</h4><p class="text-small">O que o mundo precisa + Aquilo que você ama</p><textarea id="ikigai_missao" rows="2" placeholder="Sua missão...">${resp.missao||""}</textarea></div>
-                <div class="intersecao-card"><h4>PROFISSÃO</h4><p class="text-small">O que o mundo precisa + Pelo que pode ser paga</p><textarea id="ikigai_profissao" rows="2" placeholder="Sua profissão...">${resp.profissao||""}</textarea></div>
+                <div class="intersecao-card"><h4>PAIXÃO</h4><p class="text-small">Aquilo que você ama + Aquilo que você é bom</p><textarea id="ikigai_paixao" rows="2" placeholder="Seu ponto de paixão...">${resp.paixao||""}</textarea></div>
+                <div class="intersecao-card"><h4>MISSÃO</h4><p class="text-small">Aquilo que o mundo precisa + Aquilo que você ama</p><textarea id="ikigai_missao" rows="2" placeholder="Sua missão...">${resp.missao||""}</textarea></div>
+                <div class="intersecao-card"><h4>PROFISSÃO</h4><p class="text-small">Aquilo que o mundo precisa + Aquilo pelo que pode ser pago</p><textarea id="ikigai_profissao" rows="2" placeholder="Sua profissão...">${resp.profissao||""}</textarea></div>
+                <div class="intersecao-card"><h4>VOCAÇÃO</h4><p class="text-small">Aquilo que você é bom + Aquilo pelo que pode ser pago</p><textarea id="ikigai_vocacao" rows="2" placeholder="Sua vocação...">${resp.vocacao||""}</textarea></div>
             </div>
             <button class="btn-red" id="calcularIkigaiBtn">CALCULAR MEU IKIGAI</button>
             <div id="resultadoIkigaiArea" class="info-card" style="margin-top:1rem; display:none;"><h4>Resultado:</h4><p id="resultadoIkigaiTexto"></p></div>
-            <div class="camera-box" style="background:#1f1f1f; border:3px solid #E50914; border-radius:16px; padding:1rem; text-align:center; margin-top:1rem;"><div style="background:#0a0a0a; width:50px; height:50px; border-radius:50%; margin:0 auto 0.5rem;"></div><h4>Meu IKIGAI Final</h4><textarea id="ikigai_final" rows="3" placeholder="Sua conclusão...">${resp.final||""}</textarea></div>
-            <button class="btn-red" id="salvarIkigaiBtn">Salvar IKIGAI Completo</button></div>`;
+            <button class="btn-red" id="salvarIkigaiBtn" style="margin-top:0.5rem;">Salvar IKIGAI</button></div>`;
         
-        ['ama','boa','mundo','paga','paixao','vocacao','missao','profissao'].forEach(id => { let ta = document.getElementById(`ikigai_${id}`); if(ta) ta.addEventListener('input', () => { let d=users[currentUser].diarios[currentDate]; if(d) d.ikigai_respostas[id]=ta.value; saveAll(); }); });
+        ['ama','boa','mundo','paga','paixao','missao','profissao','vocacao'].forEach(id => { let ta = document.getElementById(`ikigai_${id}`); if(ta) ta.addEventListener('input', () => { let d=users[currentUser].diarios[currentDate]; if(d) d.ikigai_respostas[id]=ta.value; saveAll(); }); });
         document.querySelectorAll('.chip').forEach(chip => { chip.onclick = () => { let ta = document.getElementById(chip.dataset.target); if(ta) ta.value = chip.innerText; }; });
         document.getElementById('calcularIkigaiBtn')?.addEventListener('click', () => { let respAtual = users[currentUser].diarios[currentDate].ikigai_respostas; let resultado = "Seu IKIGAI parece estar relacionado a um caminho de cuidado e propósito. Continue explorando!"; document.getElementById('resultadoIkigaiTexto').innerText = resultado; document.getElementById('resultadoIkigaiArea').style.display = 'block'; });
-        document.getElementById('salvarIkigaiBtn')?.addEventListener('click', () => { let d=users[currentUser].diarios[currentDate]; if(d) { d.ikigai_respostas.final = document.getElementById('ikigai_final').value; d.ikigai_data = new Date().toISOString(); saveAll(); alert("IKIGAI salvo! Próxima jornada em 2 meses."); renderIkigai(); } });
+        document.getElementById('salvarIkigaiBtn')?.addEventListener('click', () => { let d=users[currentUser].diarios[currentDate]; if(d) { d.ikigai_respostas.final = d.ikigai_respostas.ama + " " + d.ikigai_respostas.boa + " " + d.ikigai_respostas.mundo + " " + d.ikigai_respostas.paga; d.ikigai_data = new Date().toISOString(); saveAll(); alert("IKIGAI salvo! Próxima jornada em 2 meses."); renderIkigai(); } });
     }
     
-    // ARQUIVO X
+    // ARQUIVO X - editável e com exclusão
     function renderArquivos() {
         let diarios = users[currentUser]?.diarios || {};
         let dates = Object.keys(diarios).sort().reverse();
         let html = `<div class="vhs-container">`;
-        dates.forEach(d => { html += `<div class="vhs-card" data-data="${d}"><div class="vhs-date">${d}</div><button class="delete-vhs" data-data="${d}">X Excluir</button></div>`; });
+        dates.forEach(d => {
+            let entry = diarios[d];
+            let texto = entry?.diario_texto || "";
+            html += `
+                <div class="vhs-card" data-data="${d}">
+                    <div class="vhs-header">
+                        <div class="vhs-date" data-data="${d}">📀 ${d}</div>
+                        <div class="vhs-actions">
+                            <button class="edit-vhs" data-data="${d}">Editar</button>
+                            <button class="delete-vhs" data-data="${d}">Excluir</button>
+                        </div>
+                    </div>
+                    <div class="vhs-content" id="vhs-content-${d.replace(/-/g,'')}">
+                        <textarea id="edit-text-${d.replace(/-/g,'')}" rows="3">${texto}</textarea>
+                        <button class="save-vhs" data-data="${d}">Salvar alterações</button>
+                    </div>
+                </div>`;
+        });
         html += `</div>`;
         document.getElementById('page9').innerHTML = html;
-        document.querySelectorAll('.vhs-card').forEach(c => { c.onclick = (e) => { if(e.target.classList.contains('delete-vhs')) return; currentDate = c.dataset.data; loadAll(); changePage(0); }; });
-        document.querySelectorAll('.delete-vhs').forEach(btn => { btn.onclick = (e) => { e.stopPropagation(); if(confirm("Excluir este dia permanentemente?")) { delete users[currentUser].diarios[btn.dataset.data]; saveAll(); renderArquivos(); } }; });
+        
+        document.querySelectorAll('.vhs-date').forEach(date => {
+            date.onclick = () => {
+                let data = date.dataset.data;
+                let contentDiv = document.getElementById(`vhs-content-${data.replace(/-/g,'')}`);
+                if(contentDiv) contentDiv.classList.toggle('open');
+            };
+        });
+        document.querySelectorAll('.edit-vhs').forEach(btn => {
+            btn.onclick = (e) => {
+                e.stopPropagation();
+                let data = btn.dataset.data;
+                let contentDiv = document.getElementById(`vhs-content-${data.replace(/-/g,'')}`);
+                if(contentDiv) contentDiv.classList.toggle('open');
+            };
+        });
+        document.querySelectorAll('.save-vhs').forEach(btn => {
+            btn.onclick = (e) => {
+                e.stopPropagation();
+                let data = btn.dataset.data;
+                let textarea = document.getElementById(`edit-text-${data.replace(/-/g,'')}`);
+                if(textarea && users[currentUser].diarios[data]) {
+                    users[currentUser].diarios[data].diario_texto = textarea.value;
+                    saveAll();
+                    alert("Alterações salvas!");
+                }
+            };
+        });
+        document.querySelectorAll('.delete-vhs').forEach(btn => {
+            btn.onclick = (e) => {
+                e.stopPropagation();
+                let data = btn.dataset.data;
+                if(confirm("Excluir este dia permanentemente?")) {
+                    delete users[currentUser].diarios[data];
+                    saveAll();
+                    renderArquivos();
+                }
+            };
+        });
     }
     
     function loadAll() {
@@ -681,3 +741,4 @@
 </script>
 </body>
 </html>
+
