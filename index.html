@@ -71,10 +71,10 @@
         .modal-full .modal-content { width: 95%; max-width: 700px; background: #1f1f1f; border-radius: 24px; padding: 1.5rem; border-left: 6px solid #E50914; }
         .close-modal { cursor: pointer; font-size: 2rem; float: right; color: #E50914; }
         
-        /* Ikigai Circular */
-        .ikigai-circular { text-align: center; margin: 1rem 0; }
-        .ikigai-img { max-width: 100%; height: auto; background: #1f1f1f; border-radius: 50%; padding: 1rem; border: 2px solid #E50914; }
-        
+        /* Ikigai */
+        .ikigai-central { text-align: center; margin: 1rem 0; }
+        .ikigai-symbol { display: inline-block; background: #E50914; border-radius: 50%; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; margin: 0 auto; box-shadow: 0 0 20px rgba(229,9,20,0.5); }
+        .ikigai-symbol span { color: white; font-size: 1.5rem; font-weight: bold; letter-spacing: 2px; }
         .ikigai-circles { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; margin: 2rem 0; }
         .ikigai-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 1.5rem; }
         .ikigai-card { background: #1f1f1f; border: 2px solid #E50914; border-radius: 24px; padding: 1rem; width: 220px; text-align: center; }
@@ -83,16 +83,13 @@
         @media (min-width: 768px) { .intersecao-grid { grid-template-columns: repeat(2, 1fr); } }
         .intersecao-card { background: #2a2a2a; padding: 1rem; border-radius: 16px; border-left: 4px solid #E50914; }
         .intersecao-card h4 { color: #E50914; font-size: 1rem; margin-bottom: 0.3rem; }
-        .center-circle { text-align: center; margin: 1rem 0; background: #E50914; border-radius: 100px; padding: 1rem; color: white; font-weight: bold; font-size: 1.2rem; }
         
-        /* NeuroFlix */
-        .hormonio-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
-        @media (min-width: 768px) { .hormonio-grid { grid-template-columns: repeat(2, 1fr); } }
-        .hormonio-card { background: #2a2a2a; padding: 1rem; border-radius: 16px; }
-        .hormonio-card h4 { font-size: 1.2rem; margin-bottom: 0.3rem; }
-        .hormonio-card p { font-size: 0.85rem; color: #ccc; margin-bottom: 0.8rem; }
-        .check-group { display: flex; flex-direction: column; gap: 0.4rem; }
-        .check-group label { display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; cursor: pointer; }
+        /* NeuroFlix - formato vertical */
+        .hormonio-vertical { background: #2a2a2a; padding: 1rem; border-radius: 16px; margin-bottom: 1rem; }
+        .hormonio-vertical h4 { font-size: 1.2rem; margin-bottom: 0.3rem; }
+        .hormonio-vertical p { font-size: 0.85rem; color: #ccc; margin-bottom: 0.8rem; }
+        .check-group-vertical { display: flex; flex-direction: column; gap: 0.4rem; }
+        .check-group-vertical label { display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; cursor: pointer; }
         
         .card-dopamina { border-left: 6px solid #FFD700; }
         .card-ocitocina { border-left: 6px solid #FF69B4; }
@@ -108,24 +105,15 @@
         .desc-full { display: none; font-size: 0.75rem; color: #ccc; margin-bottom: 0.8rem; padding: 0.5rem; background: #2a2a2a; border-radius: 8px; }
         .desc-full.open { display: block; }
         
-        /* DiagnostiFlix */
-        .roda-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1rem; }
-        @media (min-width: 768px) { .roda-grid { grid-template-columns: repeat(2, 1fr); } }
-        .roda-item { background: #2a2a2a; padding: 1rem; border-radius: 16px; }
-        .roda-item h4 { color: #E50914; font-size: 1rem; margin-bottom: 0.3rem; }
-        .roda-item p { font-size: 0.75rem; color: #aaa; margin-bottom: 0.5rem; }
-        .progress-bar-bg { width: 100%; height: 8px; background: #333; border-radius: 4px; overflow: hidden; margin: 0.3rem 0; }
+        /* DiagnostiFlix - linha única */
+        .roda-single { background: #2a2a2a; padding: 1rem; border-radius: 16px; margin-bottom: 1rem; }
+        .roda-single h4 { color: #E50914; font-size: 1rem; margin-bottom: 0.3rem; }
+        .progress-bar-bg { width: 100%; height: 8px; background: #333; border-radius: 4px; overflow: hidden; margin: 0.5rem 0; }
         .progress-fill { height: 100%; width: 0%; border-radius: 4px; transition: width 0.3s; }
         .progress-fill.critico { background: #8B0000; }
         .progress-fill.atencao { background: #FF8C00; }
         .progress-fill.regular { background: #FFD700; }
         .progress-fill.bom { background: #228B22; }
-        
-        .pergunta-card { background: #2a2a2a; border-radius: 12px; margin-bottom: 0.5rem; overflow: hidden; }
-        .pergunta-header { background: #333; padding: 0.6rem; cursor: pointer; display: flex; justify-content: space-between; }
-        .pergunta-header h4 { margin: 0; font-size: 0.85rem; color: #E50914; }
-        .pergunta-content { display: none; padding: 0.8rem; background: #252525; }
-        .pergunta-content.open { display: block; }
         
         .vhs-container { display: grid; grid-template-columns: 1fr; gap: 1rem; }
         @media (min-width: 500px) { .vhs-container { grid-template-columns: 1fr 1fr; } }
@@ -226,7 +214,7 @@
             checklist_fisica: { banho:false, dentes:false, agua:false, comida:false, sol:false, movimento:false, alongamento:false, respiracao:false, tempoPausa:false, refeicaoLenta:false },
             checklist_autocuidado: { medicamentos:false, terapia:false, amorProprio:false, limites:false, ajuda:false, detox:false, skincare:false, arrumarCama:false, hobby:false, atividadeBem:false },
             replay: { situacao: "", aceito: "", agradeco: "", nao_faz_bem: "", faz_bem: "", deixo_ir: "", desfruto: "", nao_preciso: "" },
-            criseplay: {}, emocoes: emocoes,
+            criseplay: { fisica: {}, sensorial: {}, emocional: {} },
             plano_acao: {},
             ikigai_respostas: { ama: "", boa: "", mundo: "", paga: "", paixao: "", vocacao: "", missao: "", profissao: "" },
             ikigai_data: null, ikigai_resultado: "",
@@ -407,53 +395,124 @@
         document.getElementById('salvarPlanoBtn')?.addEventListener('click', () => { capturePlano(); alert("Plano de ação salvo!"); });
     }
     
-    // CRISEPLAY
+    // CRISEPLAY - com mais checkboxes
     function renderPagina3() {
+        let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
+        let c = data.criseplay || { fisica: {}, sensorial: {}, emocional: {} };
         document.getElementById('page3').innerHTML = `
             <div class="section"><h3>Entenda o que levou sua mente à desregulação</h3>
-            <p class="text-small">A desregulação emocional não acontece apenas por falta de controle. Na maioria das vezes, ela surge quando corpo, mente e emoções acumulam mais estímulos do que conseguem processar.</p>
-            <div class="info-card"><h4>DESREGULAÇÃO FÍSICA</h4><p class="text-small">Acontece quando o corpo está sobrecarregado ou sem recursos básicos para funcionar bem. Fome, sede, cansaço, dor ou falta de sono.</p><div class="checklist-vertical"><label><input type="checkbox"> Você comeu direito hoje?</label><label><input type="checkbox"> Dormiu bem recentemente?</label><label><input type="checkbox"> Seu corpo estava cansado?</label></div></div>
-            <div class="info-card"><h4>DESREGULAÇÃO SENSORIAL</h4><p class="text-small">Acontece quando o cérebro recebe estímulos demais e não consegue processar tudo adequadamente. Barulho, luz forte, multidão.</p><div class="checklist-vertical"><label><input type="checkbox"> O ambiente estava barulhento?</label><label><input type="checkbox"> Havia muitas pessoas?</label></div></div>
-            <div class="info-card"><h4>DESREGULAÇÃO EMOCIONAL</h4><p class="text-small">Acontece quando emoções difíceis se acumulam e ultrapassam a capacidade momentânea de processamento emocional.</p><div class="checklist-vertical"><label><input type="checkbox"> Já estava emocionalmente cansada?</label><label><input type="checkbox"> Sentiu-se rejeitada?</label></div></div>
+            <p class="text-small">A desregulação emocional não acontece apenas por falta de controle. A desregulação é causada por estímulos do que conseguem processar.</p>
+            <div class="info-card"><h4>DESREGULAÇÃO FÍSICA</h4><p class="text-small">Acontece quando o corpo está sobrecarregado ou sem recursos básicos para funcionar.</p><div class="checklist-vertical">
+                <label><input type="checkbox" id="fis_fome" ${c.fisica.fome?'checked':''}> Você comeu direito hoje?</label>
+                <label><input type="checkbox" id="fis_sono" ${c.fisica.sono?'checked':''}> Dormiu bem recentemente?</label>
+                <label><input type="checkbox" id="fis_cansaco" ${c.fisica.cansaco?'checked':''}> Seu corpo estava cansado?</label>
+                <label><input type="checkbox" id="fis_agua" ${c.fisica.agua?'checked':''}> Bebeu água suficiente?</label>
+                <label><input type="checkbox" id="fis_dor" ${c.fisica.dor?'checked':''}> Sentia alguma dor física?</label>
+                <label><input type="checkbox" id="fis_exaustao" ${c.fisica.exaustao?'checked':''}> Exaustão extrema?</label>
+                <label><input type="checkbox" id="fis_tensao" ${c.fisica.tensao?'checked':''}> Tensão muscular?</label>
+                <label><input type="checkbox" id="fis_doenca" ${c.fisica.doenca?'checked':''}> Doença ou mal-estar?</label>
+                <label><input type="checkbox" id="fis_respiracao" ${c.fisica.respiracao?'checked':''}> Respiração ofegante?</label>
+                <label><input type="checkbox" id="fis_cafeina" ${c.fisica.cafeina?'checked':''}> Excesso de cafeína?</label>
+            </div></div>
+            <div class="info-card"><h4>DESREGULAÇÃO SENSORIAL</h4><p class="text-small">Acontece quando o cérebro recebe estímulos demais e não consegue processar.</p><div class="checklist-vertical">
+                <label><input type="checkbox" id="sens_barulho" ${c.sensorial.barulho?'checked':''}> O ambiente estava barulhento?</label>
+                <label><input type="checkbox" id="sens_pessoas" ${c.sensorial.pessoas?'checked':''}> Havia muitas pessoas?</label>
+                <label><input type="checkbox" id="sens_luz" ${c.sensorial.luz?'checked':''}> Luz forte ou piscando?</label>
+                <label><input type="checkbox" id="sens_cheiro" ${c.sensorial.cheiro?'checked':''}> Cheiro forte ou desagradável?</label>
+                <label><input type="checkbox" id="sens_toque" ${c.sensorial.toque?'checked':''}> Toque inesperado?</label>
+                <label><input type="checkbox" id="sens_movimento" ${c.sensorial.movimento?'checked':''}> Movimento excessivo ao redor?</label>
+                <label><input type="checkbox" id="sens_temperatura" ${c.sensorial.temperatura?'checked':''}> Temperatura desconfortável?</label>
+                <label><input type="checkbox" id="sens_visao" ${c.sensorial.visao?'checked':''}> Estímulos visuais excessivos?</label>
+                <label><input type="checkbox" id="sens_multitarefa" ${c.sensorial.multitarefa?'checked':''}> Muitas coisas ao mesmo tempo?</label>
+                <label><input type="checkbox" id="sens_informacao" ${c.sensorial.informacao?'checked':''}> Sobrecarga de informações?</label>
+            </div></div>
+            <div class="info-card"><h4>DESREGULAÇÃO EMOCIONAL</h4><p class="text-small">Acontece quando emoções difíceis se acumulam e ultrapassam a capacidade de processamento.</p><div class="checklist-vertical">
+                <label><input type="checkbox" id="emo_cansada" ${c.emocional.cansada?'checked':''}> Você já estava emocionalmente cansada?</label>
+                <label><input type="checkbox" id="emo_rejeicao" ${c.emocional.rejeicao?'checked':''}> Você se sentiu rejeitada?</label>
+                <label><input type="checkbox" id="emo_frustracao" ${c.emocional.frustracao?'checked':''}> Houve frustração ou pressão?</label>
+                <label><input type="checkbox" id="emo_trauma" ${c.emocional.trauma?'checked':''}> Algo ativou inseguranças antigas?</label>
+                <label><input type="checkbox" id="emo_ansiedade" ${c.emocional.ansiedade?'checked':''}> Ansiedade intensa?</label>
+                <label><input type="checkbox" id="emo_tristeza" ${c.emocional.tristeza?'checked':''}> Tristeza profunda?</label>
+                <label><input type="checkbox" id="emo_raiva" ${c.emocional.raiva?'checked':''}> Raiva ou irritação acumulada?</label>
+                <label><input type="checkbox" id="emo_solidao" ${c.emocional.solidao?'checked':''}> Sensação de solidão?</label>
+                <label><input type="checkbox" id="emo_medo" ${c.emocional.medo?'checked':''}> Medo intenso?</label>
+                <label><input type="checkbox" id="emo_culpa" ${c.emocional.culpa?'checked':''}> Culpa ou vergonha?</label>
+            </div></div>
             <p class="text-small">A desregulação não aparece do nada. É um sinal de que algo ficou sobrecarregado.</p></div>`;
+        
+        const fisicas = ['fome','sono','cansaco','agua','dor','exaustao','tensao','doenca','respiracao','cafeina'];
+        fisicas.forEach(id => { let el = document.getElementById(`fis_${id}`); if(el) el.addEventListener('change', () => { let d=users[currentUser].diarios[currentDate]; if(d){ if(!d.criseplay) d.criseplay={}; if(!d.criseplay.fisica) d.criseplay.fisica={}; d.criseplay.fisica[id]=el.checked; saveAll(); } }); });
+        const sensoriais = ['barulho','pessoas','luz','cheiro','toque','movimento','temperatura','visao','multitarefa','informacao'];
+        sensoriais.forEach(id => { let el = document.getElementById(`sens_${id}`); if(el) el.addEventListener('change', () => { let d=users[currentUser].diarios[currentDate]; if(d){ if(!d.criseplay) d.criseplay={}; if(!d.criseplay.sensorial) d.criseplay.sensorial={}; d.criseplay.sensorial[id]=el.checked; saveAll(); } }); });
+        const emocionais = ['cansada','rejeicao','frustracao','trauma','ansiedade','tristeza','raiva','solidao','medo','culpa'];
+        emocionais.forEach(id => { let el = document.getElementById(`emo_${id}`); if(el) el.addEventListener('change', () => { let d=users[currentUser].diarios[currentDate]; if(d){ if(!d.criseplay) d.criseplay={}; if(!d.criseplay.emocional) d.criseplay.emocional={}; d.criseplay.emocional[id]=el.checked; saveAll(); } }); });
     }
     
     // REPLAY
     function renderPagina4() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
         let r = data.replay || {};
-        document.getElementById('page4').innerHTML = `<div class="section"><h3>Reconstruindo a cena</h3><div class="info-card"><h4>SITUAÇÃO CENTRAL</h4><textarea id="replay_situacao" rows="2" placeholder="Descreva o que aconteceu...">${r.situacao||""}</textarea></div>
+        document.getElementById('page4').innerHTML = `<div class="section"><h3>Reconstruindo a cena</h3>
+            <div class="info-card"><h4>SITUAÇÃO CENTRAL</h4><textarea id="replay_situacao" rows="2" placeholder="Descreva o que aconteceu...">${r.situacao||""}</textarea><div class="sugestoes-chips"><div class="chip" data-target="replay_situacao">Briguei com alguém</div><div class="chip" data-target="replay_situacao">Crítica no trabalho</div><div class="chip" data-target="replay_situacao">Me senti rejeitada</div></div></div>
             <div class="info-card"><h4>ACEITO</h4><textarea id="replay_aceito" rows="2" placeholder="Aceito essa situação quando...">${r.aceito||""}</textarea></div>
             <div class="info-card"><h4>AGRADEÇO</h4><textarea id="replay_agradeco" rows="2" placeholder="Agradeço essa situação porque...">${r.agradeco||""}</textarea></div>
             <div class="info-card"><h4>NÃO ME FAZ BEM</h4><textarea id="replay_nao" rows="2" placeholder="Nessa situação, não me faz bem...">${r.nao_faz_bem||""}</textarea></div>
             <div class="info-card"><h4>FAZ-ME BEM</h4><textarea id="replay_faz" rows="2" placeholder="Nessa situação, faz-me bem...">${r.faz_bem||""}</textarea></div>
             <div class="info-card"><h4>DEIXO IR</h4><textarea id="replay_deixo" rows="2" placeholder="Dessa situação, escolho deixar ir...">${r.deixo_ir||""}</textarea></div>
             <div class="info-card"><h4>DESFRUTO</h4><textarea id="replay_desfruto" rows="2" placeholder="Mesmo nessa situação, ainda consigo desfrutar...">${r.desfruto||""}</textarea></div>
-            <div class="info-card"><h4>NÃO PRECISO DISTO</h4><textarea id="replay_nao_preciso" rows="2" placeholder="Depois dessa situação, não preciso mais...">${r.nao_preciso||""}</textarea></div></div>`;
+            <div class="info-card"><h4>NÃO PRECISO DISTO</h4><textarea id="replay_nao_preciso" rows="2" placeholder="Depois dessa situação, não preciso mais...">${r.nao_preciso||""}</textarea></div>
+        </div>`;
         ['situacao','aceito','agradeco','nao','faz','deixo','desfruto','nao_preciso'].forEach(id => {
             let el = document.getElementById(`replay_${id}`);
             if(el) el.addEventListener('input', () => { let d=users[currentUser].diarios[currentDate]; if(d) { if(!d.replay) d.replay={}; d.replay[id]=el.value; saveAll(); } });
         });
+        document.querySelectorAll('.chip').forEach(chip => { chip.onclick = () => { let ta = document.getElementById(chip.dataset.target); if(ta) ta.value = chip.innerText; }; });
     }
     
-    // NEUROFLIX
+    // NEUROFLIX - formato vertical
     function renderPagina5() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
         let s = data.saga || {};
         document.getElementById('page5').innerHTML = `
             <div class="section"><h3>Quarteto da felicidade</h3>
-            <div class="hormonio-grid">
-                <div class="hormonio-card card-dopamina"><h4>DOPAMINA</h4><p>Neurotransmissor do prazer e da recompensa. Liberada quando alcançamos objetivos.</p><div class="check-group"><label><input type="checkbox" id="dop1" ${s.dop1?'checked':''}> Durma 7-9 horas</label><label><input type="checkbox" id="dop2" ${s.dop2?'checked':''}> Celebre conquistas</label><label><input type="checkbox" id="dop3" ${s.dop3?'checked':''}> Faça exercícios</label><label><input type="checkbox" id="dop4" ${s.dop4?'checked':''}> Estabeleça metas</label><label><input type="checkbox" id="dop5" ${s.dop5?'checked':''}> Ouça música</label><label><input type="checkbox" id="dop6" ${s.dop6?'checked':''}> Faça algo que gosta</label></div></div>
-                <div class="hormonio-card card-ocitocina"><h4>OCITOCINA</h4><p>Neurotransmissor do amor e da conexão. Liberada com afeto e confiança.</p><div class="check-group"><label><input type="checkbox" id="oci1" ${s.oci1?'checked':''}> Medite</label><label><input type="checkbox" id="oci2" ${s.oci2?'checked':''}> Abrace alguém</label><label><input type="checkbox" id="oci3" ${s.oci3?'checked':''}> Seja generoso</label><label><input type="checkbox" id="oci4" ${s.oci4?'checked':''}> Passe tempo com animais</label><label><input type="checkbox" id="oci5" ${s.oci5?'checked':''}> Conversas profundas</label><label><input type="checkbox" id="oci6" ${s.oci6?'checked':''}> Pratique gratidão</label></div></div>
-                <div class="hormonio-card card-endorfina"><h4>ENDORFINA</h4><p>Neurotransmissor do alívio da dor e euforia. Liberada com riso e movimento.</p><div class="check-group"><label><input type="checkbox" id="end1" ${s.end1?'checked':''}> Hobbies</label><label><input type="checkbox" id="end2" ${s.end2?'checked':''}> Ria</label><label><input type="checkbox" id="end3" ${s.end3?'checked':''}> Dance</label><label><input type="checkbox" id="end4" ${s.end4?'checked':''}> Exercícios aeróbicos</label><label><input type="checkbox" id="end5" ${s.end5?'checked':''}> Coma chocolate amargo</label><label><input type="checkbox" id="end6" ${s.end6?'checked':''}> Banho quente</label></div></div>
-                <div class="hormonio-card card-serotonina"><h4>SEROTONINA</h4><p>Neurotransmissor do bem-estar e humor. Liberada com gratidão e natureza.</p><div class="check-group"><label><input type="checkbox" id="ser1" ${s.ser1?'checked':''}> Agradeça</label><label><input type="checkbox" id="ser2" ${s.ser2?'checked':''}> Natureza</label><label><input type="checkbox" id="ser3" ${s.ser3?'checked':''}> Boas memórias</label><label><input type="checkbox" id="ser4" ${s.ser4?'checked':''}> Sol da manhã</label><label><input type="checkbox" id="ser5" ${s.ser5?'checked':''}> Meditação</label><label><input type="checkbox" id="ser6" ${s.ser6?'checked':''}> Alimentos ricos</label></div></div>
-            </div></div>`;
+            <div class="hormonio-vertical card-dopamina"><h4>DOPAMINA</h4><p>Neurotransmissor do prazer e da recompensa. Liberada quando alcançamos objetivos.</p><div class="check-group-vertical">
+                <label><input type="checkbox" id="dop1" ${s.dop1?'checked':''}> Durma 7-9 horas</label>
+                <label><input type="checkbox" id="dop2" ${s.dop2?'checked':''}> Celebre conquistas</label>
+                <label><input type="checkbox" id="dop3" ${s.dop3?'checked':''}> Faça exercícios</label>
+                <label><input type="checkbox" id="dop4" ${s.dop4?'checked':''}> Estabeleça metas</label>
+                <label><input type="checkbox" id="dop5" ${s.dop5?'checked':''}> Ouça música</label>
+                <label><input type="checkbox" id="dop6" ${s.dop6?'checked':''}> Faça algo que gosta</label>
+            </div></div>
+            <div class="hormonio-vertical card-ocitocina"><h4>OCITOCINA</h4><p>Neurotransmissor do amor e da conexão. Liberada com afeto e confiança.</p><div class="check-group-vertical">
+                <label><input type="checkbox" id="oci1" ${s.oci1?'checked':''}> Medite</label>
+                <label><input type="checkbox" id="oci2" ${s.oci2?'checked':''}> Abrace alguém</label>
+                <label><input type="checkbox" id="oci3" ${s.oci3?'checked':''}> Seja generoso</label>
+                <label><input type="checkbox" id="oci4" ${s.oci4?'checked':''}> Passe tempo com animais</label>
+                <label><input type="checkbox" id="oci5" ${s.oci5?'checked':''}> Conversas profundas</label>
+                <label><input type="checkbox" id="oci6" ${s.oci6?'checked':''}> Pratique gratidão</label>
+            </div></div>
+            <div class="hormonio-vertical card-endorfina"><h4>ENDORFINA</h4><p>Neurotransmissor do alívio da dor e euforia. Liberada com riso e movimento.</p><div class="check-group-vertical">
+                <label><input type="checkbox" id="end1" ${s.end1?'checked':''}> Hobbies</label>
+                <label><input type="checkbox" id="end2" ${s.end2?'checked':''}> Ria</label>
+                <label><input type="checkbox" id="end3" ${s.end3?'checked':''}> Dance</label>
+                <label><input type="checkbox" id="end4" ${s.end4?'checked':''}> Exercícios aeróbicos</label>
+                <label><input type="checkbox" id="end5" ${s.end5?'checked':''}> Coma chocolate amargo</label>
+                <label><input type="checkbox" id="end6" ${s.end6?'checked':''}> Banho quente</label>
+            </div></div>
+            <div class="hormonio-vertical card-serotonina"><h4>SEROTONINA</h4><p>Neurotransmissor do bem-estar e humor. Liberada com gratidão e natureza.</p><div class="check-group-vertical">
+                <label><input type="checkbox" id="ser1" ${s.ser1?'checked':''}> Agradeça</label>
+                <label><input type="checkbox" id="ser2" ${s.ser2?'checked':''}> Desfrute da natureza</label>
+                <label><input type="checkbox" id="ser3" ${s.ser3?'checked':''}> Boas memórias</label>
+                <label><input type="checkbox" id="ser4" ${s.ser4?'checked':''}> Sol da manhã</label>
+                <label><input type="checkbox" id="ser5" ${s.ser5?'checked':''}> Meditação</label>
+                <label><input type="checkbox" id="ser6" ${s.ser6?'checked':''}> Alimentos ricos</label>
+            </div></div></div>`;
         for(let i=1;i<=6;i++) { 
             ['dop','oci','end','ser'].forEach(prefix => { let el = document.getElementById(`${prefix}${i}`); if(el) el.addEventListener('change', () => { let d=users[currentUser].diarios[currentDate]; if(d) { if(!d.saga) d.saga={}; d.saga[`${prefix}${i}`]=el.checked; saveAll(); } }); });
         }
     }
     
-    // COADJUVANTES (Esferas da Amizade - restaurado)
+    // COADJUVANTES
     function renderPagina6() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
         let c = data.coadjuvantes || {};
@@ -478,7 +537,7 @@
         }
     }
     
-    // DIAGNOSTIFLIX (Roda da Vida - restaurado com 20 tópicos)
+    // DIAGNOSTIFLIX - linha única (sem duplicação)
     const areasDiagnosti = [
         "Vida Profissional", "Vida Amorosa", "Amigos", "Família", "Espiritualidade", "Saúde Mental", "Inteligência Emocional",
         "Saúde Física", "Financeiro", "Intelectual", "Lazer", "Autoconhecimento", "Propósito", "Ambiente", "Alimentação",
@@ -489,11 +548,11 @@
         let roda = data.roda_vida || {};
         let pode = (!data.roda_vida_data || new Date(data.roda_vida_data).getMonth() !== new Date().getMonth());
         if(!pode) { document.getElementById('page7').innerHTML = `<div class="blocked-message">Você já avaliou sua vida este mês. Volte no mês que vem.</div>`; return; }
-        let html = `<div class="section"><h3>Avalie sua vida</h3><p class="text-small" style="margin-bottom:0.5rem;">Esta avaliação pode ser feita uma vez por mês.</p><div class="roda-grid">`;
+        let html = `<div class="section"><h3>Avalie sua vida</h3><p class="text-small" style="margin-bottom:0.5rem;">Esta avaliação pode ser feita uma vez por mês.</p>`;
         for(let i=0;i<areasDiagnosti.length;i++) {
             let nota = roda[i] || 5;
             let corClass = nota <= 3 ? 'critico' : nota <= 5 ? 'atencao' : nota <= 7 ? 'regular' : 'bom';
-            html += `<div class="roda-item"><h4>${areasDiagnosti[i]}</h4>
+            html += `<div class="roda-single"><h4>${areasDiagnosti[i]}</h4>
                 <div><span>Nota: <span id="nota_val_${i}">${nota}</span>/10</span></div>
                 <div class="progress-bar-bg"><div class="progress-fill ${corClass}" id="progress_${i}" style="width:${nota*10}%"></div></div>
                 <input type="range" id="roda_${i}" min="0" max="10" value="${nota}">
@@ -516,7 +575,7 @@
         document.getElementById('salvarRodaBtn')?.addEventListener('click', () => { let novaRoda={}; for(let i=0;i<areasDiagnosti.length;i++) { novaRoda[i]=parseInt(document.getElementById(`roda_${i}`)?.value)||5; novaRoda[`resp_${i}`]=document.getElementById(`resp_${i}`)?.value||""; } if(users[currentUser].diarios[currentDate]) { users[currentUser].diarios[currentDate].roda_vida=novaRoda; users[currentUser].diarios[currentDate].roda_vida_data=new Date().toISOString(); saveAll(); alert("Avaliação salva! Volte mês que vem."); renderPagina7(); } });
     }
     
-    // IKIGAI (com imagem circular tradicional)
+    // IKIGAI - com símbolo central limpo e 4 blocos padronizados
     function renderIkigai() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
         let pode = (!data.ikigai_data || (new Date() - new Date(data.ikigai_data) > 60*24*60*60*1000));
@@ -524,13 +583,12 @@
         let resp = data.ikigai_respostas || {};
         document.getElementById('page8').innerHTML = `
             <div class="section"><h3>Seu Ikigai (Razão de Ser)</h3>
-            <div class="ikigai-circular"><svg viewBox="0 0 200 200" style="max-width:250px; margin:0 auto; display:block;"><circle cx="100" cy="100" r="90" fill="none" stroke="#E50914" stroke-width="3"/><circle cx="100" cy="100" r="60" fill="#E50914" opacity="0.2"/><circle cx="100" cy="100" r="30" fill="#E50914"/><text x="100" y="105" fill="white" font-size="12" text-anchor="middle">IKIGAI</text><line x1="100" y1="10" x2="100" y2="190" stroke="#E50914" stroke-width="2"/><line x1="10" y1="100" x2="190" y2="100" stroke="#E50914" stroke-width="2"/></svg></div>
-            <p class="text-small" style="text-align:center;">O IKIGAI é um método japonês que ajuda você a encontrar seu propósito.</p>
+            <div class="ikigai-central"><div class="ikigai-symbol"><span>IKIGAI</span></div></div>
+            <p class="text-small" style="text-align:center; margin:1rem 0;">O IKIGAI é um método japonês que ajuda você a encontrar seu propósito.</p>
             <div class="ikigai-circles"><div class="ikigai-row"><div class="ikigai-card"><h4>Aquilo que você ama</h4><textarea id="ikigai_ama" rows="2" placeholder="O que te faz sentir viva?">${resp.ama||""}</textarea><div class="sugestoes-chips"><div class="chip" data-target="ikigai_ama">Psicologia</div><div class="chip" data-target="ikigai_ama">Ajudar pessoas</div><div class="chip" data-target="ikigai_ama">Escrever</div></div></div>
             <div class="ikigai-card"><h4>No que você é boa</h4><textarea id="ikigai_boa" rows="2" placeholder="Quais seus talentos?">${resp.boa||""}</textarea><div class="sugestoes-chips"><div class="chip" data-target="ikigai_boa">Escutar</div><div class="chip" data-target="ikigai_boa">Cuidar</div><div class="chip" data-target="ikigai_boa">Comunicar</div></div></div></div>
             <div class="ikigai-row"><div class="ikigai-card"><h4>O que o mundo precisa</h4><textarea id="ikigai_mundo" rows="2" placeholder="Como quer ajudar o mundo?">${resp.mundo||""}</textarea><div class="sugestoes-chips"><div class="chip" data-target="ikigai_mundo">Saúde mental</div><div class="chip" data-target="ikigai_mundo">Educação</div></div></div>
-            <div class="ikigai-card"><h4>Pelo que pode ser paga</h4><textarea id="ikigai_paga" rows="2" placeholder="O que pode virar profissão?">${resp.paga||""}</textarea><div class="sugestoes-chips"><div class="chip" data-target="ikigai_paga">Atendimento</div><div class="chip" data-target="ikigai_paga">Conteúdo</div></div></div></div>
-            <div class="center-circle">SEU IKIGAI</div></div>
+            <div class="ikigai-card"><h4>Pelo que pode ser paga</h4><textarea id="ikigai_paga" rows="2" placeholder="O que pode virar profissão?">${resp.paga||""}</textarea><div class="sugestoes-chips"><div class="chip" data-target="ikigai_paga">Atendimento</div><div class="chip" data-target="ikigai_paga">Conteúdo</div></div></div></div></div>
             <div class="intersecao-grid">
                 <div class="intersecao-card"><h4>PAIXÃO</h4><p class="text-small">Aquilo que você ama + No que você é boa</p><textarea id="ikigai_paixao" rows="2" placeholder="Seu ponto de paixão...">${resp.paixao||""}</textarea></div>
                 <div class="intersecao-card"><h4>VOCAÇÃO</h4><p class="text-small">No que você é boa + Pelo que pode ser paga</p><textarea id="ikigai_vocacao" rows="2" placeholder="Sua vocação...">${resp.vocacao||""}</textarea></div>
@@ -544,7 +602,7 @@
         
         ['ama','boa','mundo','paga','paixao','vocacao','missao','profissao'].forEach(id => { let ta = document.getElementById(`ikigai_${id}`); if(ta) ta.addEventListener('input', () => { let d=users[currentUser].diarios[currentDate]; if(d) d.ikigai_respostas[id]=ta.value; saveAll(); }); });
         document.querySelectorAll('.chip').forEach(chip => { chip.onclick = () => { let ta = document.getElementById(chip.dataset.target); if(ta) ta.value = chip.innerText; }; });
-        document.getElementById('calcularIkigaiBtn')?.addEventListener('click', () => { let respAtual = users[currentUser].diarios[currentDate].ikigai_respostas; let texto = respAtual.ama + " " + respAtual.boa + " " + respAtual.mundo + " " + respAtual.paga; let resultado = "Seu IKIGAI parece estar relacionado a um caminho de cuidado e propósito. Continue explorando!"; document.getElementById('resultadoIkigaiTexto').innerText = resultado; document.getElementById('resultadoIkigaiArea').style.display = 'block'; });
+        document.getElementById('calcularIkigaiBtn')?.addEventListener('click', () => { let respAtual = users[currentUser].diarios[currentDate].ikigai_respostas; let resultado = "Seu IKIGAI parece estar relacionado a um caminho de cuidado e propósito. Continue explorando!"; document.getElementById('resultadoIkigaiTexto').innerText = resultado; document.getElementById('resultadoIkigaiArea').style.display = 'block'; });
         document.getElementById('salvarIkigaiBtn')?.addEventListener('click', () => { let d=users[currentUser].diarios[currentDate]; if(d) { d.ikigai_respostas.final = document.getElementById('ikigai_final').value; d.ikigai_data = new Date().toISOString(); saveAll(); alert("IKIGAI salvo! Próxima jornada em 2 meses."); renderIkigai(); } });
     }
     
