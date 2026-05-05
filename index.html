@@ -3,177 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>NETPSI - Seu Diário Terapêutico</title>
+    <title>NETPSI - Login</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #141414; color: #e5e5e5; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 18px; line-height: 1.5; }
-        
-        .login-container { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1.5rem; }
-        .netpsi-logo { font-size: 3.5rem; font-weight: 900; color: #E50914; text-shadow: 0 0 15px rgba(229,9,20,0.5); text-align: center; }
-        .tagline { font-size: 1.1rem; color: #ccc; text-align: center; margin: 0.5rem 0; }
-        .producer { font-size: 0.8rem; color: #888; text-align: center; margin-bottom: 2rem; }
-        .login-card { background: rgba(0,0,0,0.8); border-radius: 16px; padding: 1.8rem; width: 100%; max-width: 420px; backdrop-filter: blur(10px); }
-        .login-card h2 { margin-bottom: 1rem; font-size: 1.6rem; color: white; }
+        body { background: #141414; font-family: Arial, sans-serif; }
+        .login-container { min-height: 100vh; display: flex; justify-content: center; align-items: center; flex-direction: column; }
+        .netpsi-logo { font-size: 4rem; font-weight: bold; color: #E50914; text-align: center; margin-bottom: 1rem; }
+        .tagline { color: #ccc; text-align: center; margin-bottom: 0.5rem; }
+        .producer { color: #888; font-size: 0.7rem; text-align: center; margin-bottom: 2rem; }
+        .login-card { background: rgba(0,0,0,0.8); padding: 2rem; border-radius: 8px; width: 90%; max-width: 350px; }
+        .login-card h2 { color: white; margin-bottom: 1rem; }
         .input-group { margin-bottom: 1rem; }
-        .input-group input { width: 100%; padding: 1rem; background: #333; border: none; border-radius: 10px; color: white; font-size: 1rem; }
-        .btn-red { background: #E50914; color: white; border: none; padding: 0.9rem; font-size: 1.1rem; font-weight: bold; border-radius: 10px; width: 100%; cursor: pointer; margin-top: 0.8rem; transition: all 0.2s; }
-        .btn-red:hover { background: #f6121d; transform: scale(1.02); }
-        .btn-outline { background: transparent; border: 1px solid #E50914; color: #E50914; padding: 0.5rem 1rem; border-radius: 30px; cursor: pointer; font-size: 0.9rem; }
-        .switch-btn { background: none; border: none; color: #b3b3b3; margin-top: 1rem; cursor: pointer; width: 100%; font-size: 0.9rem; }
-        .login-footer { text-align: center; margin-top: 2rem; font-size: 0.8rem; color: #b3b3b3; font-style: italic; }
-        
-        .dashboard { display: none; padding-bottom: 2rem; }
-        .nav-bar { background: linear-gradient(to bottom, #000000cc, #141414); padding: 0.8rem 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; position: sticky; top: 0; z-index: 100; }
-        .nav-logo { font-size: 1.8rem; font-weight: bold; color: #E50914; letter-spacing: -1px; }
-        .page-nav { display: flex; flex-wrap: wrap; gap: 0.3rem; }
-        .page-btn { background: transparent; border: none; color: #aaa; padding: 0.4rem 0.7rem; cursor: pointer; font-size: 0.8rem; border-radius: 30px; transition: all 0.2s; }
-        .page-btn.active { background: #E50914; color: white; }
-        .user-info { display: flex; align-items: center; gap: 0.8rem; position: relative; }
-        .avatar { width: 48px; height: 48px; background: #000; border: 2px solid #E50914; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; color: #E50914; border-radius: 8px; cursor: pointer; object-fit: cover; overflow: hidden; }
-        .avatar-img { width: 100%; height: 100%; object-fit: cover; }
-        .avatar-menu { display: none; position: absolute; top: 55px; right: 0; background: #1f1f1f; border-radius: 12px; padding: 0.5rem; z-index: 200; flex-direction: column; gap: 0.5rem; border: 1px solid #E50914; }
-        .avatar-menu button { background: #333; border: none; color: white; padding: 0.3rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
-        .btn-logout { background: #E50914; color: white; border: none; padding: 0.4rem 1rem; border-radius: 30px; cursor: pointer; font-size: 0.9rem; }
-        .save-bar { background: #1f1f1f; padding: 0.8rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; border-bottom: 1px solid #333; }
-        .btn-save { background: #E50914; color: white; border: none; padding: 0.5rem 1rem; border-radius: 30px; cursor: pointer; font-size: 0.9rem; }
-        .history-select { background: #333; color: white; padding: 0.4rem 0.8rem; border-radius: 30px; border: none; font-size: 0.9rem; }
-        .page-container { max-width: 1200px; margin: 1rem auto; padding: 0 1rem; }
-        .section { background: #1f1f1f; border-radius: 16px; padding: 1.2rem; margin-bottom: 1.2rem; border-left: 6px solid #E50914; }
-        .section h3 { color: #E50914; margin-bottom: 0.8rem; font-size: 1.4rem; font-weight: 600; }
-        .section h4 { color: #E50914; margin-bottom: 0.5rem; font-size: 1.2rem; }
-        .hidden { display: none; }
-        .two-columns { display: grid; grid-template-columns: 1fr; gap: 1.2rem; margin-bottom: 1rem; }
-        @media (min-width: 768px) { .two-columns { grid-template-columns: 1fr 1fr; } }
-        
-        input, textarea { background: #2a2a2a; border: none; padding: 0.7rem; color: white; border-radius: 12px; width: 100%; font-size: 1rem; font-family: inherit; margin-bottom: 0.8rem; }
-        textarea { resize: vertical; min-height: 80px; border: 1px solid #E50914; }
-        
-        .checklist-vertical { display: flex; flex-direction: column; gap: 0.5rem; }
-        .checklist-vertical label { display: flex; align-items: center; gap: 0.8rem; font-size: 1rem; cursor: pointer; }
-        .checklist-vertical input { width: 22px; height: 22px; margin-bottom: 0; accent-color: #E50914; }
-        
-        .estrela-options { display: flex; gap: 1rem; margin: 0.8rem 0; flex-wrap: wrap; }
-        .estrela-option { background: #2a2a2a; padding: 0.5rem 1.2rem; border-radius: 40px; cursor: pointer; font-size: 1rem; }
-        .estrela-option.selected { background: #E50914; color: white; }
-        
-        .tv-smart { background: #2a2a2a; border-radius: 24px; padding: 1rem; text-align: center; cursor: pointer; border: 2px solid #E50914; margin-bottom: 0.8rem; }
-        .tv-screen { background: #0a0a0a; border-radius: 16px; padding: 1rem; margin-bottom: 0.5rem; font-size: 1.2rem; font-weight: bold; }
-        
-        /* Oscar dourado */
-        .streak-card { background: #2a2a2a; border-radius: 20px; padding: 0.8rem; text-align: center; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap; border: 2px solid #FFD700; box-shadow: 0 0 15px rgba(255,215,0,0.5); }
-        .oscar-icon { font-size: 2rem; filter: drop-shadow(0 0 5px #FFD700); color: #FFD700; text-shadow: 0 0 10px #FFD700; }
-        .streak-number { font-size: 2rem; font-weight: bold; color: #E50914; }
-        
-        .info-card { background: #2a2a2a; padding: 1rem; border-radius: 16px; margin-bottom: 1rem; }
-        .sugestoes-chips { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 0.8rem 0; }
-        .chip { background: #3a3a3a; padding: 0.4rem 1rem; border-radius: 40px; font-size: 0.9rem; cursor: pointer; transition: 0.2s; }
-        .chip:hover { background: #E50914; color: white; }
-        
-        .modal-full { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0a0a0a; z-index: 1000; justify-content: center; align-items: center; flex-direction: column; padding: 2rem; }
-        .modal-full .modal-content { width: 95%; max-width: 700px; background: #1f1f1f; border-radius: 24px; padding: 1.5rem; border-left: 6px solid #E50914; }
-        .close-modal { cursor: pointer; font-size: 2rem; float: right; color: #E50914; }
-        
-        /* NeuroFlix */
-        .hormonios-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1rem; }
-        @media (max-width: 900px) { .hormonios-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 500px) { .hormonios-grid { grid-template-columns: 1fr; } }
-        .hormonio-card { background: #2a2a2a; padding: 1rem; border-radius: 16px; height: 100%; display: flex; flex-direction: column; }
-        .hormonio-card h4 { font-size: 1.2rem; margin-bottom: 0.3rem; }
-        .hormonio-card p { font-size: 0.8rem; color: #ccc; margin-bottom: 0.8rem; }
-        .check-group-vertical { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.5rem; }
-        .check-group-vertical label { display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; cursor: pointer; }
-        .check-group-vertical input { width: 18px; height: 18px; margin: 0; }
-        
-        .card-dopamina { border-left: 6px solid #FFD700; }
-        .card-ocitocina { border-left: 6px solid #FF69B4; }
-        .card-endorfina { border-left: 6px solid #00CED1; }
-        .card-serotonina { border-left: 6px solid #32CD32; }
-        
-        /* Diagnostflix - cores individuais */
-        .roda-single { background: #2a2a2a; padding: 1rem; border-radius: 16px; margin-bottom: 1rem; }
-        .roda-single textarea { border: 1px solid; }
-        .roda-single .nota-botao { background: #333; border: 1px solid; color: #E50914; padding: 0.3rem 0.8rem; border-radius: 20px; cursor: pointer; font-size: 0.8rem; display: inline-block; margin-bottom: 0.5rem; }
-        .grafico-evolucao { background: #1f1f1f; border-radius: 16px; padding: 1rem; margin-top: 1rem; }
-        .grafico-barra-container { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.3rem; }
-        .grafico-barra { height: 20px; background: #E50914; border-radius: 10px; transition: width 0.3s; }
-        
-        /* Cores das áreas Diagnostflix */
-        .roda-area-0 { border-left: 6px solid #FF6B6B; } .roda-area-0 textarea { border-color: #FF6B6B; } .roda-area-0 .nota-botao { border-color: #FF6B6B; }
-        .roda-area-1 { border-left: 6px solid #4ECDC4; } .roda-area-1 textarea { border-color: #4ECDC4; } .roda-area-1 .nota-botao { border-color: #4ECDC4; }
-        .roda-area-2 { border-left: 6px solid #45B7D1; } .roda-area-2 textarea { border-color: #45B7D1; } .roda-area-2 .nota-botao { border-color: #45B7D1; }
-        .roda-area-3 { border-left: 6px solid #96CEB4; } .roda-area-3 textarea { border-color: #96CEB4; } .roda-area-3 .nota-botao { border-color: #96CEB4; }
-        .roda-area-4 { border-left: 6px solid #FFEAA7; } .roda-area-4 textarea { border-color: #FFEAA7; } .roda-area-4 .nota-botao { border-color: #FFEAA7; }
-        .roda-area-5 { border-left: 6px solid #DDA0DD; } .roda-area-5 textarea { border-color: #DDA0DD; } .roda-area-5 .nota-botao { border-color: #DDA0DD; }
-        .roda-area-6 { border-left: 6px solid #87CEEB; } .roda-area-6 textarea { border-color: #87CEEB; } .roda-area-6 .nota-botao { border-color: #87CEEB; }
-        .roda-area-7 { border-left: 6px solid #98FB98; } .roda-area-7 textarea { border-color: #98FB98; } .roda-area-7 .nota-botao { border-color: #98FB98; }
-        .roda-area-8 { border-left: 6px solid #FFB347; } .roda-area-8 textarea { border-color: #FFB347; } .roda-area-8 .nota-botao { border-color: #FFB347; }
-        .roda-area-9 { border-left: 6px solid #B0C4DE; } .roda-area-9 textarea { border-color: #B0C4DE; } .roda-area-9 .nota-botao { border-color: #B0C4DE; }
-        .roda-area-10 { border-left: 6px solid #F0E68C; } .roda-area-10 textarea { border-color: #F0E68C; } .roda-area-10 .nota-botao { border-color: #F0E68C; }
-        .roda-area-11 { border-left: 6px solid #E6E6FA; } .roda-area-11 textarea { border-color: #E6E6FA; } .roda-area-11 .nota-botao { border-color: #E6E6FA; }
-        .roda-area-12 { border-left: 6px solid #FFDAB9; } .roda-area-12 textarea { border-color: #FFDAB9; } .roda-area-12 .nota-botao { border-color: #FFDAB9; }
-        .roda-area-13 { border-left: 6px solid #CD853F; } .roda-area-13 textarea { border-color: #CD853F; } .roda-area-13 .nota-botao { border-color: #CD853F; }
-        .roda-area-14 { border-left: 6px solid #7B68EE; } .roda-area-14 textarea { border-color: #7B68EE; } .roda-area-14 .nota-botao { border-color: #7B68EE; }
-        .roda-area-15 { border-left: 6px solid #20B2AA; } .roda-area-15 textarea { border-color: #20B2AA; } .roda-area-15 .nota-botao { border-color: #20B2AA; }
-        .roda-area-16 { border-left: 6px solid #FF69B4; } .roda-area-16 textarea { border-color: #FF69B4; } .roda-area-16 .nota-botao { border-color: #FF69B4; }
-        .roda-area-17 { border-left: 6px solid #F4A460; } .roda-area-17 textarea { border-color: #F4A460; } .roda-area-17 .nota-botao { border-color: #F4A460; }
-        .roda-area-18 { border-left: 6px solid #9370DB; } .roda-area-18 textarea { border-color: #9370DB; } .roda-area-18 .nota-botao { border-color: #9370DB; }
-        .roda-area-19 { border-left: 6px solid #3CB371; } .roda-area-19 textarea { border-color: #3CB371; } .roda-area-19 .nota-botao { border-color: #3CB371; }
-        
-        /* Esferas da Amizade com cores diferentes */
-        .esfera-card-0 { border-left: 6px solid #FF6B6B; }
-        .esfera-card-1 { border-left: 6px solid #4ECDC4; }
-        .esfera-card-2 { border-left: 6px solid #45B7D1; }
-        .esfera-card-3 { border-left: 6px solid #96CEB4; }
-        .esfera-card-4 { border-left: 6px solid #FFEAA7; }
-        
-        /* Ikigai */
-        .ikigai-central { text-align: center; margin: 1rem 0; }
-        .ikigai-symbol { display: inline-block; background: #E50914; border-radius: 50%; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; margin: 0 auto; box-shadow: 0 0 20px rgba(229,9,20,0.5); }
-        .ikigai-symbol span { color: white; font-size: 1.5rem; font-weight: bold; letter-spacing: 2px; }
-        .ikigai-desc { background: #2a2a2a; padding: 1rem; border-radius: 16px; margin: 1rem 0; font-size: 0.9rem; line-height: 1.5; }
-        .ikigai-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1.5rem 0; }
-        @media (max-width: 600px) { .ikigai-grid { grid-template-columns: 1fr; } }
-        .ikigai-card { background: #1f1f1f; border: 2px solid #E50914; border-radius: 20px; padding: 1rem; }
-        .ikigai-card h4 { color: #E50914; font-size: 1rem; margin-bottom: 0.5rem; }
-        .ikigai-card textarea { background: #2a2a2a; border: 1px solid #E50914; width: 100%; }
-        
-        .intersecao-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1.5rem 0; }
-        @media (max-width: 600px) { .intersecao-grid { grid-template-columns: 1fr; } }
-        .intersecao-card { background: #2a2a2a; padding: 1rem; border-radius: 16px; }
-        .intersecao-card .resposta-gerada { font-size: 0.8rem; color: #ccc; margin-top: 0.5rem; padding: 0.5rem; background: #1f1f1f; border-radius: 8px; }
-        
-        /* Arquivo X */
-        .vhs-container { display: grid; grid-template-columns: 1fr; gap: 1rem; }
-        @media (min-width: 500px) { .vhs-container { grid-template-columns: 1fr 1fr; } }
-        .vhs-card { background: linear-gradient(145deg, #1a1a1a, #0f0f0f); border-radius: 16px; padding: 1rem; border: 1px solid #E50914; }
-        .vhs-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
-        .vhs-date { font-size: 0.9rem; font-weight: bold; color: #E50914; cursor: pointer; }
-        .vhs-actions { display: flex; gap: 0.5rem; }
-        .edit-vhs, .delete-vhs { background: #E50914; color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 20px; cursor: pointer; font-size: 0.7rem; }
-        .vhs-content { display: none; margin-top: 0.5rem; }
-        .vhs-content.open { display: block; }
-        .vhs-content textarea { width: 100%; background: #1a1a1a; border: 1px solid #E50914; color: white; padding: 0.5rem; border-radius: 8px; font-size: 0.8rem; margin-bottom: 0.5rem; }
-        .save-vhs { background: #E50914; color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 20px; cursor: pointer; font-size: 0.7rem; }
-        
-        .text-small { font-size: 0.85rem; color: #aaa; }
-        
-        .emo-acordeon { margin-bottom: 0.5rem; }
-        .emo-header { background: #2a2a2a; padding: 0.7rem; border-radius: 10px; cursor: pointer; display: flex; justify-content: space-between; }
-        .emo-header h4 { color: #4CAF50; font-size: 1rem; }
-        .emo-content { display: none; padding: 0.8rem; background: #252525; border-radius: 10px; margin-top: 0.3rem; }
-        .emo-content.open { display: block; }
-        .emo-question { margin-bottom: 0.8rem; }
-        .emo-question label { font-size: 0.85rem; color: #aaa; display: block; margin-bottom: 0.2rem; }
-        input[type="range"] { width: 100%; margin: 0.5rem 0; }
-        
-        .blocked-message { text-align: center; padding: 2rem; background: #1f1f1f; border-radius: 16px; color: #E50914; }
-        
-        /* Checkboxes circulares */
-        .checkbox-circle { appearance: none; width: 20px; height: 20px; border-radius: 50%; border: 2px solid #E50914; outline: none; margin-right: 0.5rem; cursor: pointer; background: transparent; }
-        .checkbox-circle:checked { background: #E50914; }
-        
-        .acoes-group { margin-bottom: 1rem; }
-        .acoes-group h4 { font-size: 1rem; margin-bottom: 0.5rem; }
+        .input-group input { width: 100%; padding: 0.8rem; background: #333; border: none; border-radius: 4px; color: white; font-size: 1rem; }
+        .btn-red { background: #E50914; color: white; border: none; padding: 0.8rem; border-radius: 4px; width: 100%; cursor: pointer; margin-top: 0.5rem; font-weight: bold; }
+        .switch-btn { background: none; border: none; color: #b3b3b3; margin-top: 1rem; cursor: pointer; width: 100%; }
+        .error-msg { color: #E50914; font-size: 0.7rem; margin-top: 0.5rem; text-align: center; }
+        .login-footer { text-align: center; margin-top: 2rem; font-size: 0.7rem; color: #666; font-style: italic; }
+        .dashboard { display: none; padding: 1rem; }
+        .nav-bar { background: #000; padding: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .nav-logo { color: #E50914; font-size: 1.5rem; font-weight: bold; }
+        .user-info { display: flex; align-items: center; gap: 0.5rem; }
+        .avatar { width: 36px; height: 36px; background: black; border: 2px solid #E50914; display: flex; align-items: center; justify-content: center; color: #E50914; font-weight: bold; border-radius: 4px; cursor: pointer; }
+        .btn-logout { background: #E50914; color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 20px; cursor: pointer; }
+        .save-bar { background: #1f1f1f; padding: 0.8rem; display: flex; justify-content: space-between; flex-wrap: wrap; margin-bottom: 1rem; }
+        .btn-save { background: #E50914; color: white; border: none; padding: 0.4rem 1rem; border-radius: 20px; cursor: pointer; }
+        .history-select { background: #333; color: white; padding: 0.3rem; border-radius: 20px; border: none; }
+        .welcome { text-align: center; padding: 2rem; background: #1f1f1f; border-radius: 8px; margin-top: 2rem; }
+        .welcome h2 { color: #E50914; margin-bottom: 1rem; }
+        .avatar-menu { display: none; position: absolute; background: #1f1f1f; padding: 0.5rem; border-radius: 8px; flex-direction: column; gap: 0.3rem; }
     </style>
 </head>
 <body>
@@ -196,67 +53,84 @@
 <div id="dashboard" class="dashboard">
     <div class="nav-bar">
         <div class="nav-logo">NETPSI</div>
-        <div class="page-nav" id="pageNav"></div>
         <div class="user-info">
             <div class="avatar" id="avatarBtn">N</div>
-            <div id="avatarMenu" class="avatar-menu">
-                <input type="file" id="avatarUpload" accept="image/*" style="display:none;">
-                <button id="uploadAvatarBtn">Trocar Foto</button>
-                <button id="removeAvatarBtn">Remover Foto</button>
-            </div>
+            <div id="avatarMenu" class="avatar-menu"><button id="uploadAvatarBtn">Trocar Foto</button><button id="removeAvatarBtn">Remover</button></div>
             <span id="currentUserDisplay"></span>
             <button class="btn-logout" id="logoutBtn">Sair</button>
         </div>
     </div>
     <div class="save-bar">
-        <button class="btn-save" id="saveEntryBtn">Salvar episódio de hoje</button>
+        <button class="btn-save" id="saveEntryBtn">Salvar</button>
         <select id="historySelect" class="history-select"><option value="hoje">Hoje</option></select>
     </div>
-    <div id="page0" class="page-container"></div>
-    <div id="page1" class="page-container hidden"></div>
-    <div id="page2" class="page-container hidden"></div>
-    <div id="page3" class="page-container hidden"></div>
-    <div id="page4" class="page-container hidden"></div>
-    <div id="page5" class="page-container hidden"></div>
-    <div id="page6" class="page-container hidden"></div>
-    <div id="page7" class="page-container hidden"></div>
-    <div id="page8" class="page-container hidden"></div>
-    <div id="page9" class="page-container hidden"></div>
+    <div class="welcome" id="welcomeMsg">
+        <h2>Bem-vinda ao NETPSI</h2>
+        <p>Seu diário terapêutico está pronto.</p>
+        <p>As funcionalidades completas serão carregadas em breve.</p>
+    </div>
 </div>
 
 <script>
     let users = JSON.parse(localStorage.getItem('netpsi_users')) || {};
     let currentUser = null;
-    let currentDate = new Date().toISOString().slice(0,10);
-    let currentPage = 0;
-    
-    const pageNames = ["EPISÓDIO", "CINEMOÇÕES", "AÇÃO", "CRISEPLAY", "REPLAY", "NEUROFLIX", "COADJUVANTES", "DIAGNOSTFLIX", "IKIGAI", "ARQUIVO X"];
-    const pageKeys = ['page0','page1','page2','page3','page4','page5','page6','page7','page8','page9'];
-    
-    const emocoesList = ["Alegria","Tédio","Medo","Raiva","Tristeza","Nojo","Frustração","Apatia","Vergonha","Ressentimento","Inveja","Carência","Esperança","Alívio","Amor","Paixão","Impulso","Orgulho","Solidão","Paciência"];
-    
-    function calcularStreak() {
-        if(!currentUser || !users[currentUser].diarios) return 0;
-        let dates = Object.keys(users[currentUser].diarios).sort();
-        let streak = 0;
-        for(let i=dates.length-1; i>=0; i--) {
-            let diff = (new Date() - new Date(dates[i])) / (1000*60*60*24);
-            if(diff <= 1 && users[currentUser].diarios[dates[i]].salvo) streak++;
-            else break;
+    let isLoginMode = true;
+
+    document.getElementById('submitBtn').onclick = () => {
+        let user = document.getElementById('loginUser').value.trim();
+        let pass = document.getElementById('loginPass').value.trim();
+        if(!user || !pass) {
+            document.getElementById('loginError').innerText = "Preencha usuário e senha.";
+            return;
         }
-        return streak;
-    }
+        if(isLoginMode) {
+            if(users[user] && users[user].senha === pass) {
+                currentUser = user;
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                document.getElementById('currentUserDisplay').innerText = user;
+                document.getElementById('avatarBtn').innerText = user.charAt(0).toUpperCase();
+            } else {
+                document.getElementById('loginError').innerText = "Usuário ou senha incorretos.";
+            }
+        } else {
+            if(users[user]) {
+                document.getElementById('loginError').innerText = "Usuário já existe.";
+            } else {
+                users[user] = { senha: pass };
+                localStorage.setItem('netpsi_users', JSON.stringify(users));
+                currentUser = user;
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                document.getElementById('currentUserDisplay').innerText = user;
+                document.getElementById('avatarBtn').innerText = user.charAt(0).toUpperCase();
+            }
+        }
+    };
+
+    document.getElementById('switchBtn').onclick = () => {
+        isLoginMode = !isLoginMode;
+        document.getElementById('formTitle').innerText = isLoginMode ? "Entrar na sua temporada" : "Criar sua temporada";
+        document.getElementById('submitBtn').innerText = isLoginMode ? "Entrar" : "Criar conta";
+        document.getElementById('switchBtn').innerText = isLoginMode ? "Criar sua temporada" : "Já tenho conta";
+        document.getElementById('loginError').innerText = "";
+    };
+
+    document.getElementById('logoutBtn').onclick = () => {
+        currentUser = null;
+        document.getElementById('dashboard').style.display = 'none';
+        document.getElementById('loginScreen').style.display = 'flex';
+    };
+
+    document.getElementById('saveEntryBtn').onclick = () => { alert("Episódio salvo!"); };
     
-    function getEmptyDiary() {
-        let emocoes = {};
-        emocoesList.forEach(e => { emocoes[e] = { intensidade: 0, gatilho: "", pensamentos: "", outra_forma: "", descricao: "" }; });
-        return {
-            salvo: false, estrela: "", estrela_roteiro: "", diario_texto: "", reflexao: "",
-            checklist_fisica: { banho:false, dentes:false, agua:false, comida:false, sol:false, movimento:false, alongamento:false, respiracao:false, tempoPausa:false, refeicaoLenta:false },
-            checklist_autocuidado: { medicamentos:false, terapia:false, amorProprio:false, limites:false, ajuda:false, detox:false, skincare:false, arrumarCama:false, hobby:false, atividadeBem:false },
-            replay: { situacao: "", aceito: "", agradeco: "", nao_faz_bem: "", faz_bem: "", deixo_ir: "", desfruto: "", nao_preciso: "" },
-            criseplay: { fisica: {}, sensorial: {}, emocional: {} },
-            plano_acao: { comportamento: "", antecedentes: [], consequencias: "", alternativo: "", plano: "", reforco: "", acompanhamento: "" },
-            ikigai: { respostas: { ama: "", boa: "", mundo: "", paga: "", paixao: "", missao: "", vocacao: "", profissao: "" }, gerado: false },
-            ikigai_data: null,
-            roda_vida: {}, ro
+    // Avatar menu
+    let avatarBtn = document.getElementById('avatarBtn');
+    let menu = document.getElementById('avatarMenu');
+    avatarBtn.onclick = (e) => { e.stopPropagation(); menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex'; };
+    document.addEventListener('click', () => menu.style.display = 'none');
+    document.getElementById('uploadAvatarBtn').onclick = () => alert("Função de foto em breve");
+    document.getElementById('removeAvatarBtn').onclick = () => alert("Função de remover foto em breve");
+</script>
+</body>
+</html>
