@@ -107,10 +107,7 @@
         .chip { background: #3a3a3a; padding: 0.3rem 0.6rem; border-radius: 20px; font-size: 0.7rem; cursor: pointer; transition: all 0.2s; }
         .chip:hover { background: #E50914; color: white; }
         
-        .ikigai-section { margin-bottom: 1.5rem; }
-        .ikigai-explicacao { font-size: 0.8rem; color: #ccc; margin-bottom: 0.5rem; font-style: italic; }
-        .ikigai-perguntas { display: flex; flex-direction: column; gap: 0.5rem; }
-        .resultado-ikigai { background: #2a2a2a; padding: 1rem; border-radius: 12px; margin-top: 1rem; border-left: 4px solid #E50914; }
+        .camera-box { background: #1f1f1f; border: 3px solid #E50914; border-radius: 16px; padding: 1rem; text-align: center; margin: 1rem 0; }
         
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; padding: 1rem; }
         .modal-content { background: #1f1f1f; border-radius: 16px; width: 100%; max-width: 500px; max-height: 85vh; overflow-y: auto; padding: 1rem; border-left: 4px solid #E50914; }
@@ -127,6 +124,8 @@
         .ikigai-title { font-size: 0.75rem; font-weight: 500; margin-bottom: 0.5rem; color: #ccc; }
         .circle-btn { width: 30px; height: 30px; border-radius: 50%; background: #2a2a2a; border: 1px solid #E50914; color: #E50914; font-size: 0.8rem; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; margin: 0.2rem; }
         .circle-btn:hover { background: #E50914; color: white; }
+        .ikigai-section { margin-bottom: 1rem; background: #2a2a2a; padding: 0.8rem; border-radius: 12px; }
+        .ikigai-explicacao { font-size: 0.75rem; color: #ccc; margin-bottom: 0.5rem; }
     </style>
 </head>
 <body>
@@ -164,25 +163,24 @@
 </div>
 
 <script>
-    // DADOS GLOBAIS
     let users = JSON.parse(localStorage.getItem('netpsi_users')) || {};
     let currentUser = null;
     let currentDate = new Date().toISOString().slice(0,10);
     let currentPage = 0;
-    const pageNames = ["EPISODIO", "CINEMOCOES", "CRISEPLAY", "REPLAY", "NEUROFLIX", "COADJUVANTES", "DIAGNOSTIFLIX", "IKIGAIFLIX", "ARQUIVOX"];
+    const pageNames = ["EPISÓDIO", "CINEMOÇÕES", "CRISEPLAY", "REPLAY", "NEUROFLIX", "COADJUVANTES", "DIAGNOSTIFLIX", "IKIGAI FLIX", "ARQUIVO X"];
     const pageKeys = ['page0','page1','page2','page3','page4','page5','page6','page7','page8'];
     
-    const emocoesList = ["Alegria","Tedio","Medo","Raiva","Tristeza","Nojo","Frustracao","Apatia","Vergonha","Ressentimento","Inveja","Carencia","Esperanca","Alivio","Amor","Paixao","Impulso","Orgulho","Solidão","Paciencia"];
+    const emocoesList = ["Alegria","Tédio","Medo","Raiva","Tristeza","Nojo","Frustração","Apatia","Vergonha","Ressentimento","Inveja","Carência","Esperança","Alívio","Amor","Paixão","Impulso","Orgulho","Solidão","Paciência"];
     
     function getEmptyDiary() {
         let emocoes = {};
         emocoesList.forEach(e => { emocoes[e] = { intensidade: 0, gatilho: "", pensamentos: "", outra_forma: "", descricao: "" }; });
         return {
-            estrela: "", estrela_roteiro: "", diario_texto: "", reflexao: "",
+            estrela: "", estrela_roteiro: "", diario_texto: "", diario_foto: null, reflexao: "",
             checklist_fisica: { banho:false, dentes:false, agua:false, comida:false, sol:false, movimento:false },
             checklist_autocuidado: { medicamentos:false, terapia:false, amorProprio:false, limites:false, ajuda:false, detox:false, skincare:false, arrumarCama:false, hobby:false },
-            criseplay: {},
-            replay: {},
+            criseplay: { fisica: {}, sensorial: {}, emocional: {} },
+            replay: { situacao: "", aceito: "", agradeco: "", nao_faz_bem: "", faz_bem: "", deixo_ir: "", desfruto: "", nao_preciso: "" },
             elogios: ["","",""], gratidao: ["","",""], sofa_preguica: "", hd_sigiloso: "",
             emocoes: emocoes,
             ikigai_respostas: {}, ikigai_data: null,
@@ -209,22 +207,22 @@
         if(page===8) renderArquivos();
     }
     
-    // PAGINA 0 - EPISODIO
+    // PÁGINA 0 - EPISÓDIO
     function renderPagina0() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
         document.getElementById('page0').innerHTML = `
-            <div class="section"><h3>EXERCICIO TERAPEUTICO</h3><div class="tv-smart" id="exercicioBtn"><div class="tv-screen">CLIQUE AQUI<br>PARA SEU EXERCICIO</div></div><textarea id="reflexaoTexto" rows="3" placeholder="Escreva sua reflexao...">${data.reflexao||""}</textarea></div>
-            <div class="section"><div class="tv-smart" id="tvSmartBtn"><div class="tv-screen">TV<br>COMO FOI O EPISODIO DE HOJE?</div><div class="tv-stand"></div></div></div>
-            <div class="section"><h3>Como esta sua estrela hoje?</h3><div class="estrela-options"><div class="estrela-option ${data.estrela==='brilhando'?'selected':''}" data-estrela="brilhando">Brilhando</div><div class="estrela-option ${data.estrela==='apagada'?'selected':''}" data-estrela="apagada">Apagada</div></div><textarea id="estrelaRoteiro" placeholder="Descreva o roteiro...">${data.estrela_roteiro}</textarea></div>
-            <div class="two-columns"><div class="section"><h3>Checklist Saude Fisica</h3><div class="checklist-vertical"><label><input type="checkbox" id="fis_banho" ${data.checklist_fisica.banho?'checked':''}> Tomei banho</label><label><input type="checkbox" id="fis_dentes" ${data.checklist_fisica.dentes?'checked':''}> Escovei dentes</label><label><input type="checkbox" id="fis_agua" ${data.checklist_fisica.agua?'checked':''}> Bebi agua</label><label><input type="checkbox" id="fis_comida" ${data.checklist_fisica.comida?'checked':''}> Comi bem</label><label><input type="checkbox" id="fis_sol" ${data.checklist_fisica.sol?'checked':''}> Tomei sol</label><label><input type="checkbox" id="fis_movimento" ${data.checklist_fisica.movimento?'checked':''}> Me movimentei</label></div></div>
-            <div class="section"><h3>Checklist Autocuidado</h3><div class="checklist-vertical"><label><input type="checkbox" id="auto_med" ${data.checklist_autocuidado.medicamentos?'checked':''}> Tomei medicamentos</label><label><input type="checkbox" id="auto_ter" ${data.checklist_autocuidado.terapia?'checked':''}> Fui a terapia</label><label><input type="checkbox" id="auto_amor" ${data.checklist_autocuidado.amorProprio?'checked':''}> Pratiquei amor-proprio</label><label><input type="checkbox" id="auto_lim" ${data.checklist_autocuidado.limites?'checked':''}> Estabeleci limites</label><label><input type="checkbox" id="auto_aju" ${data.checklist_autocuidado.ajuda?'checked':''}> Pedi ajuda</label><label><input type="checkbox" id="auto_detox" ${data.checklist_autocuidado.detox?'checked':''}> Detox de tela</label><label><input type="checkbox" id="auto_skincare" ${data.checklist_autocuidado.skincare?'checked':''}> Skincare</label><label><input type="checkbox" id="auto_cama" ${data.checklist_autocuidado.arrumarCama?'checked':''}> Arrumar a cama</label><label><input type="checkbox" id="auto_hobby" ${data.checklist_autocuidado.hobby?'checked':''}> Hobby</label></div></div></div>
-            <div class="two-columns"><div class="section"><h3>Elogie-se, voce e uma estrela</h3><textarea id="elogio1" placeholder="Elogio 1">${data.elogios[0]}</textarea><textarea id="elogio2" placeholder="Elogio 2">${data.elogios[1]}</textarea><textarea id="elogio3" placeholder="Elogio 3">${data.elogios[2]}</textarea></div>
-            <div class="section"><h3>Gratidao pelo episodio de hoje</h3><textarea id="gratidao1" placeholder="Gratidao 1">${data.gratidao[0]}</textarea><textarea id="gratidao2" placeholder="Gratidao 2">${data.gratidao[1]}</textarea><textarea id="gratidao3" placeholder="Gratidao 3">${data.gratidao[2]}</textarea></div></div>
-            <div class="section"><h3>Sofa da Preguica</h3><textarea id="sofaPreguica" placeholder="O que procrastinei hoje?">${data.sofa_preguica||""}</textarea></div>
+            <div class="section"><h3>EXERCÍCIO TERAPÊUTICO</h3><div class="tv-smart" id="exercicioBtn"><div class="tv-screen">CLIQUE AQUI<br>PARA SEU EXERCÍCIO</div></div><textarea id="reflexaoTexto" rows="3" placeholder="Escreva sua reflexão...">${data.reflexao||""}</textarea></div>
+            <div class="section"><div class="tv-smart" id="tvSmartBtn"><div class="tv-screen">COMO FOI O EPISÓDIO DE HOJE?</div><div class="tv-stand"></div></div></div>
+            <div class="section"><h3>Como está sua estrela hoje?</h3><div class="estrela-options"><div class="estrela-option ${data.estrela==='brilhando'?'selected':''}" data-estrela="brilhando">Brilhando</div><div class="estrela-option ${data.estrela==='apagada'?'selected':''}" data-estrela="apagada">Apagada</div></div><textarea id="estrelaRoteiro" placeholder="Descreva o roteiro...">${data.estrela_roteiro}</textarea></div>
+            <div class="two-columns"><div class="section"><h3>Checklist Saúde Física</h3><div class="checklist-vertical"><label><input type="checkbox" id="fis_banho" ${data.checklist_fisica.banho?'checked':''}> Tomei banho</label><label><input type="checkbox" id="fis_dentes" ${data.checklist_fisica.dentes?'checked':''}> Escovei dentes</label><label><input type="checkbox" id="fis_agua" ${data.checklist_fisica.agua?'checked':''}> Bebi água</label><label><input type="checkbox" id="fis_comida" ${data.checklist_fisica.comida?'checked':''}> Comi bem</label><label><input type="checkbox" id="fis_sol" ${data.checklist_fisica.sol?'checked':''}> Tomei sol</label><label><input type="checkbox" id="fis_movimento" ${data.checklist_fisica.movimento?'checked':''}> Me movimentei</label></div></div>
+            <div class="section"><h3>Checklist Autocuidado</h3><div class="checklist-vertical"><label><input type="checkbox" id="auto_med" ${data.checklist_autocuidado.medicamentos?'checked':''}> Tomei medicamentos</label><label><input type="checkbox" id="auto_ter" ${data.checklist_autocuidado.terapia?'checked':''}> Fui à terapia</label><label><input type="checkbox" id="auto_amor" ${data.checklist_autocuidado.amorProprio?'checked':''}> Pratiquei amor-próprio</label><label><input type="checkbox" id="auto_lim" ${data.checklist_autocuidado.limites?'checked':''}> Estabeleci limites</label><label><input type="checkbox" id="auto_aju" ${data.checklist_autocuidado.ajuda?'checked':''}> Pedi ajuda</label><label><input type="checkbox" id="auto_detox" ${data.checklist_autocuidado.detox?'checked':''}> Detox de tela</label><label><input type="checkbox" id="auto_skincare" ${data.checklist_autocuidado.skincare?'checked':''}> Skincare</label><label><input type="checkbox" id="auto_cama" ${data.checklist_autocuidado.arrumarCama?'checked':''}> Arrumar a cama</label><label><input type="checkbox" id="auto_hobby" ${data.checklist_autocuidado.hobby?'checked':''}> Hobby</label></div></div></div>
+            <div class="two-columns"><div class="section"><h3>Elogie-se, você é uma estrela</h3><textarea id="elogio1" placeholder="Elogio 1">${data.elogios[0]}</textarea><textarea id="elogio2" placeholder="Elogio 2">${data.elogios[1]}</textarea><textarea id="elogio3" placeholder="Elogio 3">${data.elogios[2]}</textarea></div>
+            <div class="section"><h3>Gratidão pelo episódio de hoje</h3><textarea id="gratidao1" placeholder="Gratidão 1">${data.gratidao[0]}</textarea><textarea id="gratidao2" placeholder="Gratidão 2">${data.gratidao[1]}</textarea><textarea id="gratidao3" placeholder="Gratidão 3">${data.gratidao[2]}</textarea></div></div>
+            <div class="section"><h3>Sofá da Preguiça</h3><textarea id="sofaPreguica" placeholder="O que procrastinei hoje?">${data.sofa_preguica||""}</textarea></div>
             <div class="section"><h3>HD Sigiloso</h3><textarea id="hdSigiloso" placeholder="Uma carta para nunca ser enviada">${data.hd_sigiloso||""}</textarea></div>
         `;
         document.getElementById('exercicioBtn')?.addEventListener('click', () => {
-            const exs = ["Escreva sobre um momento que voce se sentiu orgulhosa", "Descreva uma situacao de ansiedade e como lidou", "Escreva uma carta de perdao para si mesma"];
+            const exs = ["Escreva sobre um momento que você se sentiu orgulhosa", "Descreva uma situação de ansiedade e como lidou", "Escreva uma carta de perdão para si mesma"];
             alert(exs[Math.floor(Math.random() * exs.length)]);
         });
         document.getElementById('tvSmartBtn')?.addEventListener('click', () => openDiarioModal());
@@ -266,25 +264,37 @@
     function openDiarioModal() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
         let modal = document.createElement('div'); modal.className='modal';
-        modal.innerHTML = `<div class="modal-content"><div class="modal-header"><h3>Como foi o episodio de hoje?</h3><span class="close-modal">&times;</span></div><textarea id="modalDiarioText" rows="5">${data.diario_texto||""}</textarea><button class="btn-red" id="saveModalBtn">Salvar</button></div>`;
+        modal.innerHTML = `<div class="modal-content"><div class="modal-header"><h3>Como foi o episódio de hoje?</h3><span class="close-modal">&times;</span></div><textarea id="modalDiarioText" rows="6" placeholder="Escreva como foi seu dia...">${data.diario_texto||""}</textarea><label style="color:#aaa; font-size:0.7rem;">Adicionar foto (opcional)</label><input type="file" id="modalPhoto" accept="image/*"><button class="btn-red" id="saveModalBtn" style="margin-top:0.5rem;">Salvar</button></div>`;
         document.body.appendChild(modal); modal.style.display='flex';
         modal.querySelector('.close-modal').onclick = () => modal.remove();
         document.getElementById('saveModalBtn').onclick = () => {
-            if(users[currentUser].diarios[currentDate]) users[currentUser].diarios[currentDate].diario_texto = document.getElementById('modalDiarioText').value;
-            saveAll(); modal.remove();
+            let text = document.getElementById('modalDiarioText').value;
+            let file = document.getElementById('modalPhoto').files[0];
+            if(file) {
+                let reader = new FileReader();
+                reader.onload = e => {
+                    if(users[currentUser].diarios[currentDate]) users[currentUser].diarios[currentDate].diario_texto = text;
+                    users[currentUser].diarios[currentDate].diario_foto = e.target.result;
+                    saveAll(); modal.remove();
+                };
+                reader.readAsDataURL(file);
+            } else {
+                if(users[currentUser].diarios[currentDate]) users[currentUser].diarios[currentDate].diario_texto = text;
+                saveAll(); modal.remove();
+            }
         };
     }
     
-    // PAGINA 1 - CINEMOCOES
+    // PÁGINA 1 - CINEMOÇÕES
     function renderPagina1() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
-        let html = `<div class="section"><h3>Catalogo emocional de hoje</h3><div class="grid-emocoes">`;
+        let html = `<div class="section"><h3>Catálogo emocional de hoje</h3><div class="grid-emocoes">`;
         emocoesList.forEach(emo => {
             let e = data.emocoes[emo] || { intensidade:0, gatilho:"", pensamentos:"", outra_forma:"", descricao:"" };
             html += `<div class="emo-acordeon"><div class="emo-header" data-emo="${emo}"><h4>${emo}</h4><span>+</span></div><div class="emo-content" id="emoContent_${emo}">
                 <div class="emo-question"><label>Intensidade (0-100%)</label><input type="range" id="emo_int_${emo}" min="0" max="100" value="${e.intensidade}"><span class="rating-value" id="emo_val_${emo}">${e.intensidade}%</span></div>
                 <div class="emo-question"><label>Gatilho</label><textarea id="emo_gat_${emo}">${e.gatilho}</textarea></div>
-                <div class="emo-question"><label>Pensamentos automaticos</label><textarea id="emo_pens_${emo}">${e.pensamentos}</textarea></div>
+                <div class="emo-question"><label>Pensamentos automáticos</label><textarea id="emo_pens_${emo}">${e.pensamentos}</textarea></div>
                 <div class="emo-question"><label>Como posso ver de outra forma?</label><textarea id="emo_outra_${emo}">${e.outra_forma}</textarea></div>
                 <div class="emo-question"><label>Descreva o que aconteceu</label><textarea id="emo_desc_${emo}">${e.descricao}</textarea></div>
             </div></div>`;
@@ -319,141 +329,208 @@
         });
     }
     
-    // PAGINA 2 - CRISEPLAY (antiga Pipoca)
+    // PÁGINA 2 - CRISEPLAY
     function renderPagina2() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
-        let c = data.criseplay || {};
-        document.getElementById('page2').innerHTML = `<div class="section"><h3>Razoes por tras da desregulacao</h3>
-            <div class="info-card"><h4>Fisica</h4><div class="checklist-vertical"><label><input type="checkbox" id="fis_fome" ${c.fome?'checked':''}> Fome - Sem glicose, o cortex pre-frontal funciona mal.</label>
-            <label><input type="checkbox" id="fis_sede" ${c.sede?'checked':''}> Sede - Desidratacao reduz concentracao.</label>
-            <label><input type="checkbox" id="fis_sono" ${c.sono?'checked':''}> Falta de sono - Amigdala fica hiperativa.</label>
-            <label><input type="checkbox" id="fis_dor" ${c.dor?'checked':''}> Dor fisica ou desconforto corporal.</label></div></div>
-            <div class="info-card"><h4>Sensorial</h4><div class="checklist-vertical"><label><input type="checkbox" id="sens_sobrecarga" ${c.sobrecarga?'checked':''}> Sobrecarga sensorial</label>
-            <label><input type="checkbox" id="sens_gatilhos" ${c.gatilhos?'checked':''}> Gatilhos sensoriais</label>
-            <label><input type="checkbox" id="sens_mudancas" ${c.mudancas?'checked':''}> Mudancas inesperadas no ambiente</label></div></div>
-            <div class="info-card"><h4>Emocional</h4><div class="checklist-vertical"><label><input type="checkbox" id="emo_trauma" ${c.trauma?'checked':''}> Trauma nao resolvido</label>
-            <label><input type="checkbox" id="emo_estresse" ${c.estresse?'checked':''}> Estresse ou pressao</label>
-            <label><input type="checkbox" id="emo_ansiedade" ${c.ansiedade?'checked':''}> Ansiedade</label>
-            <label><input type="checkbox" id="emo_frustracao" ${c.frustracao?'checked':''}> Frustracao emocional</label>
-            <label><input type="checkbox" id="emo_solidão" ${c.solidão?'checked':''}> Solidão ou desconexao emocional</label>
-            <label><input type="checkbox" id="emo_cobranca" ${c.cobranca?'checked':''}> Excesso de autocobranca</label></div></div>
-            <p class="text-small">A desregulacao nao e fraqueza. E uma resposta do sistema nervoso a necessidades nao atendidas.</p></div>`;
-        ['fome','sede','sono','dor','sobrecarga','gatilhos','mudancas','trauma','estresse','ansiedade','frustracao','solidão','cobranca'].forEach(id => {
-            let el = document.getElementById(`fis_${id}`) || document.getElementById(`sens_${id}`) || document.getElementById(`emo_${id}`);
-            if(el) el.addEventListener('change', () => {
-                let data = users[currentUser].diarios[currentDate];
-                if(data) { if(!data.criseplay) data.criseplay = {}; data.criseplay[id] = el.checked; saveAll(); }
-            });
+        let c = data.criseplay || { fisica: {}, sensorial: {}, emocional: {} };
+        document.getElementById('page2').innerHTML = `
+            <div class="section"><h3>Entenda o que levou sua mente à desregulação</h3>
+            <p class="text-small" style="margin-bottom:1rem;">A desregulação emocional não acontece apenas por falta de controle. Na maioria das vezes, ela surge quando corpo, mente e emoções acumulam mais estímulos do que conseguem processar.</p>
+            
+            <div class="info-card"><h4>DESREGULAÇÃO FÍSICA</h4><p class="text-small">Acontece quando o corpo está sobrecarregado ou sem recursos básicos para funcionar bem.</p>
+            <div class="checklist-vertical"><label><input type="checkbox" id="fis_fome" ${c.fisica.fome?'checked':''}> Você comeu direito hoje?</label>
+            <label><input type="checkbox" id="fis_sono" ${c.fisica.sono?'checked':''}> Dormiu bem recentemente?</label>
+            <label><input type="checkbox" id="fis_cansaco" ${c.fisica.cansaco?'checked':''}> Seu corpo estava cansado?</label>
+            <label><input type="checkbox" id="fis_agua" ${c.fisica.agua?'checked':''}> Você bebeu água suficiente?</label>
+            <label><input type="checkbox" id="fis_dor" ${c.fisica.dor?'checked':''}> Sentia alguma dor física?</label></div>
+            <div class="sugestoes-chips"><div class="chip" data-section="fisica" data-texto="Fome">Fome</div><div class="chip" data-section="fisica" data-texto="Sono ruim">Sono ruim</div><div class="chip" data-section="fisica" data-texto="Exaustão">Exaustão</div><div class="chip" data-section="fisica" data-texto="Dor no corpo">Dor no corpo</div><div class="chip" data-section="fisica" data-texto="Desidratação">Desidratação</div></div></div>
+            
+            <div class="info-card"><h4>DESREGULAÇÃO SENSORIAL</h4><p class="text-small">Acontece quando o cérebro recebe estímulos demais e não consegue processar tudo adequadamente.</p>
+            <div class="checklist-vertical"><label><input type="checkbox" id="sens_barulho" ${c.sensorial.barulho?'checked':''}> O ambiente estava barulhento?</label>
+            <label><input type="checkbox" id="sens_pessoas" ${c.sensorial.pessoas?'checked':''}> Havia muitas pessoas?</label>
+            <label><input type="checkbox" id="sens_info" ${c.sensorial.info?'checked':''}> Você recebeu informações demais?</label>
+            <label><input type="checkbox" id="sens_luz" ${c.sensorial.luz?'checked':''}> Algum som, luz ou toque incomodou?</label></div>
+            <div class="sugestoes-chips"><div class="chip" data-section="sensorial" data-texto="Barulho">Barulho</div><div class="chip" data-section="sensorial" data-texto="Luz forte">Luz forte</div><div class="chip" data-section="sensorial" data-texto="Ambiente lotado">Ambiente lotado</div><div class="chip" data-section="sensorial" data-texto="Sobrecarga">Sobrecarga</div></div></div>
+            
+            <div class="info-card"><h4>DESREGULAÇÃO EMOCIONAL</h4><p class="text-small">Acontece quando emoções difíceis se acumulam e ultrapassam a capacidade momentânea de processamento emocional.</p>
+            <div class="checklist-vertical"><label><input type="checkbox" id="emo_cansada" ${c.emocional.cansada?'checked':''}> Você já estava emocionalmente cansada?</label>
+            <label><input type="checkbox" id="emo_rejeicao" ${c.emocional.rejeicao?'checked':''}> Você se sentiu rejeitada?</label>
+            <label><input type="checkbox" id="emo_frustracao" ${c.emocional.frustracao?'checked':''}> Houve frustração ou pressão?</label>
+            <label><input type="checkbox" id="emo_trauma" ${c.emocional.trauma?'checked':''}> Algo ativou inseguranças antigas?</label></div>
+            <div class="sugestoes-chips"><div class="chip" data-section="emocional" data-texto="Ansiedade">Ansiedade</div><div class="chip" data-section="emocional" data-texto="Tristeza">Tristeza</div><div class="chip" data-section="emocional" data-texto="Rejeição">Rejeição</div><div class="chip" data-section="emocional" data-texto="Medo">Medo</div><div class="chip" data-section="emocional" data-texto="Frustração">Frustração</div><div class="chip" data-section="emocional" data-texto="Solidão">Solidão</div></div></div>
+            
+            <p class="text-small" style="margin-top:1rem;">A desregulação não aparece do nada. Ela geralmente é um sinal de que algo dentro de você ficou sobrecarregado por tempo demais.</p></div>`;
+        
+        ['fome','sono','cansaco','agua','dor'].forEach(id => {
+            let el = document.getElementById(`fis_${id}`);
+            if(el) el.addEventListener('change', () => { let d=users[currentUser].diarios[currentDate]; if(d){ if(!d.criseplay) d.criseplay={}; if(!d.criseplay.fisica) d.criseplay.fisica={}; d.criseplay.fisica[id]=el.checked; saveAll(); } });
+        });
+        ['barulho','pessoas','info','luz'].forEach(id => {
+            let el = document.getElementById(`sens_${id}`);
+            if(el) el.addEventListener('change', () => { let d=users[currentUser].diarios[currentDate]; if(d){ if(!d.criseplay) d.criseplay={}; if(!d.criseplay.sensorial) d.criseplay.sensorial={}; d.criseplay.sensorial[id]=el.checked; saveAll(); } });
+        });
+        ['cansada','rejeicao','frustracao','trauma'].forEach(id => {
+            let el = document.getElementById(`emo_${id}`);
+            if(el) el.addEventListener('change', () => { let d=users[currentUser].diarios[currentDate]; if(d){ if(!d.criseplay) d.criseplay={}; if(!d.criseplay.emocional) d.criseplay.emocional={}; d.criseplay.emocional[id]=el.checked; saveAll(); } });
+        });
+        document.querySelectorAll('.chip[data-section]').forEach(chip => {
+            chip.onclick = () => {
+                let section = chip.dataset.section;
+                let texto = chip.dataset.texto;
+                alert(`Sugestão: ${texto}\nVocê pode refletir se isso se aplica à sua desregulação.`);
+            };
         });
     }
     
-    // PAGINA 3 - REPLAY DECODIFICADO
+    // PÁGINA 3 - REPLAY DECODIFICADO (corrigido)
     function renderPagina3() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
         let r = data.replay || {};
-        document.getElementById('page3').innerHTML = `<div class="section"><h3>Reconstruindo a cena</h3>
-            <textarea id="replay_situacao" placeholder="SITUACAO - descreva...">${r.situacao||""}</textarea>
-            <div class="two-columns"><div class="info-card"><h4>ACEITO</h4><textarea id="replay_aceito" placeholder="Aceito essa situacao quando…">${r.aceito||""}</textarea></div>
-            <div class="info-card"><h4>AGRADEÇO</h4><textarea id="replay_agradeco" placeholder="Agradeco essa situacao porque…">${r.agradeco||""}</textarea></div></div>
-            <div class="two-columns"><div class="info-card"><h4>NAO ME FAZ BEM</h4><textarea id="replay_nao" placeholder="Nao me faz bem...">${r.nao_faz_bem||""}</textarea></div>
-            <div class="info-card"><h4>FAZ-ME BEM</h4><textarea id="replay_faz" placeholder="Faz-me bem...">${r.faz_bem||""}</textarea></div></div>
-            <div class="two-columns"><div class="info-card"><h4>DEIXO IR</h4><textarea id="replay_deixo" placeholder="Pois…">${r.deixo_ir||""}</textarea></div>
-            <div class="info-card"><h4>DESFRUTO</h4><textarea id="replay_desfruto" placeholder="Desfruto da maneira…">${r.desfruto||""}</textarea></div></div>
-            <div style="text-align:center; margin-top:0.5rem;"><span style="color:#E50914;">NAO PRECISO DISTO</span></div></div>`;
-        ['situacao','aceito','agradeco','nao','faz','deixo','desfruto'].forEach(id => {
+        document.getElementById('page3').innerHTML = `
+            <div class="section"><h3>Reconstruindo a cena</h3>
+            <p class="text-small" style="margin-bottom:0.8rem;">Uma mesma cena pode ser vista por novos ângulos.</p>
+            
+            <div class="info-card"><h4>SITUAÇÃO CENTRAL</h4><p class="text-small">A situação que será trabalhada.</p><textarea id="replay_situacao" rows="3" placeholder="Descreva o que aconteceu...">${r.situacao||""}</textarea>
+            <div class="sugestoes-chips"><div class="chip" data-target="replay_situacao" data-texto="Briguei com alguém importante para mim.">Briguei com alguém importante</div><div class="chip" data-target="replay_situacao" data-texto="Recebi uma crítica no trabalho.">Crítica no trabalho</div><div class="chip" data-target="replay_situacao" data-texto="Me senti rejeitada hoje.">Me senti rejeitada</div></div></div>
+            
+            <div class="info-card"><h4>ACEITO</h4><p class="text-small">Aceitação da realidade emocional.</p><textarea id="replay_aceito" rows="2" placeholder="Aceito essa situação quando percebo que...">${r.aceito||""}</textarea>
+            <div class="sugestoes-chips"><div class="chip" data-target="replay_aceito" data-texto="não posso controlar tudo">não posso controlar tudo</div><div class="chip" data-target="replay_aceito" data-texto="emoções difíceis também passam">emoções difíceis também passam</div><div class="chip" data-target="replay_aceito" data-texto="fiz o melhor que consegui naquele momento">fiz o melhor que consegui</div></div></div>
+            
+            <div class="info-card"><h4>AGRADEÇO</h4><p class="text-small">Encontrar significado mesmo na dor.</p><textarea id="replay_agradeco" rows="2" placeholder="Agradeço essa situação porque ela me mostrou...">${r.agradeco||""}</textarea>
+            <div class="sugestoes-chips"><div class="chip" data-target="replay_agradeco" data-texto="meus limites">meus limites</div><div class="chip" data-target="replay_agradeco" data-texto="o que realmente importa">o que realmente importa</div><div class="chip" data-target="replay_agradeco" data-texto="minha força emocional">minha força emocional</div></div></div>
+            
+            <div class="info-card"><h4>NÃO ME FAZ BEM</h4><p class="text-small">Identificar impactos negativos da situação.</p><textarea id="replay_nao" rows="2" placeholder="Nessa situação, não me faz bem...">${r.nao_faz_bem||""}</textarea>
+            <div class="sugestoes-chips"><div class="chip" data-target="replay_nao" data-texto="me culpar o tempo todo">me culpar o tempo todo</div><div class="chip" data-target="replay_nao" data-texto="insistir em quem me machuca">insistir em quem me machuca</div><div class="chip" data-target="replay_nao" data-texto="ignorar meus sentimentos">ignorar meus sentimentos</div></div></div>
+            
+            <div class="info-card"><h4>FAZ-ME BEM</h4><p class="text-small">Perceber o que ajuda emocionalmente.</p><textarea id="replay_faz" rows="2" placeholder="Nessa situação, faz-me bem...">${r.faz_bem||""}</textarea>
+            <div class="sugestoes-chips"><div class="chip" data-target="replay_faz" data-texto="conversar com alguém seguro">conversar com alguém seguro</div><div class="chip" data-target="replay_faz" data-texto="descansar">descansar</div><div class="chip" data-target="replay_faz" data-texto="escrever sobre o que sinto">escrever sobre o que sinto</div></div></div>
+            
+            <div class="info-card"><h4>DEIXO IR</h4><p class="text-small">Liberar pesos emocionais.</p><textarea id="replay_deixo" rows="2" placeholder="Dessa situação, escolho deixar ir...">${r.deixo_ir||""}</textarea>
+            <div class="sugestoes-chips"><div class="chip" data-target="replay_deixo" data-texto="a culpa excessiva">a culpa excessiva</div><div class="chip" data-target="replay_deixo" data-texto="a necessidade de aprovação">a necessidade de aprovação</div><div class="chip" data-target="replay_deixo" data-texto="expectativas irreais">expectativas irreais</div></div></div>
+            
+            <div class="info-card"><h4>DESFRUTO</h4><p class="text-small">Reconectar-se com pequenas experiências positivas.</p><textarea id="replay_desfruto" rows="2" placeholder="Mesmo nessa situação, ainda consigo desfrutar...">${r.desfruto||""}</textarea>
+            <div class="sugestoes-chips"><div class="chip" data-target="replay_desfruto" data-texto="dos pequenos momentos">dos pequenos momentos</div><div class="chip" data-target="replay_desfruto" data-texto="das pessoas que me acolhem">das pessoas que me acolhem</div><div class="chip" data-target="replay_desfruto" data-texto="da minha própria companhia">da minha própria companhia</div></div></div>
+            
+            <div class="info-card"><h4>NÃO PRECISO DISTO</h4><p class="text-small">Reconhecer o que não merece continuar.</p><textarea id="replay_nao_preciso" rows="2" placeholder="Depois dessa situação, percebo que não preciso mais...">${r.nao_preciso||""}</textarea>
+            <div class="sugestoes-chips"><div class="chip" data-target="replay_nao_preciso" data-texto="me diminuir para caber">me diminuir para caber</div><div class="chip" data-target="replay_nao_preciso" data-texto="carregar tudo sozinha">carregar tudo sozinha</div><div class="chip" data-target="replay_nao_preciso" data-texto="me punir pelos meus erros">me punir pelos meus erros</div></div></div>
+            </div>`;
+        
+        ['situacao','aceito','agradeco','nao','faz','deixo','desfruto','nao_preciso'].forEach(id => {
             let el = document.getElementById(`replay_${id}`);
             if(el) el.addEventListener('input', () => {
                 let data = users[currentUser].diarios[currentDate];
                 if(data) { if(!data.replay) data.replay = {}; data.replay[id] = el.value; saveAll(); }
             });
         });
+        document.querySelectorAll('.chip[data-target]').forEach(chip => {
+            chip.onclick = () => {
+                let targetId = chip.dataset.target;
+                let texto = chip.dataset.texto;
+                let textarea = document.getElementById(targetId);
+                if(textarea) textarea.value = (textarea.value ? textarea.value + " " : "") + texto;
+            };
+        });
     }
     
-    // PAGINA 4 - NEUROFLIX
+    // PÁGINA 4 - NEUROFLIX
     function renderPagina4() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
         let s = data.saga || {};
         document.getElementById('page4').innerHTML = `<div class="section"><h3>Quarteto da felicidade</h3>
-            <div class="hormonios-grid" style="display:grid;grid-template-columns:1fr;gap:0.8rem;"><div class="info-card"><h4>DOPAMINA</h4><p class="text-small">Neurotransmissor do prazer e da recompensa.</p><label class="checklist-vertical" style="display:flex;gap:0.3rem;"><input type="checkbox" id="dop1" ${s.dop1?'checked':''}> Durma de 7 a 9 horas</label>
-            <label class="checklist-vertical"><input type="checkbox" id="dop2" ${s.dop2?'checked':''}> Celebre conquistas diarias</label>
-            <label class="checklist-vertical"><input type="checkbox" id="dop3" ${s.dop3?'checked':''}> Faca exercicios diarios</label></div>
-            <div class="info-card"><h4>OCITOCINA</h4><p class="text-small">Neurotransmissor do amor e da conexao.</p><label class="checklist-vertical"><input type="checkbox" id="oci1" ${s.oci1?'checked':''}> Medite todas as manhas</label>
-            <label><input type="checkbox" id="oci2" ${s.oci2?'checked':''}> De um abraco em alguem</label>
-            <label><input type="checkbox" id="oci3" ${s.oci3?'checked':''}> Faca um ato de generosidade</label></div>
-            <div class="info-card"><h4>ENDORFINA</h4><p class="text-small">Neurotransmissor do alivio da dor e euforia.</p><label><input type="checkbox" id="end1" ${s.end1?'checked':''}> Pratique hobbies</label>
+            <div style="display:grid;grid-template-columns:1fr;gap:0.8rem;"><div class="info-card"><h4>DOPAMINA</h4><p class="text-small">Neurotransmissor do prazer e da recompensa.</p><label class="checklist-vertical"><input type="checkbox" id="dop1" ${s.dop1?'checked':''}> Durma de 7 a 9 horas</label>
+            <label><input type="checkbox" id="dop2" ${s.dop2?'checked':''}> Celebre conquistas diárias</label>
+            <label><input type="checkbox" id="dop3" ${s.dop3?'checked':''}> Faça exercícios diários</label></div>
+            <div class="info-card"><h4>OCITOCINA</h4><p class="text-small">Neurotransmissor do amor e da conexão.</p><label><input type="checkbox" id="oci1" ${s.oci1?'checked':''}> Medite todas as manhãs</label>
+            <label><input type="checkbox" id="oci2" ${s.oci2?'checked':''}> Dê um abraço em alguém</label>
+            <label><input type="checkbox" id="oci3" ${s.oci3?'checked':''}> Faça um ato de generosidade</label></div>
+            <div class="info-card"><h4>ENDORFINA</h4><p class="text-small">Neurotransmissor do alívio da dor e euforia.</p><label><input type="checkbox" id="end1" ${s.end1?'checked':''}> Pratique hobbies</label>
             <label><input type="checkbox" id="end2" ${s.end2?'checked':''}> Ria com entes queridos</label>
             <label><input type="checkbox" id="end3" ${s.end3?'checked':''}> Dance ou cante</label></div>
-            <div class="info-card"><h4>SEROTONINA</h4><p class="text-small">Neurotransmissor do bem-estar e humor.</p><label><input type="checkbox" id="ser1" ${s.ser1?'checked':''}> Agradeca todos os dias</label>
+            <div class="info-card"><h4>SEROTONINA</h4><p class="text-small">Neurotransmissor do bem-estar e humor.</p><label><input type="checkbox" id="ser1" ${s.ser1?'checked':''}> Agradeça todos os dias</label>
             <label><input type="checkbox" id="ser2" ${s.ser2?'checked':''}> Desfrute da natureza</label>
             <label><input type="checkbox" id="ser3" ${s.ser3?'checked':''}> Relembre momentos importantes</label></div></div></div>`;
         for(let i=1;i<=3;i++) {
             ['dop','oci','end','ser'].forEach(prefix => {
                 let el = document.getElementById(`${prefix}${i}`);
-                if(el) el.addEventListener('change', () => {
-                    let data = users[currentUser].diarios[currentDate];
-                    if(data) { if(!data.saga) data.saga = {}; data.saga[`${prefix}${i}`] = el.checked; saveAll(); }
-                });
+                if(el) el.addEventListener('change', () => { let d=users[currentUser].diarios[currentDate]; if(d){ if(!d.saga) d.saga={}; d.saga[`${prefix}${i}`]=el.checked; saveAll(); } });
             });
         }
     }
     
-    // PAGINA 5 - COADJUVANTES
+    // PÁGINA 5 - COADJUVANTES
     function renderPagina5() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
         let c = data.coadjuvantes || {};
-        const esferas = ["INTIMOS", "NECESSARIOS", "ESTRATEGICOS", "INCONTORNAVEIS", "SUPERADOS"];
-        const descricoes = ["Sao raros. Nao passam de 2 ou 3 pessoas na vida toda. E aquele amigo que voce pode mostrar suas fraquezas, seus medos, sem medo de julgamento.",
-            "Sao os amigos do cotidiano. Estao presentes, fazem bem, alegram os dias. Voce vai a festas com eles, compartilha conquistas.",
-            "Sao conexoes que te fazem crescer. Podem ser mentores, pessoas de areas diferentes, contatos que abrem portas.",
-            "Sao pessoas que voce nao escolheu mas que estao na sua vida e precisa conviver. Chefe, colega de trabalho, vizinho.",
-            "Sao pessoas que um dia foram proximas mas a relacao teve seu ciclo e acabou. O trabalho e lidar com leveza, sem magoa."];
-        let html = `<div class="section"><h3>Esferas da Amizade</h3><div class="esferas-grid" style="display:grid;gap:0.8rem;">`;
+        const esferas = ["ÍNTIMOS", "NECESSÁRIOS", "ESTRATÉGICOS", "INCONTORNÁVEIS", "SUPERADOS"];
+        const descricoes = ["São raros. Não passam de 2 ou 3 pessoas na vida toda. É aquele amigo que você pode mostrar suas fraquezas, seus medos, sem medo de julgamento.",
+            "São os amigos do cotidiano. Estão presentes, fazem bem, alegram os dias.",
+            "São conexões que te fazem crescer. Podem ser mentores, pessoas de áreas diferentes.",
+            "São pessoas que você não escolheu mas que estão na sua vida e precisa conviver.",
+            "São pessoas que um dia foram próximas mas a relação teve seu ciclo e acabou."];
+        let html = `<div class="section"><h3>Esferas da Amizade</h3><div style="display:grid;gap:0.8rem;">`;
         for(let i=0;i<esferas.length;i++) {
-            html += `<div class="info-card"><h4>${esferas[i]}</h4><div class="esfera-desc" style="cursor:pointer;color:#aaa;font-size:0.7rem;" data-desc="${i}">Ver descricao</div><div class="desc-full" id="desc_${i}" style="display:none;">${descricoes[i]}</div><input type="text" id="coadj_${i}" placeholder="Coadjuvante (nomes)" value="${c[i]||""}" style="width:100%;margin-top:0.3rem;"></div>`;
+            html += `<div class="info-card"><h4>${esferas[i]}</h4><div class="esfera-desc" style="cursor:pointer;color:#aaa;font-size:0.7rem;" data-desc="${i}">Ver descrição</div><div class="desc-full" id="desc_${i}" style="display:none;">${descricoes[i]}</div><input type="text" id="coadj_${i}" placeholder="Coadjuvante (nomes)" value="${c[i]||""}" style="width:100%;margin-top:0.3rem;"></div>`;
         }
         html += `</div></div>`;
         document.getElementById('page5').innerHTML = html;
         for(let i=0;i<esferas.length;i++) {
             let inp = document.getElementById(`coadj_${i}`);
-            if(inp) inp.addEventListener('input', () => {
-                let data = users[currentUser].diarios[currentDate];
-                if(data) { if(!data.coadjuvantes) data.coadjuvantes = {}; data.coadjuvantes[i] = inp.value; saveAll(); }
-            });
+            if(inp) inp.addEventListener('input', () => { let d=users[currentUser].diarios[currentDate]; if(d){ if(!d.coadjuvantes) d.coadjuvantes={}; d.coadjuvantes[i]=inp.value; saveAll(); } });
             let descBtn = document.querySelector(`.esfera-desc[data-desc="${i}"]`);
-            if(descBtn) descBtn.onclick = () => {
-                let d = document.getElementById(`desc_${i}`);
-                d.style.display = d.style.display === 'none' || d.style.display === '' ? 'block' : 'none';
-            };
+            if(descBtn) descBtn.onclick = () => { let d=document.getElementById(`desc_${i}`); d.style.display = d.style.display === 'none' || d.style.display === '' ? 'block' : 'none'; };
         }
     }
     
-    // PAGINA 6 - DIAGNOSTIFLIX (com nova estrutura)
+    // PÁGINA 6 - DIAGNOSTIFLIX
     const areasDiagnostiFlix = [
-        "Vida Profissional", "Vida Amorosa", "Amigos", "Familia", "Espiritualidade", "Saude Mental", "Inteligencia Emocional",
-        "Saude Fisica", "Financeiro", "Intelectual", "Lazer", "Autoconhecimento", "Proposito", "Ambiente", "Alimentacao",
+        "Vida Profissional", "Vida Amorosa", "Amigos", "Família", "Espiritualidade", "Saúde Mental", "Inteligência Emocional",
+        "Saúde Física", "Financeiro", "Intelectual", "Lazer", "Autoconhecimento", "Propósito", "Ambiente", "Alimentação",
         "Sono", "Tecnologia Digital", "Higiene", "Sexualidade", "Produtividade"
     ];
+    
+    const descricoesAreas = {
+        0: "Como você se sente em relação ao seu trabalho, carreira ou ocupação atual. Inclui satisfação, crescimento, reconhecimento e alinhamento com seus valores.",
+        1: "A qualidade do seu relacionamento romântico. Envolve conexão, afeto, comunicação e intimidade.",
+        2: "A profundidade e qualidade das suas amizades. Se você tem pessoas com quem contar.",
+        3: "Como estão seus vínculos familiares. Harmonia, comunicação, limites saudáveis.",
+        4: "Sua conexão com algo maior, seja religião, filosofia de vida, natureza ou sentido transcendente.",
+        5: "Seu equilíbrio emocional e psicológico no dia a dia. Inclui ansiedade, autoestima, pensamentos, humor.",
+        6: "O quanto você reconhece, compreende e regula suas próprias emoções.",
+        7: "Como está seu corpo: energia, disposição, ausência de dores, exames em dia.",
+        8: "Sua relação com o dinheiro. Organização, segurança, dívidas, investimentos.",
+        9: "O quanto você estimula sua mente com leituras, aprendizado, conversas profundas.",
+        10: "A presença de momentos de prazer, descanso e diversão na sua rotina.",
+        11: "O quanto você se conhece de verdade. Seus padrões, gatilhos, valores, medos.",
+        12: "A clareza sobre o porquê você faz o que faz. Se sua vida tem direção e sentido.",
+        13: "O espaço físico onde você vive e trabalha. Organização, beleza, conforto.",
+        14: "Sua relação com a comida. Qualidade nutricional, consciência ao comer.",
+        15: "A qualidade e quantidade do seu descanso. Se você acorda restaurado(a).",
+        16: "Sua relação com telas, redes sociais e dispositivos. Se o uso é consciente.",
+        17: "Seus cuidados pessoais e com o ambiente. Como forma de respeito consigo mesmo(a).",
+        18: "Sua relação com o próprio corpo, desejo e expressão sexual.",
+        19: "Sua capacidade de transformar intenção em ação. Se você realiza o que planeja."
+    };
     
     function renderDiagnostiFlix() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
         let roda = data.roda_vida || {};
         let pode = (!data.roda_vida_data || new Date(data.roda_vida_data).getMonth() !== new Date().getMonth());
-        if(!pode) { document.getElementById('page6').innerHTML = `<div class="blocked-message">Voce ja avaliou sua vida este mes. Volte no mes que vem.</div>`; return; }
+        if(!pode) { document.getElementById('page6').innerHTML = `<div class="blocked-message">Você já avaliou sua vida este mês. Volte no mês que vem.</div>`; return; }
         
-        let html = `<div class="section"><h3>Avalie sua vida</h3>`;
+        let html = `<div class="section"><h3>Avalie sua vida</h3><p class="text-small" style="margin-bottom:1rem;">Esta avaliação pode ser feita a cada 2 meses.</p>`;
         for(let i=0;i<areasDiagnostiFlix.length;i++) {
-            let area = areasDiagnostiFlix[i];
             let nota = roda[i] || 5;
             let corClass = nota <= 3 ? 'critico' : nota <= 5 ? 'atencao' : nota <= 7 ? 'regular' : 'bom';
             html += `<div class="info-card" style="margin-bottom:1rem;">
-                <h4>${area}</h4>
-                <div class="flex-between" style="display:flex;justify-content:space-between;"><span>Nota: <span id="nota_val_${i}">${nota}</span>/10</span></div>
+                <h4>${areasDiagnostiFlix[i]}</h4>
+                <p class="text-small">${descricoesAreas[i] || ""}</p>
+                <div><span>Nota: <span id="nota_val_${i}">${nota}</span>/10</span></div>
                 <div class="progress-bar-bg"><div class="progress-fill ${corClass}" id="progress_${i}" style="width:${nota*10}%"></div></div>
                 <input type="range" id="roda_${i}" min="0" max="10" value="${nota}" style="width:100%;">
                 <div id="perguntas_container_${i}" style="margin-top:0.8rem;"></div>
             </div>`;
         }
-        html += `<button class="btn-red" id="salvarRodaBtn" style="margin-top:0.5rem;">Salvar avaliacao</button></div>`;
+        html += `<button class="btn-red" id="salvarRodaBtn" style="margin-top:0.5rem;">Salvar avaliação</button></div>`;
         document.getElementById('page6').innerHTML = html;
         
         for(let i=0;i<areasDiagnostiFlix.length;i++) {
@@ -484,165 +561,164 @@
             if(users[currentUser].diarios[currentDate]) {
                 users[currentUser].diarios[currentDate].roda_vida = novaRoda;
                 users[currentUser].diarios[currentDate].roda_vida_data = new Date().toISOString();
-                saveAll(); alert("Avaliacao salva! Volte mes que vem."); renderDiagnostiFlix();
+                saveAll(); alert("Avaliação salva! Volte daqui a 2 meses."); renderDiagnostiFlix();
             }
         });
     }
     
     const perguntasAreas = {
-        0: [{ pergunta: "Sinto que meu trabalho tem sentido?", sugestoes: ["Me sinto perdida", "Gosto do que faco", "Quero mudar de area", "Nao me sinto reconhecida", "Sinto proposito no meu trabalho"] },
-            { pergunta: "Estou crescendo profissionalmente?", sugestoes: ["Estou estagnada", "Tenho evoluido aos poucos", "Quero aprender mais", "Me sinto atrasada", "Estou orgulhosa da minha evolucao"] }],
-        1: [{ pergunta: "Me sinto amada e respeitada?", sugestoes: ["Me sinto sozinha", "Existe carinho", "Falta dialogo", "Tenho medo", "Me sinto acolhida"] },
-            { pergunta: "Existe reciprocidade?", sugestoes: ["Dou muito e recebo pouco", "Somos equilibrados", "Me sinto sobrecarregada", "Ele/ela se importa comigo"] }]
+        0: [{ pergunta: "Sinto que meu trabalho tem sentido?", sugestoes: ["Me sinto perdida", "Gosto do que faço", "Quero mudar de área", "Não me sinto reconhecida", "Sinto propósito no meu trabalho"] }],
+        1: [{ pergunta: "Me sinto amada e respeitada?", sugestoes: ["Me sinto sozinha", "Existe carinho", "Falta diálogo", "Tenho medo", "Me sinto acolhida"] }],
+        2: [{ pergunta: "Tenho amigos com quem posso contar?", sugestoes: ["Me sinto apoiada", "Estou sozinha", "Quero fazer mais amigos", "Me sinto acolhida"] }]
     };
+    for(let i=3;i<20;i++) { perguntasAreas[i] = [{ pergunta: "Como você avalia esta área?", sugestoes: ["Precisa melhorar", "Estou satisfeita", "Quero mudar"] }]; }
     
     function renderPerguntasArea(idx, roda) {
         let container = document.getElementById(`perguntas_container_${idx}`);
         if(!container) return;
-        let perguntas = perguntasAreas[idx] || [{ pergunta: "Como voce avalia esta area?", sugestoes: ["Precisa melhorar", "Estou satisfeita", "Quero mudar"] }];
+        let perguntas = perguntasAreas[idx] || [{ pergunta: "Como você avalia esta área?", sugestoes: ["Precisa melhorar", "Estou satisfeita", "Quero mudar"] }];
         let html = '';
         for(let j=0;j<perguntas.length;j++) {
             let respAtual = roda[`resp_${idx}_${j}`] || "";
-            html += `<div class="pergunta-card"><div class="pergunta-header" data-pergunta="${idx}_${j}"><h4>Cena desbloqueada: ${perguntas[j].pergunta}</h4><span style="font-size:1rem;">+</span></div>
-                <div class="pergunta-content" id="pergunta_content_${idx}_${j}"><textarea id="resp_${idx}_${j}" placeholder="Escreva sua reflexao..." rows="2">${respAtual}</textarea>
+            html += `<div class="pergunta-card"><div class="pergunta-header" data-pergunta="${idx}_${j}"><h4>Cena desbloqueada: ${perguntas[j].pergunta}</h4><span>+</span></div>
+                <div class="pergunta-content" id="pergunta_content_${idx}_${j}"><textarea id="resp_${idx}_${j}" placeholder="Escreva sua reflexão..." rows="2">${respAtual}</textarea>
                 <div class="sugestoes-chips">${perguntas[j].sugestoes.map(s => `<div class="chip" data-target="resp_${idx}_${j}" data-texto="${s}">${s}</div>`).join('')}</div></div></div>`;
         }
         container.innerHTML = html;
         for(let j=0;j<perguntas.length;j++) {
             let header = document.querySelector(`.pergunta-header[data-pergunta="${idx}_${j}"]`);
-            if(header) header.onclick = () => {
-                let content = document.getElementById(`pergunta_content_${idx}_${j}`);
-                content.classList.toggle('open');
-                let icon = header.querySelector('span');
-                icon.innerText = content.classList.contains('open') ? '-' : '+';
-            };
-            document.querySelectorAll(`.chip[data-target="resp_${idx}_${j}"]`).forEach(chip => {
-                chip.onclick = () => {
-                    let textarea = document.getElementById(chip.dataset.target);
-                    if(textarea) textarea.value = (textarea.value ? textarea.value + " " : "") + chip.dataset.texto;
-                };
-            });
+            if(header) header.onclick = () => { let c=document.getElementById(`pergunta_content_${idx}_${j}`); c.classList.toggle('open'); let icon=header.querySelector('span'); icon.innerText=c.classList.contains('open')?'-':'+'; };
+            document.querySelectorAll(`.chip[data-target="resp_${idx}_${j}"]`).forEach(chip => { chip.onclick = () => { let ta=document.getElementById(chip.dataset.target); if(ta) ta.value = (ta.value ? ta.value + " " : "") + chip.dataset.texto; }; });
             let textarea = document.getElementById(`resp_${idx}_${j}`);
-            if(textarea) textarea.addEventListener('input', () => {
-                let data = users[currentUser].diarios[currentDate];
-                if(data && data.roda_vida) data.roda_vida[`resp_${idx}_${j}`] = textarea.value;
-                saveAll();
-            });
+            if(textarea) textarea.addEventListener('input', () => { let d=users[currentUser].diarios[currentDate]; if(d && d.roda_vida) d.roda_vida[`resp_${idx}_${j}`]=textarea.value; saveAll(); });
         }
     }
     
-    // PAGINA 7 - IKIGAIFLIX
+    // PÁGINA 7 - IKIGAI FLIX
     function renderIkigaiFlix() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
-        let pode = (!data.ikigai_data || (new Date() - new Date(data.ikigai_data) > 180*24*60*60*1000));
-        if(!pode) { document.getElementById('page7').innerHTML = `<div class="blocked-message">Voce ja fez seu IKIGAI neste semestre. Volte daqui a 6 meses.</div>`; return; }
+        let pode = (!data.ikigai_data || (new Date() - new Date(data.ikigai_data) > 60*24*60*60*1000));
+        if(!pode) { document.getElementById('page7').innerHTML = `<div class="blocked-message">Você já fez seu IKIGAI neste bimestre. Volte daqui a 2 meses.</div>`; return; }
         let resp = data.ikigai_respostas || {};
         
-        let html = `<div class="section"><h3>Seu Ikigai (Razao de Ser)</h3>
-            <p class="text-small" style="margin-bottom:1rem;">Seu proposito nao nasce de uma unica resposta. Ele aparece no encontro entre partes da sua vida.</p>
-            <div class="ikigai-circles"><div class="ikigai-row"><div class="ikigai-sphere"><div class="ikigai-title">Aquilo que voce ama</div><div class="circle-btn" data-tipo="pergunta" data-area="ama">?</div><div class="circle-btn" data-tipo="resposta" data-area="ama">R</div></div></div>
-            <div class="ikigai-row"><div class="ikigai-sphere"><div class="ikigai-title">No que voce e boa</div><div class="circle-btn" data-tipo="pergunta" data-area="boa">?</div><div class="circle-btn" data-tipo="resposta" data-area="boa">R</div></div>
+        let html = `<div class="section"><h3>Seu Ikigai (Razão de Ser)</h3>
+            <p class="text-small" style="margin-bottom:0.5rem;">Seu propósito não nasce de uma única resposta. Ele aparece no encontro entre partes da sua vida.</p>
+            <div class="info-card"><h4>O que é IKIGAI?</h4><p class="text-small">O IKIGAI é um método japonês de autoconhecimento que ajuda você a entender: o que ama, no que é boa, o que o mundo precisa e o que pode gerar retorno financeiro. Seu propósito geralmente nasce no cruzamento dessas áreas.</p></div>
+            
+            <div class="ikigai-circles"><div class="ikigai-row"><div class="ikigai-sphere"><div class="ikigai-title">Aquilo que você ama</div><div class="circle-btn" data-tipo="pergunta" data-area="ama">?</div><div class="circle-btn" data-tipo="resposta" data-area="ama">R</div></div></div>
+            <div class="ikigai-row"><div class="ikigai-sphere"><div class="ikigai-title">No que você é boa</div><div class="circle-btn" data-tipo="pergunta" data-area="boa">?</div><div class="circle-btn" data-tipo="resposta" data-area="boa">R</div></div>
             <div class="ikigai-sphere"><div class="ikigai-title">O que o mundo precisa</div><div class="circle-btn" data-tipo="pergunta" data-area="mundo">?</div><div class="circle-btn" data-tipo="resposta" data-area="mundo">R</div></div></div>
-            <div class="ikigai-row"><div class="ikigai-sphere"><div class="ikigai-title">Pelo que voce pode ser paga</div><div class="circle-btn" data-tipo="pergunta" data-area="paga">?</div><div class="circle-btn" data-tipo="resposta" data-area="paga">R</div></div></div></div>`;
+            <div class="ikigai-row"><div class="ikigai-sphere"><div class="ikigai-title">Pelo que você pode ser paga</div><div class="circle-btn" data-tipo="pergunta" data-area="paga">?</div><div class="circle-btn" data-tipo="resposta" data-area="paga">R</div></div></div></div>`;
         
-        // Secoes expandidas com perguntas e sugestoes
         const secoes = [
-            { id: "ama", titulo: "O QUE VOCE AMA", explicacao: "Sao atividades, assuntos ou experiencias que fazem voce se sentir viva emocionalmente.",
-              perguntas: ["O que me faz sentir viva?", "O que eu faria de graca?", "O que me empolga naturalmente?", "O que eu nunca me canso de aprender?"],
-              sugestoes: ["Psicologia", "Musica", "Ajudar pessoas", "Escrever", "Arte", "Criancas", "Ensinar", "Saude mental", "Criatividade", "Comunicacao"] },
-            { id: "boa", titulo: "NO QUE VOCE E BOA", explicacao: "Sao habilidades naturais ou desenvolvidas que voce executa bem.",
-              perguntas: ["Pelo que as pessoas me procuram?", "O que faco com facilidade?", "Em quais areas me destaco?", "O que aprendo rapidamente?"],
+            { id: "ama", titulo: "O QUE VOCÊ AMA", explicacao: "São atividades, assuntos ou experiências que fazem você se sentir viva emocionalmente.",
+              perguntas: ["O que me faz sentir viva?", "O que eu faria de graça?", "O que me empolga naturalmente?"],
+              sugestoes: ["Psicologia", "Música", "Ajudar pessoas", "Escrever", "Arte", "Crianças", "Ensinar", "Saúde mental", "Criatividade", "Comunicação"] },
+            { id: "boa", titulo: "NO QUE VOCÊ É BOA", explicacao: "São habilidades naturais ou desenvolvidas que você executa bem.",
+              perguntas: ["Pelo que as pessoas me procuram?", "O que faço com facilidade?", "Em quais áreas me destaco?"],
               sugestoes: ["Escutar", "Organizar", "Cuidar", "Comunicar", "Criar", "Liderar", "Ensinar", "Resolver problemas", "Acolher", "Escrever"] },
-            { id: "mundo", titulo: "O QUE O MUNDO PRECISA", explicacao: "Sao problemas, necessidades ou dores que despertam sua vontade de contribuir.",
-              perguntas: ["Que problemas me tocam emocionalmente?", "Como quero ajudar pessoas?", "O que gostaria de transformar no mundo?", "Que impacto quero deixar?"],
-              sugestoes: ["Saude mental", "Educacao", "Inclusao", "Amor", "Escuta", "Seguranca emocional", "Autoconhecimento", "Criancas", "Fe", "Relacoes saudaveis"] },
-            { id: "paga", titulo: "PELO QUE VOCE PODE SER PAGA", explicacao: "Sao habilidades, conhecimentos ou servicos que possuem valor profissional.",
-              perguntas: ["Pelo que as pessoas pagariam?", "O que posso transformar em profissao?", "Que habilidade minha gera valor?", "O que consigo oferecer com consistencia?"],
-              sugestoes: ["Atendimento psicologico", "Escrita", "Redes sociais", "Aulas", "Arte", "Consultoria", "Comunicacao", "Musica", "Terapia", "Criacao de conteudo"] }
+            { id: "mundo", titulo: "O QUE O MUNDO PRECISA", explicacao: "São problemas, necessidades ou dores que despertam sua vontade de contribuir.",
+              perguntas: ["Que problemas me tocam emocionalmente?", "Como quero ajudar pessoas?", "Que impacto quero deixar?"],
+              sugestoes: ["Saúde mental", "Educação", "Inclusão", "Amor", "Escuta", "Segurança emocional", "Autoconhecimento", "Crianças", "Fé", "Relações saudáveis"] },
+            { id: "paga", titulo: "PELO QUE VOCÊ PODE SER PAGA", explicacao: "São habilidades, conhecimentos ou serviços que possuem valor profissional.",
+              perguntas: ["Pelo que as pessoas pagariam?", "O que posso transformar em profissão?", "Que habilidade minha gera valor?"],
+              sugestoes: ["Atendimento psicológico", "Escrita", "Redes sociais", "Aulas", "Arte", "Consultoria", "Comunicação", "Música", "Terapia", "Criação de conteúdo"] }
         ];
         
-        html += `<div class="resultado-ikigai" style="margin-top:1rem;"><h4>Investigue seu proposito</h4>`;
         for(let s of secoes) {
             html += `<div class="ikigai-section"><h4>${s.titulo}</h4><p class="ikigai-explicacao">${s.explicacao}</p>
-                <div class="ikigai-perguntas">${s.perguntas.map(p => `<div class="pergunta-card"><div class="pergunta-header" data-area="${s.id}" data-pergunta="${p}"><span>${p}</span><span style="font-size:1rem;">+</span></div>
+                <div class="perguntas-container">${s.perguntas.map(p => `<div class="pergunta-card"><div class="pergunta-header" data-area="${s.id}" data-pergunta="${p}"><span>${p}</span><span>+</span></div>
                 <div class="pergunta-content" id="pergunta_${s.id}_${p.replace(/ /g,'_')}"><textarea id="resp_${s.id}_${p.replace(/ /g,'_')}" rows="2" placeholder="Escreva sua resposta...">${resp[`${s.id}_${p}`]||""}</textarea>
                 <div class="sugestoes-chips">${s.sugestoes.map(sug => `<div class="chip" data-target="resp_${s.id}_${p.replace(/ /g,'_')}" data-texto="${sug}">${sug}</div>`).join('')}</div></div></div>`).join('')}</div></div>`;
         }
-        html += `<div class="camera-box" style="background:#1f1f1f;border:3px solid #E50914;border-radius:16px;padding:1rem;text-align:center;margin:1rem 0;"><div style="background:#0a0a0a;width:50px;height:50px;border-radius:50%;margin:0 auto 0.5rem;display:flex;align-items:center;justify-content:center;border:2px solid #E50914;">CAM</div>
-            <h4>Meu IKIGAI</h4><textarea id="ikigai_final" rows="4" placeholder="Escreva sua conclusao...">${resp.final||""}</textarea></div>
+        
+        html += `<div class="info-card"><h4>INTERSEÇÕES DO IKIGAI</h4><p class="text-small">É o ponto de encontro entre as áreas. Representa seu propósito em construção.</p>
+            <div class="pergunta-card"><div class="pergunta-header" data-area="paixao"><h4>PAIXÃO</h4><span>+</span></div><div class="pergunta-content" id="pergunta_paixao"><p class="text-small">Paixão = o que você ama + o que você é boa</p><textarea id="resp_paixao" rows="2" placeholder="Escreva sua reflexão...">${resp.paixao||""}</textarea></div></div>
+            <div class="pergunta-card"><div class="pergunta-header" data-area="vocacao"><h4>VOCAÇÃO</h4><span>+</span></div><div class="pergunta-content" id="pergunta_vocacao"><p class="text-small">Vocação = o que você é boa + o que você pode ser paga</p><textarea id="resp_vocacao" rows="2" placeholder="Escreva sua reflexão...">${resp.vocacao||""}</textarea></div></div>
+            <div class="pergunta-card"><div class="pergunta-header" data-area="missao"><h4>MISSÃO</h4><span>+</span></div><div class="pergunta-content" id="pergunta_missao"><p class="text-small">Missão = o que o mundo precisa + o que você ama</p><textarea id="resp_missao" rows="2" placeholder="Escreva sua reflexão...">${resp.missao||""}</textarea></div></div>
+            <div class="pergunta-card"><div class="pergunta-header" data-area="profissao"><h4>PROFISSÃO</h4><span>+</span></div><div class="pergunta-content" id="pergunta_profissao"><p class="text-small">Profissão = o que você pode ser paga + o que o mundo precisa</p><textarea id="resp_profissao" rows="2" placeholder="Escreva sua reflexão...">${resp.profissao||""}</textarea></div></div></div>`;
+        
+        html += `<div class="resultado-ikigai" style="background:#2a2a2a;padding:1rem;border-radius:12px;margin-top:1rem;"><h4>RESULTADO FINAL</h4><p class="text-small" style="margin-bottom:0.5rem;">Seu IKIGAI pode estar relacionado a...</p><textarea id="ikigai_resultado" rows="3" placeholder="O sistema cruzará seus padrões automaticamente. Escreva sua conclusão aqui...">${resp.resultado||""}</textarea>
+            <p class="text-small" style="margin-top:0.5rem;">O propósito não precisa nascer pronto. Ele costuma aparecer quando você percebe os padrões do que ama, faz bem, oferece ao mundo e consegue sustentar.</p></div>
+            <div class="camera-box"><div style="background:#0a0a0a;width:50px;height:50px;border-radius:50%;margin:0 auto 0.5rem;display:flex;align-items:center;justify-content:center;border:2px solid #E50914;">CAM</div><h4>Meu IKIGAI</h4><textarea id="ikigai_final" rows="3" placeholder="Escreva sua conclusão final...">${resp.final||""}</textarea></div>
             <button class="btn-red" id="salvarIkigaiBtn">Salvar IKIGAI</button></div>`;
         document.getElementById('page7').innerHTML = html;
         
-        for(let s of secoes) {
-            for(let p of s.perguntas) {
-                let header = document.querySelector(`.pergunta-header[data-pergunta="${p}"]`);
-                if(header) header.onclick = () => {
-                    let content = document.getElementById(`pergunta_${s.id}_${p.replace(/ /g,'_')}`);
+        // Configurar expansão das perguntas
+        document.querySelectorAll('.pergunta-header').forEach(header => {
+            header.onclick = () => {
+                let content = header.parentElement.querySelector('.pergunta-content');
+                if(content) {
                     content.classList.toggle('open');
                     let icon = header.querySelectorAll('span')[1];
-                    icon.innerText = content.classList.contains('open') ? '-' : '+';
-                };
-                let textarea = document.getElementById(`resp_${s.id}_${p.replace(/ /g,'_')}`);
-                if(textarea) textarea.addEventListener('input', () => {
-                    let data = users[currentUser].diarios[currentDate];
-                    if(data && data.ikigai_respostas) data.ikigai_respostas[`${s.id}_${p}`] = textarea.value;
-                    saveAll();
-                });
-                document.querySelectorAll(`.chip[data-target="resp_${s.id}_${p.replace(/ /g,'_')}"]`).forEach(chip => {
-                    chip.onclick = () => {
-                        let ta = document.getElementById(chip.dataset.target);
-                        if(ta) ta.value = (ta.value ? ta.value + " " : "") + chip.dataset.texto;
-                    };
-                });
+                    if(icon) icon.innerText = content.classList.contains('open') ? '-' : '+';
+                }
+            };
+        });
+        
+        // Configurar chips
+        document.querySelectorAll('.chip[data-target]').forEach(chip => {
+            chip.onclick = () => {
+                let ta = document.getElementById(chip.dataset.target);
+                if(ta) ta.value = (ta.value ? ta.value + " " : "") + chip.dataset.texto;
+            };
+        });
+        
+        // Salvar respostas
+        const salvarResposta = (id, campo) => {
+            let el = document.getElementById(id);
+            if(el) el.addEventListener('input', () => {
+                let d = users[currentUser].diarios[currentDate];
+                if(d) { if(!d.ikigai_respostas) d.ikigai_respostas = {}; d.ikigai_respostas[campo] = el.value; saveAll(); }
+            });
+        };
+        
+        for(let s of secoes) {
+            for(let p of s.perguntas) {
+                salvarResposta(`resp_${s.id}_${p.replace(/ /g,'_')}`, `${s.id}_${p}`);
             }
         }
+        salvarResposta('resp_paixao', 'paixao');
+        salvarResposta('resp_vocacao', 'vocacao');
+        salvarResposta('resp_missao', 'missao');
+        salvarResposta('resp_profissao', 'profissao');
+        salvarResposta('ikigai_resultado', 'resultado');
+        salvarResposta('ikigai_final', 'final');
         
         document.getElementById('salvarIkigaiBtn')?.addEventListener('click', () => {
             if(users[currentUser].diarios[currentDate]) {
-                let respostas = users[currentUser].diarios[currentDate].ikigai_respostas || {};
-                respostas.final = document.getElementById('ikigai_final').value;
-                users[currentUser].diarios[currentDate].ikigai_respostas = respostas;
                 users[currentUser].diarios[currentDate].ikigai_data = new Date().toISOString();
-                saveAll(); alert("IKIGAI salvo! Proxima jornada em 6 meses."); renderIkigaiFlix();
+                saveAll(); alert("IKIGAI salvo! Próxima jornada em 2 meses."); renderIkigaiFlix();
             }
         });
         
         document.querySelectorAll('.circle-btn').forEach(btn => {
             btn.onclick = () => {
                 let tipo = btn.dataset.tipo, area = btn.dataset.area;
-                if(tipo === 'pergunta') openPerguntaIkigai(area);
-                else openRespostaIkigai(area, resp);
+                if(tipo === 'pergunta') {
+                    let perg = { ama: "O que você ama fazer?", boa: "Quais seus talentos?", mundo: "O que o mundo precisa?", paga: "Pelo que podem te pagar?" };
+                    alert(`Reflexão: ${perg[area] || "Pense sobre esta área"}`);
+                } else {
+                    let modal = document.createElement('div'); modal.className='modal';
+                    modal.innerHTML = `<div class="modal-content"><div class="modal-header"><h3>Minha resposta</h3><span class="close-modal">&times;</span></div><textarea id="modalResp" rows="4" placeholder="Escreva sua resposta..."></textarea><button class="btn-red" id="saveModalResp">Salvar</button></div>`;
+                    document.body.appendChild(modal); modal.style.display='flex';
+                    modal.querySelector('.close-modal').onclick = () => modal.remove();
+                    document.getElementById('saveModalResp').onclick = () => {
+                        let d = users[currentUser].diarios[currentDate];
+                        if(d) { if(!d.ikigai_respostas) d.ikigai_respostas = {}; d.ikigai_respostas[area] = document.getElementById('modalResp').value; saveAll(); }
+                        modal.remove();
+                    };
+                }
             };
         });
     }
     
-    function openPerguntaIkigai(area) {
-        let perguntas = { ama: ["O que me faz sentir viva?", "O que eu faria de graca?", "O que me empolga naturalmente?"], boa: ["Pelo que as pessoas me procuram?", "O que faco com facilidade?"], mundo: ["Que problemas me tocam?", "Como quero ajudar?"], paga: ["Pelo que as pessoas pagariam?", "O que posso transformar em profissao?"] };
-        let qs = perguntas[area] || ["Reflexao sobre esta area"];
-        let modal = document.createElement('div'); modal.className='modal';
-        modal.innerHTML = `<div class="modal-content"><div class="modal-header"><h3>Reflexao</h3><span class="close-modal">&times;</span></div>${qs.map(q => `<p style="margin-bottom:0.8rem;">${q}</p>`).join('')}</div>`;
-        document.body.appendChild(modal); modal.style.display='flex';
-        modal.querySelector('.close-modal').onclick = () => modal.remove();
-    }
-    
-    function openRespostaIkigai(area, resp) {
-        let modal = document.createElement('div'); modal.className='modal';
-        modal.innerHTML = `<div class="modal-content"><div class="modal-header"><h3>Minhas Respostas</h3><span class="close-modal">&times;</span></div><textarea id="modalResp" rows="4" placeholder="Sua resposta...">${resp[area]||""}</textarea><button class="btn-red" id="saveModalResp">Salvar</button></div>`;
-        document.body.appendChild(modal); modal.style.display='flex';
-        modal.querySelector('.close-modal').onclick = () => modal.remove();
-        document.getElementById('saveModalResp').onclick = () => {
-            let data = users[currentUser].diarios[currentDate];
-            if(data) { if(!data.ikigai_respostas) data.ikigai_respostas = {}; data.ikigai_respostas[area] = document.getElementById('modalResp').value; saveAll(); }
-            modal.remove();
-        };
-    }
-    
-    // PAGINA 8 - ARQUIVO X
+    // PÁGINA 8 - ARQUIVO X
     function renderArquivos() {
         let diarios = users[currentUser]?.diarios || {};
         let dates = Object.keys(diarios).sort().reverse();
         let html = `<div class="vhs-container">`;
-        dates.forEach(d => { html += `<div class="vhs-card" data-data="${d}"><div class="vhs-date">${d}</div><div class="vhs-info">Episodio salvo</div></div>`; });
+        dates.forEach(d => { html += `<div class="vhs-card" data-data="${d}"><div class="vhs-date">${d}</div><div class="vhs-info">Episódio salvo</div></div>`; });
         html += `</div>`;
         document.getElementById('page8').innerHTML = html;
         document.querySelectorAll('.vhs-card').forEach(c => { c.onclick = () => { currentDate = c.dataset.data; loadDate(); changePage(0); }; });
@@ -679,7 +755,7 @@
         loadDate();
         document.getElementById('currentUserDisplay').innerText = currentUser;
         document.getElementById('avatarBtn').innerText = currentUser.charAt(0).toUpperCase();
-        document.getElementById('saveEntryBtn').onclick = () => { capturePage0(); alert("Episodio salvo!"); };
+        document.getElementById('saveEntryBtn').onclick = () => { capturePage0(); alert("Episódio salvo!"); };
         document.getElementById('historySelect').onchange = (e) => { let val = e.target.value === "hoje" ? new Date().toISOString().slice(0,10) : e.target.value; capturePage0(); currentDate = val; loadDate(); };
         document.getElementById('logoutBtn').onclick = () => { currentUser = null; document.getElementById('dashboard').style.display = 'none'; document.getElementById('loginScreen').style.display = 'flex'; };
         let nav = document.getElementById('pageNav');
@@ -693,16 +769,16 @@
     function handleLogin() {
         let user = document.getElementById('loginUser').value.trim();
         let pass = document.getElementById('loginPass').value.trim();
-        if(!user || !pass) { document.getElementById('loginError').innerText = "Preencha usuario e senha."; return; }
+        if(!user || !pass) { document.getElementById('loginError').innerText = "Preencha usuário e senha."; return; }
         if(isLoginMode) {
             if(users[user] && users[user].senha === pass) {
                 currentUser = user;
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
                 initDashboard();
-            } else { document.getElementById('loginError').innerText = "Usuario ou senha incorretos."; }
+            } else { document.getElementById('loginError').innerText = "Usuário ou senha incorretos."; }
         } else {
-            if(users[user]) { document.getElementById('loginError').innerText = "Usuario ja existe."; }
+            if(users[user]) { document.getElementById('loginError').innerText = "Usuário já existe."; }
             else {
                 users[user] = { senha: pass, diarios: {} };
                 localStorage.setItem('netpsi_users', JSON.stringify(users));
@@ -722,7 +798,7 @@
         isLoginMode = !isLoginMode;
         document.getElementById('formTitle').innerText = isLoginMode ? "Entrar na sua temporada" : "Criar sua temporada";
         document.getElementById('submitBtn').innerText = isLoginMode ? "Entrar" : "Criar conta";
-        document.getElementById('switchBtn').innerText = isLoginMode ? "Criar sua temporada" : "Ja tenho conta";
+        document.getElementById('switchBtn').innerText = isLoginMode ? "Criar sua temporada" : "Já tenho conta";
         document.getElementById('loginError').innerText = "";
     };
 </script>
