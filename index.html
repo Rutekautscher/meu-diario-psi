@@ -71,7 +71,22 @@
         .modal-full .modal-content { width: 95%; max-width: 700px; background: #1f1f1f; border-radius: 24px; padding: 1.5rem; border-left: 6px solid #E50914; }
         .close-modal { cursor: pointer; font-size: 2rem; float: right; color: #E50914; }
         
-        /* NeuroFlix - 4 hormônios lado a lado */
+        /* Ikigai */
+        .ikigai-central { text-align: center; margin: 1rem 0; }
+        .ikigai-symbol { display: inline-block; background: #E50914; border-radius: 50%; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; margin: 0 auto; box-shadow: 0 0 20px rgba(229,9,20,0.5); }
+        .ikigai-symbol span { color: white; font-size: 1.5rem; font-weight: bold; letter-spacing: 2px; }
+        .ikigai-desc { background: #2a2a2a; padding: 1rem; border-radius: 16px; margin: 1rem 0; font-size: 0.9rem; line-height: 1.5; }
+        .ikigai-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1.5rem 0; }
+        @media (max-width: 600px) { .ikigai-grid { grid-template-columns: 1fr; } }
+        .ikigai-card { background: #1f1f1f; border: 2px solid #E50914; border-radius: 20px; padding: 1rem; text-align: center; }
+        .ikigai-card h4 { color: #E50914; font-size: 1rem; margin-bottom: 0.5rem; }
+        .ikigai-card.disabled { opacity: 0.5; pointer-events: none; }
+        .intersecao-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1.5rem 0; }
+        @media (max-width: 600px) { .intersecao-grid { grid-template-columns: 1fr; } }
+        .intersecao-card { background: #2a2a2a; padding: 1rem; border-radius: 16px; border-left: 4px solid #E50914; }
+        .intersecao-card h4 { color: #E50914; font-size: 1rem; margin-bottom: 0.3rem; }
+        
+        /* NeuroFlix */
         .hormonios-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1rem; }
         @media (max-width: 900px) { .hormonios-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 500px) { .hormonios-grid { grid-template-columns: 1fr; } }
@@ -87,28 +102,13 @@
         .card-endorfina { border-left: 6px solid #00CED1; }
         .card-serotonina { border-left: 6px solid #32CD32; }
         
-        /* DiagnostiFlix - linha única */
+        /* DiagnostiFlix */
         .roda-single { background: #2a2a2a; padding: 1rem; border-radius: 16px; margin-bottom: 1rem; }
         .roda-single h4 { color: #E50914; font-size: 1rem; margin-bottom: 0.3rem; }
-        .progress-bar-bg { width: 100%; height: 8px; background: #333; border-radius: 4px; overflow: hidden; margin: 0.5rem 0; }
-        .progress-fill { height: 100%; width: 0%; border-radius: 4px; transition: width 0.3s; }
-        .progress-fill.critico { background: #8B0000; }
-        .progress-fill.atencao { background: #FF8C00; }
-        .progress-fill.regular { background: #FFD700; }
-        .progress-fill.bom { background: #228B22; }
-        
-        /* Ikigai */
-        .ikigai-central { text-align: center; margin: 1rem 0; }
-        .ikigai-symbol { display: inline-block; background: #E50914; border-radius: 50%; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; margin: 0 auto; box-shadow: 0 0 20px rgba(229,9,20,0.5); }
-        .ikigai-symbol span { color: white; font-size: 1.5rem; font-weight: bold; letter-spacing: 2px; }
-        .ikigai-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1.5rem 0; }
-        @media (max-width: 600px) { .ikigai-grid { grid-template-columns: 1fr; } }
-        .ikigai-card { background: #1f1f1f; border: 2px solid #E50914; border-radius: 20px; padding: 1rem; text-align: center; }
-        .ikigai-card h4 { color: #E50914; font-size: 0.9rem; margin-bottom: 0.5rem; }
-        .intersecao-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1.5rem 0; }
-        @media (max-width: 600px) { .intersecao-grid { grid-template-columns: 1fr; } }
-        .intersecao-card { background: #2a2a2a; padding: 1rem; border-radius: 16px; border-left: 4px solid #E50914; }
-        .intersecao-card h4 { color: #E50914; font-size: 1rem; margin-bottom: 0.3rem; }
+        .roda-desc { font-size: 0.8rem; color: #ccc; margin-bottom: 0.5rem; }
+        .nota-botao { background: #333; border: 1px solid #E50914; color: #E50914; padding: 0.3rem 0.8rem; border-radius: 20px; cursor: pointer; font-size: 0.8rem; margin-bottom: 0.5rem; display: inline-block; }
+        .nota-botao:hover { background: #E50914; color: white; }
+        .nota-selecionada { display: inline-block; margin-left: 0.5rem; color: #E50914; font-weight: bold; }
         
         /* Esferas da Amizade */
         .esferas-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
@@ -119,7 +119,7 @@
         .desc-full { display: none; font-size: 0.75rem; color: #ccc; margin-bottom: 0.8rem; padding: 0.5rem; background: #2a2a2a; border-radius: 8px; }
         .desc-full.open { display: block; }
         
-        /* Arquivo X - editável */
+        /* Arquivo X */
         .vhs-container { display: grid; grid-template-columns: 1fr; gap: 1rem; }
         @media (min-width: 500px) { .vhs-container { grid-template-columns: 1fr 1fr; } }
         .vhs-card { background: linear-gradient(145deg, #1a1a1a, #0f0f0f); border-radius: 16px; padding: 1rem; border: 1px solid #E50914; }
@@ -227,8 +227,8 @@
             replay: { situacao: "", aceito: "", agradeco: "", nao_faz_bem: "", faz_bem: "", deixo_ir: "", desfruto: "", nao_preciso: "" },
             criseplay: { fisica: {}, sensorial: {}, emocional: {} },
             plano_acao: {},
-            ikigai_respostas: { ama: "", boa: "", mundo: "", paga: "", paixao: "", vocacao: "", missao: "", profissao: "" },
-            ikigai_data: null, ikigai_resultado: "",
+            ikigai: { etapa: 0, respostas: { ama: "", boa: "", mundo: "", paga: "", paixao: "", missao: "", vocacao: "", profissao: "", resultado: "" }, resultado_parcial: {} },
+            ikigai_data: null,
             roda_vida: {}, coadjuvantes: {}, 
             saga: { dop1:false,dop2:false,dop3:false,dop4:false,dop5:false,dop6:false, oci1:false,oci2:false,oci3:false,oci4:false,oci5:false,oci6:false, end1:false,end2:false,end3:false,end4:false,end5:false,end6:false, ser1:false,ser2:false,ser3:false,ser4:false,ser5:false,ser6:false }
         };
@@ -282,7 +282,7 @@
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
         let streak = calcularStreak();
         document.getElementById('page0').innerHTML = `
-            <div class="streak-card"><div style="font-size:2rem;">🏆</div><div class="streak-number">${streak}</div><div>dias de constância (OSCAR)</div></div>
+            <div class="streak-card"><div style="font-size:2rem;">🏆</div><div class="streak-number">${streak}</div><div>dias de constância (OSCAR da Constância)</div></div>
             <div class="section"><h3>EXERCÍCIO TERAPÊUTICO</h3><div class="tv-smart" id="exercicioBtn"><div class="tv-screen">CLIQUE AQUI<br>PARA SEU EXERCÍCIO</div></div><textarea id="reflexaoTexto" rows="3" placeholder="Escreva sua reflexão...">${data.reflexao||""}</textarea></div>
             <div class="section"><div class="tv-smart" id="tvSmartBtn"><div class="tv-screen">COMO FOI O EPISÓDIO DE HOJE?</div></div></div>
             <div class="section"><h3>Como está sua estrela hoje?</h3><div class="estrela-options"><div class="estrela-option ${data.estrela==='brilhando'?'selected':''}" data-estrela="brilhando">Brilhando</div><div class="estrela-option ${data.estrela==='apagada'?'selected':''}" data-estrela="apagada">Apagada</div></div><textarea id="estrelaRoteiro" placeholder="Descreva o roteiro...">${data.estrela_roteiro}</textarea></div>
@@ -480,7 +480,7 @@
         document.querySelectorAll('.chip').forEach(chip => { chip.onclick = () => { let ta = document.getElementById(chip.dataset.target); if(ta) ta.value = chip.innerText; }; });
     }
     
-    // NEUROFLIX - 4 hormônios lado a lado
+    // NEUROFLIX
     function renderPagina5() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
         let s = data.saga || {};
@@ -550,69 +550,255 @@
         }
     }
     
-    // DIAGNOSTIFLIX - linha única, sem duplicação
+    // DIAGNOSTIFLIX - com botão de selecionar nota
     const areasDiagnosti = [
         "Vida Profissional", "Vida Amorosa", "Amigos", "Família", "Espiritualidade", "Saúde Mental", "Inteligência Emocional",
         "Saúde Física", "Financeiro", "Intelectual", "Lazer", "Autoconhecimento", "Propósito", "Ambiente", "Alimentação",
         "Sono", "Tecnologia Digital", "Higiene", "Sexualidade", "Produtividade"
     ];
+    const descricoesAreas = {
+        0: "Emprego, carreira, negócio, salário, satisfação",
+        1: "Relacionamento, namoro, casamento, intimidade",
+        2: "Íntimos, necessários, estratégicos, incontornáveis, superados",
+        3: "Pais, filhos, irmãos, convívio, comunicação",
+        4: "Fé, religião, meditação, crenças",
+        5: "Ansiedade, depressão, estresse, psiquiatra, psicoterapia",
+        6: "Controle emocional, empatia, conflitos, mágoas",
+        7: "Treino, exames, energia, dores, hábitos",
+        8: "Poupança, dívidas, investimentos, gastos",
+        9: "Leituras, cursos, idiomas, conhecimentos novos",
+        10: "Hobbies, viagens, descanso, diversão",
+        11: "Identidade, medos, padrões de comportamento, valores",
+        12: "Sonhos, metas, missão de vida, legado",
+        13: "Quarto arrumado, guarda-roupa organizado, roupas limpas",
+        14: "Dieta, relação com comida, compulsão, hidratação",
+        15: "Qualidade, rotina noturna, insônia, descanso",
+        16: "Redes sociais, tempo de tela, dependência, produtividade",
+        17: "Cuidados pessoais, rotina, higiene bucal, pele, cabelo",
+        18: "Identidade, saúde sexual, autoconhecimento do corpo, vida ativa",
+        19: "Foco, organização, gestão do tempo, procrastinação, rotina"
+    };
     function renderPagina7() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
         let roda = data.roda_vida || {};
         let pode = (!data.roda_vida_data || new Date(data.roda_vida_data).getMonth() !== new Date().getMonth());
         if(!pode) { document.getElementById('page7').innerHTML = `<div class="blocked-message">Você já avaliou sua vida este mês. Volte no mês que vem.</div>`; return; }
-        let html = `<div class="section"><h3>Avalie sua vida</h3><p class="text-small" style="margin-bottom:0.5rem;">Esta avaliação pode ser feita uma vez por mês.</p>`;
+        let html = `<div class="section"><h3>Avalie sua vida</h3><p class="text-small" style="margin-bottom:0.5rem;">Esta avaliação pode ser feita apenas 1 vez por mês</p>`;
         for(let i=0;i<areasDiagnosti.length;i++) {
-            let nota = roda[i] || 5;
-            let corClass = nota <= 3 ? 'critico' : nota <= 5 ? 'atencao' : nota <= 7 ? 'regular' : 'bom';
-            html += `<div class="roda-single"><h4>${areasDiagnosti[i]}</h4>
-                <div><span>Nota: <span id="nota_val_${i}">${nota}</span>/10</span></div>
-                <div class="progress-bar-bg"><div class="progress-fill ${corClass}" id="progress_${i}" style="width:${nota*10}%"></div></div>
-                <input type="range" id="roda_${i}" min="0" max="10" value="${nota}">
+            let nota = roda[i] || 0;
+            html += `<div class="roda-single" data-area="${i}">
+                <h4>${areasDiagnosti[i]}</h4>
+                <div class="roda-desc">${descricoesAreas[i]}</div>
+                <div><button class="nota-botao" data-area="${i}">Selecionar nota</button><span class="nota-selecionada" id="nota_display_${i}">${nota > 0 ? nota + "/10" : "Não selecionada"}</span></div>
+                <textarea id="comentario_${i}" placeholder="Comente sobre essa área..." rows="2">${roda[`comentario_${i}`]||""}</textarea>
             </div>`;
         }
         html += `<button class="btn-red" id="salvarRodaBtn">Salvar avaliação</button></div>`;
         document.getElementById('page7').innerHTML = html;
+        
         for(let i=0;i<areasDiagnosti.length;i++) {
-            let slider = document.getElementById(`roda_${i}`);
-            if(slider) slider.addEventListener('input', (e) => { let val=parseInt(e.target.value); document.getElementById(`nota_val_${i}`).innerText = val; let classe=val<=3?'critico':val<=5?'atencao':val<=7?'regular':'bom'; let prog=document.getElementById(`progress_${i}`); if(prog){ prog.style.width=(val*10)+'%'; prog.className='progress-fill '+classe; } });
+            let btn = document.querySelector(`.nota-botao[data-area="${i}"]`);
+            if(btn) {
+                btn.onclick = () => {
+                    let notas = [1,2,3,4,5,6,7,8,9,10];
+                    let modal = document.createElement('div'); modal.className='modal-full';
+                    modal.innerHTML = `<div class="modal-content"><div class="modal-header"><span class="close-modal">&times;</span><h3>Selecione a nota para ${areasDiagnosti[i]}</h3></div><div style="display:flex; flex-wrap:wrap; gap:0.5rem; justify-content:center; padding:1rem;">${notas.map(n => `<button class="nota-opcao" data-nota="${n}" style="background:#333; border:1px solid #E50914; color:#E50914; width:50px; height:50px; border-radius:50%; cursor:pointer; font-size:1.2rem;">${n}</button>`).join('')}</div></div>`;
+                    document.body.appendChild(modal); modal.style.display='flex';
+                    modal.querySelector('.close-modal').onclick = () => modal.remove();
+                    modal.querySelectorAll('.nota-opcao').forEach(opt => {
+                        opt.onclick = () => {
+                            let nota = parseInt(opt.dataset.nota);
+                            document.getElementById(`nota_display_${i}`).innerText = nota + "/10";
+                            if(users[currentUser].diarios[currentDate]) {
+                                if(!users[currentUser].diarios[currentDate].roda_vida) users[currentUser].diarios[currentDate].roda_vida = {};
+                                users[currentUser].diarios[currentDate].roda_vida[i] = nota;
+                                saveAll();
+                            }
+                            modal.remove();
+                        };
+                    });
+                };
+            }
+            let comentario = document.getElementById(`comentario_${i}`);
+            if(comentario) comentario.addEventListener('input', () => {
+                if(users[currentUser].diarios[currentDate]) {
+                    if(!users[currentUser].diarios[currentDate].roda_vida) users[currentUser].diarios[currentDate].roda_vida = {};
+                    users[currentUser].diarios[currentDate].roda_vida[`comentario_${i}`] = comentario.value;
+                    saveAll();
+                }
+            });
         }
-        document.getElementById('salvarRodaBtn')?.addEventListener('click', () => { let novaRoda={}; for(let i=0;i<areasDiagnosti.length;i++) { novaRoda[i]=parseInt(document.getElementById(`roda_${i}`)?.value)||5; } if(users[currentUser].diarios[currentDate]) { users[currentUser].diarios[currentDate].roda_vida=novaRoda; users[currentUser].diarios[currentDate].roda_vida_data=new Date().toISOString(); saveAll(); alert("Avaliação salva! Volte mês que vem."); renderPagina7(); } });
+        document.getElementById('salvarRodaBtn')?.addEventListener('click', () => { alert("Avaliação salva! Volte mês que vem."); renderPagina7(); });
     }
     
-    // IKIGAI - com linguagem padronizada e sem "Meu Ikigai final"
+    // IKIGAI FLIX - com fluxo de etapas
+    let ikigaiEtapaAtual = 0;
+    const ikigaiEtapas = ["PAIXÃO", "MISSÃO", "VOCAÇÃO", "PROFISSÃO"];
+    const ikigaiPerguntas = {
+        PAIXÃO: "O que você ama fazer que também faz bem?",
+        MISSÃO: "Como unir o que você ama com algo que o mundo precisa?",
+        VOCAÇÃO: "Seu talento pode ajudar os outros de que forma?",
+        PROFISSÃO: "Como transformar seu dom em uma carreira?"
+    };
+    
     function renderIkigai() {
         let data = users[currentUser]?.diarios?.[currentDate] || getEmptyDiary();
+        let ikigai = data.ikigai || { etapa: 0, respostas: { ama: "", boa: "", mundo: "", paga: "", paixao: "", missao: "", vocacao: "", profissao: "", resultado: "" }, resultado_parcial: {} };
         let pode = (!data.ikigai_data || (new Date() - new Date(data.ikigai_data) > 60*24*60*60*1000));
-        if(!pode) { document.getElementById('page8').innerHTML = `<div class="blocked-message">Você já fez seu IKIGAI neste bimestre. Volte daqui a 2 meses.</div>`; return; }
-        let resp = data.ikigai_respostas || {};
-        document.getElementById('page8').innerHTML = `
-            <div class="section"><h3>Seu Ikigai (Razão de Ser)</h3>
-            <div class="ikigai-central"><div class="ikigai-symbol"><span>IKIGAI</span></div></div>
-            <p class="text-small" style="text-align:center; margin:1rem 0;">O IKIGAI é um método japonês que ajuda você a encontrar seu propósito.</p>
-            <div class="ikigai-grid">
-                <div class="ikigai-card"><h4>Aquilo que você ama</h4><textarea id="ikigai_ama" rows="2" placeholder="O que te faz sentir viva?">${resp.ama||""}</textarea><div class="sugestoes-chips"><div class="chip" data-target="ikigai_ama">Psicologia</div><div class="chip" data-target="ikigai_ama">Ajudar pessoas</div><div class="chip" data-target="ikigai_ama">Escrever</div></div></div>
-                <div class="ikigai-card"><h4>Aquilo que você é bom</h4><textarea id="ikigai_boa" rows="2" placeholder="Quais seus talentos?">${resp.boa||""}</textarea><div class="sugestoes-chips"><div class="chip" data-target="ikigai_boa">Escutar</div><div class="chip" data-target="ikigai_boa">Cuidar</div><div class="chip" data-target="ikigai_boa">Comunicar</div></div></div>
-                <div class="ikigai-card"><h4>Aquilo que o mundo precisa</h4><textarea id="ikigai_mundo" rows="2" placeholder="Como quer ajudar o mundo?">${resp.mundo||""}</textarea><div class="sugestoes-chips"><div class="chip" data-target="ikigai_mundo">Saúde mental</div><div class="chip" data-target="ikigai_mundo">Educação</div></div></div>
-                <div class="ikigai-card"><h4>Aquilo pelo que pode ser pago</h4><textarea id="ikigai_paga" rows="2" placeholder="O que pode virar profissão?">${resp.paga||""}</textarea><div class="sugestoes-chips"><div class="chip" data-target="ikigai_paga">Atendimento</div><div class="chip" data-target="ikigai_paga">Conteúdo</div></div></div>
-            </div>
-            <div class="intersecao-grid">
-                <div class="intersecao-card"><h4>PAIXÃO</h4><p class="text-small">Aquilo que você ama + Aquilo que você é bom</p><textarea id="ikigai_paixao" rows="2" placeholder="Seu ponto de paixão...">${resp.paixao||""}</textarea></div>
-                <div class="intersecao-card"><h4>MISSÃO</h4><p class="text-small">Aquilo que o mundo precisa + Aquilo que você ama</p><textarea id="ikigai_missao" rows="2" placeholder="Sua missão...">${resp.missao||""}</textarea></div>
-                <div class="intersecao-card"><h4>PROFISSÃO</h4><p class="text-small">Aquilo que o mundo precisa + Aquilo pelo que pode ser pago</p><textarea id="ikigai_profissao" rows="2" placeholder="Sua profissão...">${resp.profissao||""}</textarea></div>
-                <div class="intersecao-card"><h4>VOCAÇÃO</h4><p class="text-small">Aquilo que você é bom + Aquilo pelo que pode ser pago</p><textarea id="ikigai_vocacao" rows="2" placeholder="Sua vocação...">${resp.vocacao||""}</textarea></div>
-            </div>
-            <button class="btn-red" id="calcularIkigaiBtn">CALCULAR MEU IKIGAI</button>
-            <div id="resultadoIkigaiArea" class="info-card" style="margin-top:1rem; display:none;"><h4>Resultado:</h4><p id="resultadoIkigaiTexto"></p></div>
-            <button class="btn-red" id="salvarIkigaiBtn" style="margin-top:0.5rem;">Salvar IKIGAI</button></div>`;
         
-        ['ama','boa','mundo','paga','paixao','missao','profissao','vocacao'].forEach(id => { let ta = document.getElementById(`ikigai_${id}`); if(ta) ta.addEventListener('input', () => { let d=users[currentUser].diarios[currentDate]; if(d) d.ikigai_respostas[id]=ta.value; saveAll(); }); });
-        document.querySelectorAll('.chip').forEach(chip => { chip.onclick = () => { let ta = document.getElementById(chip.dataset.target); if(ta) ta.value = chip.innerText; }; });
-        document.getElementById('calcularIkigaiBtn')?.addEventListener('click', () => { let respAtual = users[currentUser].diarios[currentDate].ikigai_respostas; let resultado = "Seu IKIGAI parece estar relacionado a um caminho de cuidado e propósito. Continue explorando!"; document.getElementById('resultadoIkigaiTexto').innerText = resultado; document.getElementById('resultadoIkigaiArea').style.display = 'block'; });
-        document.getElementById('salvarIkigaiBtn')?.addEventListener('click', () => { let d=users[currentUser].diarios[currentDate]; if(d) { d.ikigai_respostas.final = d.ikigai_respostas.ama + " " + d.ikigai_respostas.boa + " " + d.ikigai_respostas.mundo + " " + d.ikigai_respostas.paga; d.ikigai_data = new Date().toISOString(); saveAll(); alert("IKIGAI salvo! Próxima jornada em 2 meses."); renderIkigai(); } });
+        document.getElementById('page8').innerHTML = `
+            <div class="section"><h3>Ikigai - Razão de ser</h3>
+            <div class="ikigai-central"><div class="ikigai-symbol"><span>IKIGAI</span></div></div>
+            <div class="ikigai-desc">
+                <p>Ikigai é um conceito japonês que significa "razão de ser". Ele representa o ponto de equilíbrio entre quatro dimensões fundamentais da vida: o que você ama, no que você é bom, pelo que pode ser pago e o que o mundo precisa.</p>
+                <p style="margin-top:0.5rem;">Mais do que uma ferramenta de carreira, o Ikigai é um método de autoconhecimento profundo que ajuda a construir uma vida com sentido, direção e coerência entre identidade e ação.</p>
+                <p style="margin-top:0.5rem;">Na cultura japonesa, especialmente em Okinawa, o Ikigai está associado a longevidade, bem-estar e estabilidade emocional, porque envolve viver com propósito no cotidiano, e não apenas buscar grandes conquistas externas.</p>
+                <p style="margin-top:0.5rem;">Ele não é fixo. O Ikigai muda conforme você muda.</p>
+            </div>`;
+        
+        if(pode) {
+            document.getElementById('page8').innerHTML += `
+                <div class="ikigai-grid">
+                    <div class="ikigai-card ${ikigai.etapa >= 1 ? '' : 'disabled'}">
+                        <h4>Aquilo que você ama</h4>
+                        <textarea id="ikigai_ama" rows="2" placeholder="O que te faz sentir viva?" ${ikigai.etapa < 1 ? 'disabled' : ''}>${ikigai.respostas.ama||""}</textarea>
+                        <div class="sugestoes-chips"><div class="chip" data-target="ikigai_ama" data-etapa="1">Psicologia</div><div class="chip" data-target="ikigai_ama" data-etapa="1">Ajudar pessoas</div><div class="chip" data-target="ikigai_ama" data-etapa="1">Escrever</div></div>
+                    </div>
+                    <div class="ikigai-card ${ikigai.etapa >= 2 ? '' : 'disabled'}">
+                        <h4>Aquilo que você é bom</h4>
+                        <textarea id="ikigai_boa" rows="2" placeholder="Quais seus talentos?" ${ikigai.etapa < 2 ? 'disabled' : ''}>${ikigai.respostas.boa||""}</textarea>
+                        <div class="sugestoes-chips"><div class="chip" data-target="ikigai_boa" data-etapa="2">Escutar</div><div class="chip" data-target="ikigai_boa" data-etapa="2">Cuidar</div><div class="chip" data-target="ikigai_boa" data-etapa="2">Comunicar</div></div>
+                    </div>
+                    <div class="ikigai-card ${ikigai.etapa >= 3 ? '' : 'disabled'}">
+                        <h4>Aquilo que o mundo precisa</h4>
+                        <textarea id="ikigai_mundo" rows="2" placeholder="Como quer ajudar o mundo?" ${ikigai.etapa < 3 ? 'disabled' : ''}>${ikigai.respostas.mundo||""}</textarea>
+                        <div class="sugestoes-chips"><div class="chip" data-target="ikigai_mundo" data-etapa="3">Saúde mental</div><div class="chip" data-target="ikigai_mundo" data-etapa="3">Educação</div></div>
+                    </div>
+                    <div class="ikigai-card ${ikigai.etapa >= 4 ? '' : 'disabled'}">
+                        <h4>Aquilo pelo que pode ser pago</h4>
+                        <textarea id="ikigai_paga" rows="2" placeholder="O que pode virar profissão?" ${ikigai.etapa < 4 ? 'disabled' : ''}>${ikigai.respostas.paga||""}</textarea>
+                        <div class="sugestoes-chips"><div class="chip" data-target="ikigai_paga" data-etapa="4">Atendimento</div><div class="chip" data-target="ikigai_paga" data-etapa="4">Conteúdo</div></div>
+                    </div>
+                </div>`;
+            
+            // Etapas de descoberta
+            if(ikigai.etapa < 5) {
+                let etapaNome = ikigaiEtapas[ikigai.etapa];
+                let respostaAtual = ikigai.respostas[etapaNome.toLowerCase()] || "";
+                document.getElementById('page8').innerHTML += `
+                    <div class="intersecao-card" style="margin-top:1rem;">
+                        <h4>${etapaNome}</h4>
+                        <p class="text-small">${ikigaiPerguntas[etapaNome]}</p>
+                        <textarea id="etapa_resposta" rows="3" placeholder="Escreva sua reflexão...">${respostaAtual}</textarea>
+                        <button class="btn-red" id="descobrirBtn" style="margin-top:0.5rem;">DESCUBRA</button>
+                        <div id="resultadoParcial" class="info-card" style="margin-top:0.5rem; display:none;"></div>
+                    </div>`;
+            } else {
+                document.getElementById('page8').innerHTML += `
+                    <div class="intersecao-grid">
+                        <div class="intersecao-card"><h4>PAIXÃO</h4><p class="text-small">${ikigai.respostas.paixao || "Reflita sobre o que você ama e faz bem"}</p></div>
+                        <div class="intersecao-card"><h4>MISSÃO</h4><p class="text-small">${ikigai.respostas.missao || "Reflita sobre o que você ama e o mundo precisa"}</p></div>
+                        <div class="intersecao-card"><h4>VOCAÇÃO</h4><p class="text-small">${ikigai.respostas.vocacao || "Reflita sobre seu talento e utilidade social"}</p></div>
+                        <div class="intersecao-card"><h4>PROFISSÃO</h4><p class="text-small">${ikigai.respostas.profissao || "Reflita sobre seu dom e carreira"}</p></div>
+                    </div>
+                    <div class="info-card" style="margin-top:1rem;">
+                        <h4>RESULTADO FINAL</h4>
+                        <p>${ikigai.respostas.resultado || "Clique em CALCULAR para gerar seu IKIGAI"}</p>
+                    </div>
+                    <button class="btn-red" id="calcularIkigaiFinalBtn">CALCULAR MEU IKIGAI</button>
+                    <button class="btn-outline" id="reiniciarIkigaiBtn" style="margin-top:0.5rem;">Reiniciar jornada</button>`;
+            }
+            
+            document.getElementById('page8').innerHTML += `<button class="btn-red" id="salvarIkigaiBtn" style="margin-top:1rem;">Salvar IKIGAI</button>`;
+        } else {
+            document.getElementById('page8').innerHTML += `<div class="blocked-message">Você já fez seu IKIGAI neste bimestre. Volte daqui a 2 meses.</div>`;
+        }
+        
+        // Configurar chips
+        document.querySelectorAll('.chip').forEach(chip => {
+            chip.onclick = () => {
+                let target = document.getElementById(chip.dataset.target);
+                if(target && !target.disabled) target.value = chip.innerText;
+            };
+        });
+        
+        // Salvar respostas das áreas
+        ['ama','boa','mundo','paga'].forEach(id => {
+            let ta = document.getElementById(`ikigai_${id}`);
+            if(ta) ta.addEventListener('input', () => {
+                let d = users[currentUser].diarios[currentDate];
+                if(d) { if(!d.ikigai) d.ikigai = { etapa: 0, respostas: {} }; d.ikigai.respostas[id] = ta.value; saveAll(); }
+            });
+        });
+        
+        // Botão Descobrir
+        let descobrirBtn = document.getElementById('descobrirBtn');
+        if(descobrirBtn) {
+            descobrirBtn.onclick = () => {
+                let resposta = document.getElementById('etapa_resposta')?.value || "";
+                let etapaNome = ikigaiEtapas[ikigaiEtapaAtual];
+                let interpretacao = "";
+                if(etapaNome === "PAIXÃO") interpretacao = "Sua paixão parece estar ligada ao que te move internamente. Continue explorando suas motivações.";
+                if(etapaNome === "MISSÃO") interpretacao = "Sua missão pode estar relacionada a unir seu amor com as necessidades do mundo.";
+                if(etapaNome === "VOCAÇÃO") interpretacao = "Sua vocação parece ser usar seus talentos para o bem coletivo.";
+                if(etapaNome === "PROFISSÃO") interpretacao = "Sua profissão pode unir seu dom com oportunidades reais de mercado.";
+                
+                document.getElementById('resultadoParcial').innerHTML = `<p>${interpretacao}</p><p class="text-small">Baseado na sua resposta: "${resposta}"</p>`;
+                document.getElementById('resultadoParcial').style.display = 'block';
+                
+                let d = users[currentUser].diarios[currentDate];
+                if(d) {
+                    if(!d.ikigai) d.ikigai = { etapa: 0, respostas: {} };
+                    d.ikigai.respostas[etapaNome.toLowerCase()] = resposta;
+                    d.ikigai.etapa = ikigaiEtapaAtual + 1;
+                    saveAll();
+                    setTimeout(() => renderIkigai(), 500);
+                }
+            };
+        }
+        
+        // Calcular resultado final
+        let calcularBtn = document.getElementById('calcularIkigaiFinalBtn');
+        if(calcularBtn) {
+            calcularBtn.onclick = () => {
+                let d = users[currentUser].diarios[currentDate];
+                if(d && d.ikigai) {
+                    let ama = d.ikigai.respostas.ama || "";
+                    let boa = d.ikigai.respostas.boa || "";
+                    let mundo = d.ikigai.respostas.mundo || "";
+                    let paga = d.ikigai.respostas.paga || "";
+                    let resultado = `Seu IKIGAI parece unir: ${ama.substring(0,50)}... + ${boa.substring(0,50)}... + ${mundo.substring(0,50)}... + ${paga.substring(0,50)}... Continue aprofundando essas áreas.`;
+                    d.ikigai.respostas.resultado = resultado;
+                    saveAll();
+                    renderIkigai();
+                }
+            };
+        }
+        
+        // Reiniciar
+        let reiniciarBtn = document.getElementById('reiniciarIkigaiBtn');
+        if(reiniciarBtn) {
+            reiniciarBtn.onclick = () => {
+                if(confirm("Reiniciar sua jornada IKIGAI? Isso apagará suas respostas atuais.")) {
+                    let d = users[currentUser].diarios[currentDate];
+                    if(d) d.ikigai = { etapa: 0, respostas: { ama: "", boa: "", mundo: "", paga: "", paixao: "", missao: "", vocacao: "", profissao: "", resultado: "" }, resultado_parcial: {} };
+                    saveAll();
+                    renderIkigai();
+                }
+            };
+        }
+        
+        // Salvar IKIGAI
+        let salvarBtn = document.getElementById('salvarIkigaiBtn');
+        if(salvarBtn) {
+            salvarBtn.onclick = () => {
+                let d = users[currentUser].diarios[currentDate];
+                if(d) { d.ikigai_data = new Date().toISOString(); saveAll(); alert("IKIGAI salvo! Próxima jornada em 2 meses."); renderIkigai(); }
+            };
+        }
     }
     
-    // ARQUIVO X - editável e com exclusão
+    // ARQUIVO X
     function renderArquivos() {
         let diarios = users[currentUser]?.diarios || {};
         let dates = Object.keys(diarios).sort().reverse();
@@ -623,7 +809,7 @@
             html += `
                 <div class="vhs-card" data-data="${d}">
                     <div class="vhs-header">
-                        <div class="vhs-date" data-data="${d}">📀 ${d}</div>
+                        <div class="vhs-date" data-data="${d}">🎞️ ${d}</div>
                         <div class="vhs-actions">
                             <button class="edit-vhs" data-data="${d}">Editar</button>
                             <button class="delete-vhs" data-data="${d}">Excluir</button>
@@ -738,7 +924,9 @@
         document.getElementById('switchBtn').innerText = isLoginMode ? "Criar sua temporada" : "Já tenho conta";
         document.getElementById('loginError').innerText = "";
     };
+    
+    // Inicializar ikigai etapa
+    ikigaiEtapaAtual = 0;
 </script>
 </body>
 </html>
-
